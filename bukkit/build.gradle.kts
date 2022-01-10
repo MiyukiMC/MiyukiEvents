@@ -1,0 +1,27 @@
+repositories {
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
+    maven("https://libraries.minecraft.net/")
+    maven("https://maven.enginehub.org/repo/")
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    maven("https://repo.codemc.io/repository/maven-public/")
+    flatDir {
+        dirs("libs")
+    }
+}
+
+dependencies {
+    compileOnly(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+
+    compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
+
+    compileOnly("com.mojang:authlib:1.5.21")
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7")
+    compileOnly("me.clip:placeholderapi:2.10.9")
+
+    implementation("io.github.bananapuncher714:nbteditor:7.18.0")
+
+    compileOnly("com.github.cryptomorin:XSeries:8.5.0.1")
+
+    compileOnly("com.zaxxer:HikariCP:4.0.3")
+}

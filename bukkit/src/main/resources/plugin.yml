@@ -1,0 +1,5 @@
+name: MiyukiEvents
+version: 1.0.0-SNAPSHOT
+website: https://github.com/MiyukiMC/
+authors: [ SOekd, xMattNice_ ]
+main: app.miyuki.bukkit.Main
