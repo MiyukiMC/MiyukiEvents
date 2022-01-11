@@ -3,7 +3,7 @@ package app.miyuki.bukkit.game.impl.inperson;
 import app.miyuki.bukkit.MiyukiEvents;
 import app.miyuki.bukkit.game.Game;
 import app.miyuki.bukkit.game.InPerson;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -11,7 +11,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class Archer implements Game<Player>, InPerson {
 
     private final MiyukiEvents PLUGIN;

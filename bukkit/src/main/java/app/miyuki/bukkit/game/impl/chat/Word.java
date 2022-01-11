@@ -3,12 +3,11 @@ package app.miyuki.bukkit.game.impl.chat;
 import app.miyuki.bukkit.MiyukiEvents;
 import app.miyuki.bukkit.game.Chat;
 import app.miyuki.bukkit.game.Game;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class Word implements Game<Player>, Chat {
 
     private final MiyukiEvents PLUGIN;
