@@ -44,7 +44,7 @@ public class Gladiator implements Game<List<Player>>, InPerson {
     }
 
     @Override
-    public void quit(Player player) {
+    public void leave(Player player) {
 
     }
 

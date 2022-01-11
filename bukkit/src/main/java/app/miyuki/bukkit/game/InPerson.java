@@ -11,7 +11,7 @@ public interface InPerson {
 
     void join(Player player);
 
-    void quit(Player player);
+    void leave(Player player);
 
     void onPlayerQuit(PlayerQuitEvent event);
 
