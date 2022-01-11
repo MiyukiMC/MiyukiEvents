@@ -1,9 +1,13 @@
 package app.miyuki.bukkit.game;
 
-public interface Game {
+public interface Game<W> {
+
+    String getName();
 
     void start();
 
     void stop();
+
+    void onWin(W w);
 
 }
