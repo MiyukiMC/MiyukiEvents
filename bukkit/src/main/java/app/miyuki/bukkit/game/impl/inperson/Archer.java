@@ -3,7 +3,7 @@ package app.miyuki.bukkit.game.impl.inperson;
 import app.miyuki.bukkit.game.Game;
 import app.miyuki.bukkit.game.InPerson;
 import app.miyuki.bukkit.game.repository.GameRepository;
-import app.miyuki.bukkit.model.User;
+import app.miyuki.bukkit.user.User;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
