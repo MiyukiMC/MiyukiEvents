@@ -2,7 +2,6 @@ package app.miyuki.bukkit.user;
 
 import app.miyuki.bukkit.database.Cacheable;
 import com.google.common.collect.Maps;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
