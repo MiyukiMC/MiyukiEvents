@@ -39,6 +39,11 @@ public class Gladiator implements Game<List<Player>>, InPerson {
     }
 
     @Override
+    public void giveReward(List<Player> players) {
+
+    }
+
+    @Override
     public void join(Player player) {
 
     }

@@ -14,7 +14,7 @@ public class Giveaway implements Game<Player>, Chat {
 
     @Override
     public String getName() {
-        return null;
+        return "Sorteio";
     }
 
     @Override
@@ -31,4 +31,10 @@ public class Giveaway implements Game<Player>, Chat {
     public void onWin(Player player) {
 
     }
+
+    @Override
+    public void giveReward(Player player) {
+
+    }
+
 }

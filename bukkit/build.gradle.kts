@@ -10,7 +10,7 @@ repositories {
     }
 }
 
-// nChat, LegendChat, yClans, SimpleClans, WorldEdit, bStats (SOekd)
+// nChat, LegendChat, yClans, SimpleClans, WorldEdit, bStats (SOekd), utf8
 dependencies {
     compileOnly(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 

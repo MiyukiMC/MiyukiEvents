@@ -1,0 +1,19 @@
+Permission: 'miyukievents.giveaway'
+Cost: 0
+Calls: 5
+CallInterval: 15
+
+MaxParticipants: 10
+
+Reward:
+  Money: 10000
+  Cash: 0
+  Commands:
+    - 'give {player} diamond 64'
+
+Tag:
+  Enabled: false
+  Name: 'miyukievents_giveaway'
+  Tag: '&d[Sorteio]'
+
+Messages:

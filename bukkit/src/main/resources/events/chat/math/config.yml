@@ -5,7 +5,7 @@ CallInterval: 15
 
 MinNumber: 100
 MaxNumber: 10000
-SumTypes:
+SumTypes: # Esses são os 3 tipos máximos, não adicione nenhum, só retire caso não queira algum.
   - '+'
   - '-'
   - '*'

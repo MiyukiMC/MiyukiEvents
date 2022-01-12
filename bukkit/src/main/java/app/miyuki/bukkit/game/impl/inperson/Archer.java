@@ -34,6 +34,11 @@ public class Archer extends GameRepository<String, User> implements Game<Player>
     }
 
     @Override
+    public void giveReward(Player player) {
+
+    }
+
+    @Override
     public void join(Player player) {
 
     }

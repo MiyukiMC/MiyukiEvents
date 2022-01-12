@@ -1,0 +1,36 @@
+Permission: 'miyukievents.fastclick'
+Cost: 0
+Calls: 5
+CallInterval: 15
+
+Reward:
+  Money: 10000
+  Cash: 0
+  Commands:
+    - 'give {player} diamond 64'
+
+Tag:
+  Enabled: false
+  Name: 'miyukievents_fastclick'
+  Tag: '&5[FastClick]'
+
+Messages:
+  CallEvent:
+    - ''
+    - ''
+    - ''
+  EventWin:
+    - ''
+    - ''
+    - ''
+  NoWinner:
+    - ''
+    - ''
+    - ''
+  EventCancelled:
+    - ''
+    - ''
+    - ''
+  WrongPlace: ''
+  ClickablePlace: ''
+  NotClickablePlace: ''

@@ -10,4 +10,6 @@ public interface Game<W> {
 
     void onWin(W w);
 
+    void giveReward(W w);
+
 }
