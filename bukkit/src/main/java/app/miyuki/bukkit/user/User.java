@@ -10,7 +10,6 @@ import java.util.Locale;
 import java.util.Map;
 
 @Getter
-@Builder
 public class User implements Cacheable<String> {
 
     private String playerName;

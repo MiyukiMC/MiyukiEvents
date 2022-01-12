@@ -1,10 +1,10 @@
 repositories {
+    maven("https://repo.codemc.org/repository/maven-public/")
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://oss.sonatype.org/content/repositories/snapshots/")
     maven("https://libraries.minecraft.net/")
     maven("https://maven.enginehub.org/repo/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-    maven("https://repo.codemc.io/repository/maven-public/")
     flatDir {
         dirs("libs")
     }
@@ -20,6 +20,8 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.10.9")
 
     implementation("io.github.bananapuncher714:nbteditor:7.18.0")
+
+    implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")
 
     compileOnly("com.github.cryptomorin:XSeries:8.5.0.1")
 

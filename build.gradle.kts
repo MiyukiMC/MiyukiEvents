@@ -16,6 +16,8 @@ allprojects {
         mavenCentral()
         jcenter()
         maven("https://jitpack.io")
+        maven("https://repo.aikar.co/content/groups/aikar/")
+        maven("https://repo.codemc.org/repository/maven-public/")
     }
 
     dependencies {
@@ -26,13 +28,20 @@ allprojects {
 }
 
 dependencies {
+    implementation(project(":bukkit"))
+    implementation(project(":bungeecord"))
 }
 
 tasks {
     withType<JavaCompile> {
         options.encoding = "UTF-8"
+        options.compilerArgs.add("-parameters")
+        options.isFork = true
+        options.forkOptions.executable = "javac"
     }
-//    shadowJar {
-//        archiveFileName.set("MiyukiEvents-$version.jar")
-//    }
+    shadowJar {
+        archiveFileName.set("MiyukiEvents-$version.jar")
+        relocate("co.aikar.commands", "app.miyuki.libs.acf")
+        relocate("co.aikar.locales", "app.miyuki.libs.locales")
+    }
 }
