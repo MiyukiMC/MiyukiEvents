@@ -1,4 +1,4 @@
-package app.miyuki.bukkit.util;
+package app.miyuki.bukkit.util.random;
 
 import lombok.experimental.UtilityClass;
 

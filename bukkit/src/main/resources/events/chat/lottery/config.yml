@@ -1,0 +1,39 @@
+Permission: 'miyukievents.lottery'
+Cost: 0
+Calls: 5
+CallInterval: 15
+
+MinNumber: 1
+MaxNumber: 1000
+
+Reward:
+  Money: 10000
+  Cash: 0
+  Commands:
+    - 'give {player} diamond 64'
+
+Tag:
+  Enabled: false
+  Name: 'miyukievents_lottery'
+  Tag: '&b[Loteria]'
+
+Messages:
+  EventCall:
+    - ''
+    - ''
+    - ''
+  EventWin:
+    - ''
+    - ''
+    - ''
+  NoWinner:
+    - ''
+    - ''
+    - ''
+  EventCancelled:
+    - ''
+    - ''
+    - ''
+  NoMoney: '&b[Loteria] &cVocê não tem dinheiro suficiente para apostar na loteria.'
+  NoPermission: '&b[Loteria] &cVocê não tem permissão para participar desse evento.'
+  Lose: '&b[Loteria] &cVocê errou o número da sorte.'

@@ -10,6 +10,7 @@ repositories {
     }
 }
 
+// nChat, LegendChat, yClans, SimpleClans, WorldEdit, bStats (SOekd)
 dependencies {
     compileOnly(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 

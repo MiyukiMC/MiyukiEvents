@@ -1,0 +1,43 @@
+Permission: 'miyukievents.math'
+Cost: 0
+Calls: 5
+CallInterval: 15
+
+MinNumber: 100
+MaxNumber: 10000
+SumTypes:
+  - '+'
+  - '-'
+  - '*'
+
+Reward:
+  Money: 10000
+  Cash: 0
+  Commands:
+    - 'give {player} diamond 64'
+
+Tag:
+  Enabled: false
+  Name: 'miyukievents_math'
+  Tag: '&3[Matemática]'
+
+Messages:
+  EventCall:
+    - ''
+    - ''
+    - ''
+  EventWin:
+    - ''
+    - ''
+    - ''
+  NoWinner:
+    - ''
+    - ''
+    - ''
+  EventCancelled:
+    - ''
+    - ''
+    - ''
+  NoMoney: '&b[Matemática] &cVocê não tem dinheiro para participar do evento.'
+  NoPermission: '&b[Matemática] &cVocê não tem permissão para participar desse evento.'
+  Lose: '&b[Matemática] &cVocê errou o resultado. Tente novamente.'

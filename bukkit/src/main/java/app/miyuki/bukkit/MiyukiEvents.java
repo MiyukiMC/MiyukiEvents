@@ -13,7 +13,6 @@ public final class MiyukiEvents extends JavaPlugin {
     @Override
     public void onEnable() {
 
-
         commandManager = new PaperCommandManager(this);
 
         commandRegistry = CommandRegistry.of(commandManager);

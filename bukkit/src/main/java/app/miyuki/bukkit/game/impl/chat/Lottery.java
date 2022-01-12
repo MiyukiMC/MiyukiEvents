@@ -3,7 +3,7 @@ package app.miyuki.bukkit.game.impl.chat;
 import app.miyuki.bukkit.MiyukiEvents;
 import app.miyuki.bukkit.game.Chat;
 import app.miyuki.bukkit.game.Game;
-import app.miyuki.bukkit.util.RandomUtils;
+import app.miyuki.bukkit.util.random.RandomUtils;
 import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
