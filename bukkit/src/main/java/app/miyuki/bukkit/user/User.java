@@ -11,7 +11,7 @@ import java.util.Map;
 @Getter
 public class User implements Cacheable<String> {
 
-    private String playerName;
+    private final String playerName;
 
     @Setter
     private UserState userState;
@@ -19,10 +19,11 @@ public class User implements Cacheable<String> {
     @Setter
     private String clanTag;
 
-    private Map<String, Integer> wins = Maps.newHashMap();
+    private final Map<String, Integer> wins = Maps.newHashMap();
 
     public User(String playerName) {
         this.playerName = playerName;
+        this.clanTag = null;
     }
 
     @Override
