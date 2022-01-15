@@ -183,132 +183,224 @@ public class Config {
         return config.getInt(path, def);
     }
 
-    public boolean isInt(@NotNull String path);
+    public boolean isInt(@NotNull String path) {
+        return config.isInt(path);
+    }
 
-    public boolean getBoolean(@NotNull String path);
+    public boolean getBoolean(@NotNull String path) {
+        return config.getBoolean(path);
+    }
 
-    public boolean getBoolean(@NotNull String path, boolean def);
+    public boolean getBoolean(@NotNull String path, boolean def) {
+        return config.getBoolean(path, def);
+    }
 
-    public boolean isBoolean(@NotNull String path);
+    public boolean isBoolean(@NotNull String path) {
+        return config.isBoolean(path);
+    }
 
-    public double getDouble(@NotNull String path);
+    public double getDouble(@NotNull String path) {
+        return config.getDouble(path);
+    }
 
-    public double getDouble(@NotNull String path, double def);
+    public double getDouble(@NotNull String path, double def) {
+        return config.getDouble(path, def);
+    }
 
-    public boolean isDouble(@NotNull String path);
+    public boolean isDouble(@NotNull String path) {
+        return config.isDouble(path);
+    }
 
-    public long getLong(@NotNull String path);
+    public long getLong(@NotNull String path) {
+        return config.getLong(path);
+    }
 
-    public long getLong(@NotNull String path, long def);
+    public long getLong(@NotNull String path, long def) {
+        return config.getLong(path, def);
+    }
 
-    public boolean isLong(@NotNull String path);
+    public boolean isLong(@NotNull String path) {
+        return config.isLong(path);
+    }
 
     @Nullable
-    public List<?> getList(@NotNull String path);
+    public List<?> getList(@NotNull String path) {
+        return config.getList(path);
+    }
 
     @Contract("_, !null -> !null")
     @Nullable
-    public List<?> getList(@NotNull String path, @Nullable List<?> def);
+    public List<?> getList(@NotNull String path, @Nullable List<?> def) {
+        return config.getList(path, def);
+    }
 
-    public boolean isList(@NotNull String path);
-
-    @NotNull
-    public List<String> getStringList(@NotNull String path);
-
-    @NotNull
-    public List<Integer> getIntegerList(@NotNull String path);
+    public boolean isList(@NotNull String path) {
+        return config.isList(path);
+    }
 
     @NotNull
-    public List<Boolean> getBooleanList(@NotNull String path);
+    public List<String> getStringList(@NotNull String path) {
+        return config.getStringList(path);
+    }
 
     @NotNull
-    public List<Double> getDoubleList(@NotNull String path);
+    public List<Integer> getIntegerList(@NotNull String path) {
+        return config.getIntegerList(path);
+    }
 
     @NotNull
-    public List<Float> getFloatList(@NotNull String path);
+    public List<Boolean> getBooleanList(@NotNull String path) {
+        return config.getBooleanList(path);
+    }
 
     @NotNull
-    public List<Long> getLongList(@NotNull String path);
+    public List<Double> getDoubleList(@NotNull String path) {
+        return config.getDoubleList(path);
+    }
 
     @NotNull
-    public List<Byte> getByteList(@NotNull String path);
+    public List<Float> getFloatList(@NotNull String path) {
+        return config.getFloatList(path);
+    }
 
     @NotNull
-    public List<Character> getCharacterList(@NotNull String path);
+    public List<Long> getLongList(@NotNull String path) {
+        return config.getLongList(path);
+    }
 
     @NotNull
-    public List<Short> getShortList(@NotNull String path);
+    public List<Byte> getByteList(@NotNull String path) {
+        return config.getByteList(path);
+    }
 
     @NotNull
-    public List<Map<?, ?>> getMapList(@NotNull String path);
+    public List<Character> getCharacterList(@NotNull String path) {
+        return config.getCharacterList(path);
+    }
+
+    @NotNull
+    public List<Short> getShortList(@NotNull String path) {
+        return config.getShortList(path);
+    }
+
+    @NotNull
+    public List<Map<?, ?>> getMapList(@NotNull String path) {
+        return config.getMapList(path);
+    }
 
     @Nullable
-    public <T extends Object> T getObject(@NotNull String path, @NotNull Class<T> clazz);
+    public <T extends Object> T getObject(@NotNull String path, @NotNull Class<T> clazz) {
+        return config.getObject(path, clazz);
+    }
 
     @Contract("_, _, !null -> !null")
     @Nullable
-    public <T extends Object> T getObject(@NotNull String path, @NotNull Class<T> clazz, @Nullable T def);
+    public <T extends Object> T getObject(@NotNull String path, @NotNull Class<T> clazz, @Nullable T def) {
+        return config.getObject(path, clazz, def);
+    }
 
     @Nullable
-    public <T extends ConfigurationSerializable> T getSerializable(@NotNull String path, @NotNull Class<T> clazz);
+    public <T extends ConfigurationSerializable> T getSerializable(@NotNull String path, @NotNull Class<T> clazz) {
+        return config.getSerializable(path, clazz);
+    }
 
     @Contract("_, _, !null -> !null")
     @Nullable
-    public <T extends ConfigurationSerializable> T getSerializable(@NotNull String path, @NotNull Class<T> clazz, @Nullable T def);
+    public <T extends ConfigurationSerializable> T getSerializable(@NotNull String path, @NotNull Class<T> clazz, @Nullable T def) {
+        return config.getSerializable(path, clazz, def);
+    }
 
     @Nullable
-    public Vector getVector(@NotNull String path);
+    public Vector getVector(@NotNull String path) {
+        return config.getVector(path);
+    }
 
     @Contract("_, !null -> !null")
     @Nullable
-    public Vector getVector(@NotNull String path, @Nullable Vector def);
+    public Vector getVector(@NotNull String path, @Nullable Vector def) {
+        return config.getVector(path, def);
+    }
 
-    public boolean isVector(@NotNull String path);
+    public boolean isVector(@NotNull String path) {
+        return config.isVector(path);
+    }
 
     @Nullable
-    public OfflinePlayer getOfflinePlayer(@NotNull String path);
+    public OfflinePlayer getOfflinePlayer(@NotNull String path) {
+        return config.getOfflinePlayer(path);
+    }
 
     @Contract("_, !null -> !null")
     @Nullable
-    public OfflinePlayer getOfflinePlayer(@NotNull String path, @Nullable OfflinePlayer def);
+    public OfflinePlayer getOfflinePlayer(@NotNull String path, @Nullable OfflinePlayer def) {
+        return config.getOfflinePlayer(path, def);
+    }
 
-    public boolean isOfflinePlayer(@NotNull String path);
+    public boolean isOfflinePlayer(@NotNull String path) {
+        return config.isOfflinePlayer(path);
+    }
 
     @Nullable
-    public ItemStack getItemStack(@NotNull String path);
+    public ItemStack getItemStack(@NotNull String path) {
+        return config.getItemStack(path);
+    }
 
     @Contract("_, !null -> !null")
     @Nullable
-    public ItemStack getItemStack(@NotNull String path, @Nullable ItemStack def);
+    public ItemStack getItemStack(@NotNull String path, @Nullable ItemStack def) {
+        return config.getItemStack(path, def);
+    }
 
-    public boolean isItemStack(@NotNull String path);
+    public boolean isItemStack(@NotNull String path) {
+        return config.isItemStack(path);
+    }
 
     @Nullable
-    public Color getColor(@NotNull String path);
+    public Color getColor(@NotNull String path) {
+        return config.getColor(path);
+    }
 
     @Contract("_, !null -> !null")
     @Nullable
-    public Color getColor(@NotNull String path, @Nullable Color def);
+    public Color getColor(@NotNull String path, @Nullable Color def) {
+        return config.getColor(path, def);
+    }
 
-    public boolean isColor(@NotNull String path);
+    public boolean isColor(@NotNull String path) {
+        return config.isColor(path);
+    }
 
     @Nullable
-    public Location getLocation(@NotNull String path);
+    public Location getLocation(@NotNull String path) {
+        return config.getLocation(path);
+    }
 
     @Contract("_, !null -> !null")
     @Nullable
-    public Location getLocation(@NotNull String path, @Nullable Location def);
+    public Location getLocation(@NotNull String path, @Nullable Location def) {
+        return config.getLocation(path, def);
+    }
 
-    public boolean isLocation(@NotNull String path);
+    public boolean isLocation(@NotNull String path) {
+        return config.isLocation(path);
+    }
 
     @Nullable
-    public ConfigurationSection getConfigurationSection(@NotNull String path);
+    public ConfigurationSection getConfigurationSection(@NotNull String path) {
+        return config.getConfigurationSection(path);
+    }
 
-    public boolean isConfigurationSection(@NotNull String path);
+    public boolean isConfigurationSection(@NotNull String path) {
+        return config.isConfigurationSection(path);
+    }
 
     @Nullable
-    public ConfigurationSection getDefaultSection();
+    public ConfigurationSection getDefaultSection() {
+        return config.getDefaultSection();
+    }
 
-    public void addDefault(@NotNull String path, @Nullable Object value);
+    public void addDefault(@NotNull String path, @Nullable Object value) {
+        config.addDefault(path, value);
+    }
 
 }
