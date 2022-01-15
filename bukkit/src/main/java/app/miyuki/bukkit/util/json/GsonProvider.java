@@ -1,4 +1,4 @@
-package app.miyuki.bukkit.util.gson;
+package app.miyuki.bukkit.util.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

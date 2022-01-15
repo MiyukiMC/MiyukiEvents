@@ -1,6 +1,7 @@
 package app.miyuki.bukkit.config;
 
 import app.miyuki.bukkit.MiyukiEvents;
+import lombok.Data;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.val;
@@ -28,6 +29,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+@Data
 public class Config {
 
     private final MiyukiEvents plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
@@ -35,6 +37,7 @@ public class Config {
     private final String path;
     private final String internalPath;
 
+    @Getter
     private final File file;
 
     @Getter
@@ -68,11 +71,14 @@ public class Config {
             in = plugin.getResource(path);
         }
 
-        if (in == null)
-            return;
-
         val dirs = file.getParentFile();
         dirs.mkdirs();
+
+        if (in == null) {
+            file.createNewFile();
+            reloadConfig();
+            return;
+        }
 
         OutputStream out = new FileOutputStream(file);
         byte[] buf = new byte[1024];

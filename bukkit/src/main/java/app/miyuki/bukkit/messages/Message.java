@@ -1,13 +1,13 @@
 package app.miyuki.bukkit.messages;
 
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
+import java.util.function.Function;
 
 public interface Message {
 
-    void dispatch(CommandSender sender);
-
-    void dispatch(CommandSender sender, Map<String, String> placeholders);
+    void dispatch(@NotNull CommandSender sender, @Nullable Function<String, String> format);
 
 }
