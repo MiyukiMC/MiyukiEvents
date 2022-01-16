@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "app.miyuki"
-version = "1.0-SNAPSHOT"
+version = "1.0.0-SNAPSHOT"
 
 
 allprojects {
@@ -37,9 +37,9 @@ dependencies {
 tasks {
     withType<JavaCompile> {
         options.encoding = "UTF-8"
-        options.compilerArgs.add("-parameters")
-        options.isFork = true
-        options.forkOptions.executable = "javac"
+//        options.compilerArgs.add("-parameters")
+//        options.isFork = true
+//        options.forkOptions.executable = "javac"
     }
     shadowJar {
         archiveFileName.set("MiyukiEvents-$version.jar")

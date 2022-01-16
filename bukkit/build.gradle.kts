@@ -22,8 +22,6 @@ dependencies {
 
     implementation("io.github.bananapuncher714:nbteditor:7.18.0")
 
-    implementation("co.aikar:acf-paper:0.5.1-SNAPSHOT")
-
     compileOnly("com.github.cryptomorin:XSeries:8.5.0.1")
 
     compileOnly("com.zaxxer:HikariCP:4.0.3")

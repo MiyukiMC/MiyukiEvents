@@ -13,6 +13,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 @AllArgsConstructor
@@ -36,7 +38,6 @@ public class JsonMessage implements Message {
             textComponent.addExtra(baseComponent);
         }
         ((Player) sender).spigot().sendMessage(textComponent);
-
     }
 
 

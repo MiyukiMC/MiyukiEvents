@@ -1,31 +1,34 @@
 package app.miyuki.bukkit.config;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ConfigProvider {
-
 
     private final Config messages;
     private final Config config;
     private final Config data;
 
-    public ConfigProvider(@NotNull String gameName, @NotNull String language) {
+    public ConfigProvider(@NotNull String path) {
+        this(path, null);
+    }
 
-        String defaultPath = "events/" + gameName + "/";
-        String internalPath = language + "/" + defaultPath;
+    public ConfigProvider(@NotNull String path, @Nullable String internalPath) {
 
         messages = new Config(
-                defaultPath + ConfigType.MESSAGES.getName(),
-                internalPath + ConfigType.MESSAGES.getName()
+                path + ConfigType.MESSAGES.getName(),
+                internalPath == null ? null :  internalPath + ConfigType.MESSAGES.getName()
         );
         config = new Config(
-                defaultPath + ConfigType.CONFIG.getName(),
-                internalPath + ConfigType.CONFIG.getName()
+                path + ConfigType.CONFIG.getName(),
+                internalPath == null ? null :  internalPath + ConfigType.CONFIG.getName()
         );
         data = new Config(
-                defaultPath + ConfigType.DATA.getName(),
-                internalPath + ConfigType.DATA.getName()
+                path + ConfigType.DATA.getName(),
+                internalPath == null ? null :  internalPath + ConfigType.DATA.getName()
         );
+
+        load();
     }
 
     public @NotNull Config provide(@NotNull ConfigType type) {
@@ -38,6 +41,19 @@ public class ConfigProvider {
                 return messages;
         }
         throw new IllegalArgumentException("invalid config type");
+    }
+
+    public void load() {
+        config.saveDefaultConfig();
+        messages.saveDefaultConfig();
+        data.saveDefaultConfig();
+        reload();
+    }
+
+    public void reload() {
+        config.reloadConfig();
+        messages.reloadConfig();
+        data.reloadConfig();
     }
 
 

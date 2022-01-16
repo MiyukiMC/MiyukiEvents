@@ -1,6 +1,7 @@
 package app.miyuki.bukkit.messages;
 
-import app.miyuki.bukkit.config.Config;
+import app.miyuki.bukkit.config.ConfigProvider;
+import app.miyuki.bukkit.config.ConfigType;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.bukkit.command.CommandSender;
@@ -15,9 +16,11 @@ import java.util.function.Function;
 @AllArgsConstructor
 public class MessageDispatcher {
 
-    private final Config messages;
+    private final ConfigProvider configProvider;
 
     public void dispatch(@NotNull CommandSender sender, @NotNull String path, @Nullable Function<String, String> format) {
+
+        val messages = configProvider.provide(ConfigType.MESSAGES);
 
         if (!messages.contains(path)) {
             new ChatMessage(new String[]{ "&r[&9&lMiyuki&d&lEvents&r] &cMessage not found, contact an administrator." })

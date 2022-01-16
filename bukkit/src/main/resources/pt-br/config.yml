@@ -3,4 +3,13 @@
 #
 #
 Database:
-  Type:
+  # Tipos: MYSQL e SQLITE
+  Type: MYSQL
+  Host: localhost
+  Port: 3306
+  Database: MiyukiEvents
+  Username: 'Username'
+  Password: 'Password'
+
+# Caso crie um evento customizado, registre-o aqui.
+CustomEvents: []

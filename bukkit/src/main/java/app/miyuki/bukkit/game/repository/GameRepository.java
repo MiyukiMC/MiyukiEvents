@@ -7,26 +7,26 @@ import java.util.Map;
 
 public abstract class GameRepository<K, V extends Cacheable<K>> {
 
-    protected final Map<K, V> CACHED = Maps.newHashMap();
+    protected final Map<K, V> cached = Maps.newHashMap();
 
     protected void add(V value) {
-        CACHED.put(value.getKey(), value);
+        cached.put(value.getKey(), value);
     }
 
     protected void remove(K key) {
-        CACHED.remove(key);
+        cached.remove(key);
     }
 
     protected boolean contains(K key) {
-        return CACHED.containsKey(key);
+        return cached.containsKey(key);
     }
 
     protected V get(K key) {
-        return CACHED.get(key);
+        return cached.get(key);
     }
 
     protected Map<K, V> getAll() {
-        return CACHED;
+        return cached;
     }
 
 }
