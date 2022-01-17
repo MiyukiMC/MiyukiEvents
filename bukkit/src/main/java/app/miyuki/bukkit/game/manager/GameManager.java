@@ -25,7 +25,7 @@ import java.util.Map;
 public class GameManager implements Manager {
 
     public final @NonNull MiyukiEvents plugin;
-    private final @NonNull Config config;
+    private final @NonNull ConfigProvider globalConfigProvider;
     private final @NonNull String language;
 
     private static final ImmutableList<String> DEFAULT_GAMES = ImmutableList.of(
@@ -50,6 +50,8 @@ public class GameManager implements Manager {
     public void load() {
 
         List<String> games = Lists.newArrayList();
+
+        val config = globalConfigProvider.provide(ConfigType.CONFIG);
 
         games.addAll(DEFAULT_GAMES);
 

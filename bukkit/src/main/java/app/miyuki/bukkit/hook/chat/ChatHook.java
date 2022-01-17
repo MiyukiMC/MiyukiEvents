@@ -14,6 +14,6 @@ public abstract class ChatHook<E extends Event> implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    abstract void onPlayerChat(E event);
+    public abstract void onPlayerChat(E event);
 
 }
