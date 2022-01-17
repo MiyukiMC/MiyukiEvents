@@ -1,24 +1,19 @@
 package app.miyuki.bukkit.game.impl.chat;
 
-import app.miyuki.bukkit.MiyukiEvents;
+import app.miyuki.bukkit.config.ConfigProvider;
+import app.miyuki.bukkit.config.ConfigType;
 import app.miyuki.bukkit.game.Chat;
 import app.miyuki.bukkit.game.Game;
-import app.miyuki.bukkit.util.random.RandomUtils;
-import com.google.common.collect.Lists;
-import lombok.RequiredArgsConstructor;
+import app.miyuki.bukkit.game.GameState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+public class Lottery extends Game<Player> implements Chat {
 
-@RequiredArgsConstructor
-public class Lottery implements Game<Player>, Chat {
-
-    private final MiyukiEvents PLUGIN;
-
-    private final List<String> PLAYERS = Lists.newArrayList();
-
-    private int number;
+    public Lottery(@NotNull ConfigProvider configProvider) {
+        super(configProvider);
+    }
 
     @Override
     public void onChat(AsyncPlayerChatEvent event) {
@@ -26,16 +21,22 @@ public class Lottery implements Game<Player>, Chat {
     }
 
     @Override
+    public String getTypeName() {
+        return configProvider.provide(ConfigType.CONFIG).getString("Type");
+    }
+
+    @Override
     public String getName() {
-        return "Loteria";
+        return configProvider.provide(ConfigType.CONFIG).getString("Name");
+    }
+
+    @Override
+    public GameState getState() {
+        return null;
     }
 
     @Override
     public void start() {
-        int min = 1;
-        int max = 300;
-        this.number = RandomUtils.generateRandomNumber(min, max);
-
     }
 
     @Override

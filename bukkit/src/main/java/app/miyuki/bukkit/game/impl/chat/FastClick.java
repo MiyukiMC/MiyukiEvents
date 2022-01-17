@@ -1,9 +1,10 @@
 package app.miyuki.bukkit.game.impl.chat;
 
 import app.miyuki.bukkit.config.ConfigProvider;
+import app.miyuki.bukkit.config.ConfigType;
 import app.miyuki.bukkit.game.Chat;
 import app.miyuki.bukkit.game.Game;
-import app.miyuki.bukkit.messages.MessageDispatcher;
+import app.miyuki.bukkit.game.GameState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.jetbrains.annotations.NotNull;
@@ -21,11 +22,16 @@ public class FastClick extends Game<Player> implements Chat {
 
     @Override
     public String getTypeName() {
-        return null;
+        return configProvider.provide(ConfigType.CONFIG).getString("Type");
     }
 
     @Override
     public String getName() {
+        return configProvider.provide(ConfigType.CONFIG).getString("Name");
+    }
+
+    @Override
+    public GameState getState() {
         return null;
     }
 

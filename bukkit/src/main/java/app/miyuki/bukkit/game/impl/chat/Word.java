@@ -1,27 +1,19 @@
 package app.miyuki.bukkit.game.impl.chat;
 
-import app.miyuki.bukkit.MiyukiEvents;
+import app.miyuki.bukkit.config.ConfigProvider;
+import app.miyuki.bukkit.config.ConfigType;
 import app.miyuki.bukkit.game.Chat;
 import app.miyuki.bukkit.game.Game;
-import app.miyuki.bukkit.util.random.RandomUtils;
-import lombok.RequiredArgsConstructor;
-import lombok.val;
-import org.bukkit.configuration.file.FileConfiguration;
+import app.miyuki.bukkit.game.GameState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.jetbrains.annotations.NotNull;
 
-@RequiredArgsConstructor
-public class Word implements Game<Player>, Chat {
+public class Word extends Game<Player> implements Chat {
 
-    private final MiyukiEvents PLUGIN;
-
-    private FileConfiguration config;
-
-    private String permission;
-
-    private Double cost;
-
-    private String word;
+    public Word(@NotNull ConfigProvider configProvider) {
+        super(configProvider);
+    }
 
     @Override
     public void onChat(AsyncPlayerChatEvent event) {
@@ -29,24 +21,22 @@ public class Word implements Game<Player>, Chat {
     }
 
     @Override
+    public String getTypeName() {
+        return configProvider.provide(ConfigType.CONFIG).getString("Type");
+    }
+
+    @Override
     public String getName() {
-        return "Palavra";
+        return configProvider.provide(ConfigType.CONFIG).getString("Name");
+    }
+
+    @Override
+    public GameState getState() {
+        return null;
     }
 
     @Override
     public void start() {
-        this.config = PLUGIN.getConfig(); // Só para testes, arrumar depois
-
-        this.permission = config.getString("Permission");
-        this.cost = config.getDouble("Cost");
-
-        val calls = config.getInt("Calls");
-        val callInterval = config.getInt("CallInterval");
-
-        if (config.getBoolean("Words.Random.Enabled"))
-            this.word = RandomUtils.generateRandomString(config.getString("Words.Random.Characters").toCharArray(), config.getInt("Words.Random.MaxCharacters"));
-        else
-            this.word = RandomUtils.getRandomElement(config.getStringList("Words.Words"));
 
     }
 

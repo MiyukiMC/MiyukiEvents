@@ -9,11 +9,14 @@ import lombok.experimental.UtilityClass;
 public final class GsonProvider {
 
     @Getter
-    private final Gson normal = new GsonBuilder().disableHtmlEscaping().create();
+    private final Gson normal = new GsonBuilder()
+            .disableHtmlEscaping()
+            .create();
 
     @Getter
-    private final Gson prettyPrinting = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
-
-
+    private final Gson prettyPrinting = new GsonBuilder()
+            .disableHtmlEscaping()
+            .setPrettyPrinting()
+            .create();
 
 }
