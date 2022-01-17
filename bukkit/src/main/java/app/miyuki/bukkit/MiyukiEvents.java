@@ -1,30 +1,32 @@
 package app.miyuki.bukkit;
 
-import app.miyuki.bukkit.commands.CommandRegistry;
 import app.miyuki.bukkit.config.Config;
+import app.miyuki.bukkit.game.manager.GameManager;
+import app.miyuki.bukkit.language.LanguageEvaluator;
+import app.miyuki.bukkit.language.LanguageProvider;
+import app.miyuki.bukkit.listener.ListenerRegistry;
+import lombok.Getter;
 import lombok.val;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MiyukiEvents extends JavaPlugin {
 
-    private CommandRegistry commandRegistry;
+    @Getter
+    private GameManager gameManager;
+
+    @Getter
+    private Config config;
 
     @Override
     public void onEnable() {
 
-        commandRegistry.register();
+        val language = new LanguageEvaluator().evaluate(new LanguageProvider().provide());
 
-        val config = new Config("lang.yml");
-        val config2 = new Config("config.yml", "pt-br/config.yml");
+        config = new Config("config.yml", language + "/config.yml");
 
-        config.saveDefaultConfig();
-        config.reloadConfig();
+        gameManager = new GameManager(this, config, language);
 
-        config2.saveDefaultConfig();
-        config2.reloadConfig();
-
-        System.out.println("Lang: " + config.getConfig().getString("Language"));
-        System.out.println("Teste: " + config2.getConfig().getString("teste2"));
+        ListenerRegistry.of(this).register();
 
     }
 

@@ -1,7 +1,13 @@
+
+Type: 'word'
+
+Commands: ['word', 'palavra']
+
 Permission: 'miyukievents.word'
 Cost: 0
 Calls: 5
 CallInterval: 15
+
 
 Words:
   Random:

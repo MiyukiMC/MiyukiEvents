@@ -24,6 +24,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class GameManager implements Manager {
 
+    public final @NonNull MiyukiEvents plugin;
     private final @NonNull Config config;
     private final @NonNull String language;
 
@@ -44,8 +45,6 @@ public class GameManager implements Manager {
 
     @Getter
     private final Map<String, Game> games = Maps.newHashMap();
-
-    public final @NonNull MiyukiEvents plugin;
 
     @Override
     public void load() {

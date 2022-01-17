@@ -11,5 +11,7 @@ Database:
   Username: 'Username'
   Password: 'Password'
 
+Commands: ['evento', 'event', 'game']
+
 # Caso crie um evento customizado, registre-o aqui.
 CustomEvents: []
