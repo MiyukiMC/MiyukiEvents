@@ -2,7 +2,6 @@ package app.miyuki.bukkit.util.chat;
 
 import lombok.experimental.UtilityClass;
 import lombok.val;
-import lombok.var;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,4 +52,5 @@ public class ChatUtils {
         }
         return ChatColor.stripColor(text);
     }
+
 }

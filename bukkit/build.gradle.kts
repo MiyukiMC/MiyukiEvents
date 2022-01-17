@@ -10,7 +10,7 @@ repositories {
     }
 }
 
-// nChat, LegendChat, yClans, SimpleClans, WorldEdit, bStats (SOekd), utf8
+// nChat, LegendChat, yClans, SimpleClans, WorldEdit, bStats (SOekd), utf8, cash plugins (yPoints, NextCash)
 dependencies {
     compileOnly(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
