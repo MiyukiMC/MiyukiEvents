@@ -2,7 +2,7 @@ package app.miyuki.bukkit.hook.clan;
 
 import java.util.Set;
 
-public interface Clan {
+public interface ClanAPI {
 
     boolean hasClan(String playerName);
 

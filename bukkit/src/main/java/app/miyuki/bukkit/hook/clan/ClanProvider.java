@@ -10,21 +10,21 @@ import org.bukkit.plugin.ServicePriority;
 
 public class ClanProvider {
 
-    private Clan clan = null;
+    private final ClanAPI clanAPI = null;
 
     public ClanProvider(MiyukiEvents plugin) {
 
         val pluginManager = Bukkit.getPluginManager();
         if (pluginManager.getPlugin("yClans") != null) {
-            Bukkit.getServicesManager().register(Clan.class, new YClans(), plugin, ServicePriority.Highest);
+            Bukkit.getServicesManager().register(ClanAPI.class, new YClans(), plugin, ServicePriority.Highest);
         } else if (pluginManager.getPlugin("SimpleClans") != null) {
-            Bukkit.getServicesManager().register(Clan.class, new SimpleClans(), plugin, ServicePriority.Highest);
+            Bukkit.getServicesManager().register(ClanAPI.class, new SimpleClans(), plugin, ServicePriority.Highest);
         }
 
     }
 
     public boolean hook() {
-        val registeredServiceProvider = Bukkit.getServicesManager().getRegistration(Clan.class);
+        val registeredServiceProvider = Bukkit.getServicesManager().getRegistration(ClanAPI.class);
 
         if (registeredServiceProvider == null)
             return false;
@@ -33,8 +33,8 @@ public class ClanProvider {
         return provider != null;
     }
 
-    public Clan getProvider() {
-        return clan;
+    public ClanAPI getProvider() {
+        return clanAPI;
     }
 
 

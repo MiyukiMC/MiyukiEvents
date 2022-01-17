@@ -1,10 +1,12 @@
 package app.miyuki.bukkit.hook.clan.impl;
 
-import app.miyuki.bukkit.hook.clan.Clan;
+import app.miyuki.bukkit.hook.clan.ClanAPI;
 
 import java.util.Set;
 
-public class SimpleClans implements Clan {
+public class SimpleClans implements ClanAPI {
+
+    private final net.sacredlabyrinth.phaed.simpleclans.SimpleClans clanAPI = net.sacredlabyrinth.phaed.simpleclans.SimpleClans.getInstance();
 
     @Override
     public boolean hasClan(String playerName) {
@@ -18,17 +20,17 @@ public class SimpleClans implements Clan {
 
     @Override
     public String getClanTagByPlayer(String playerName) {
-        return null;
+        return clanAPI.getClanManager().getClanPlayer(playerName).getClan().getTag();
     }
 
     @Override
     public String getClanColorTag(String clanTag) {
-        return null;
+        return clanAPI.getClanManager().getClan(clanTag).getColorTag();
     }
 
     @Override
     public String getClanName(String clanTag) {
-        return null;
+        return clanAPI.getClanManager().getClan(clanTag).getName();
     }
 
     @Override

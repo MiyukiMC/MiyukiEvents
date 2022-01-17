@@ -1,16 +1,17 @@
 package app.miyuki.bukkit.hook.clan.impl;
 
-import app.miyuki.bukkit.hook.clan.Clan;
-import lombok.val;
+import app.miyuki.bukkit.hook.clan.ClanAPI;
+import yclans.api.yClansAPI;
 
 import java.util.Set;
 
-public class YClans implements Clan {
+public class YClans implements ClanAPI {
 
+    private final yClansAPI clanAPI = yClansAPI.yclansapi;
 
     @Override
     public boolean hasClan(String playerName) {
-        return false;
+        return clanAPI.getPlayer(playerName).hasClan();
     }
 
     @Override
@@ -20,17 +21,17 @@ public class YClans implements Clan {
 
     @Override
     public String getClanTagByPlayer(String playerName) {
-        return null;
+        return clanAPI.getPlayer(playerName).getClanTag();
     }
 
     @Override
     public String getClanColorTag(String clanTag) {
-        return null;
+        return clanAPI.getClan(clanTag).getColoredTag();
     }
 
     @Override
     public String getClanName(String clanTag) {
-        return null;
+        return clanAPI.getClan(clanTag).getNameClan();
     }
 
     @Override

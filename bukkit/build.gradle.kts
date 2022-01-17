@@ -22,6 +22,8 @@ dependencies {
 
     implementation("io.github.bananapuncher714:nbteditor:7.18.0")
 
+    compileOnly("net.sacredlabyrinth.phaed.simpleclans:SimpleClans:2.15.0")
+
     compileOnly("com.github.cryptomorin:XSeries:8.5.0.1")
 
     compileOnly("com.zaxxer:HikariCP:4.0.3")
