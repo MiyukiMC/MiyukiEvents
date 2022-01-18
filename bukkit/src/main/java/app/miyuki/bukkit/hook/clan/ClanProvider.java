@@ -3,6 +3,7 @@ package app.miyuki.bukkit.hook.clan;
 import app.miyuki.bukkit.MiyukiEvents;
 import app.miyuki.bukkit.hook.clan.impl.SimpleClans;
 import app.miyuki.bukkit.hook.clan.impl.YClans;
+import lombok.Getter;
 import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
@@ -10,6 +11,7 @@ import org.bukkit.plugin.ServicePriority;
 
 public class ClanProvider {
 
+    @Getter
     private final ClanAPI clanAPI = null;
 
     public ClanProvider(MiyukiEvents plugin) {
@@ -32,10 +34,5 @@ public class ClanProvider {
         val provider = registeredServiceProvider.getProvider();
         return provider != null;
     }
-
-    public ClanAPI getProvider() {
-        return clanAPI;
-    }
-
 
 }
