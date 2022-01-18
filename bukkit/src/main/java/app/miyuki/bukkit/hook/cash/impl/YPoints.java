@@ -11,8 +11,11 @@ public class YPoints implements CashAPI {
     @Override
     public void deposit(String playerName, Double amount) {
         val account = cashAPI.getPlayer(playerName);
-        val oldValue = account.getPoints();
-        cashAPI.getPlayer(playerName).setPoints(oldValue + amount);
+
+        if (account == null)
+            return;
+
+        account.deposit(amount);
     }
 
 }
