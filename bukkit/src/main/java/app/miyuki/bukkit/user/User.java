@@ -1,10 +1,12 @@
 package app.miyuki.bukkit.user;
 
 import app.miyuki.bukkit.database.Cacheable;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -18,6 +20,8 @@ public class User implements Cacheable<String> {
 
     @Setter
     private String clanTag;
+
+    private final List<String> tags = Lists.newArrayList();
 
     private final Map<String, Integer> wins = Maps.newHashMap();
 

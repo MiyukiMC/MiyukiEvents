@@ -18,7 +18,7 @@ public class PlayerQuit implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         for (Game game : plugin.getGameManager().getGames().values()) {
 
-            if (game.getState() == GameState.HAPPENING && game instanceof InPerson) {
+            if (game.getGameState() == GameState.HAPPENING && game instanceof InPerson) {
                 ((InPerson) game).onPlayerQuit(event);
             }
 

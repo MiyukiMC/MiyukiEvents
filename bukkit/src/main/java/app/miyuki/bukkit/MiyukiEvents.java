@@ -1,5 +1,7 @@
 package app.miyuki.bukkit;
 
+import app.miyuki.bukkit.adapter.impl.LocationAdapter;
+import app.miyuki.bukkit.adapter.impl.RewardAdapter;
 import app.miyuki.bukkit.config.Config;
 import app.miyuki.bukkit.config.ConfigProvider;
 import app.miyuki.bukkit.game.manager.GameManager;
@@ -22,6 +24,12 @@ public final class MiyukiEvents extends JavaPlugin {
     @Getter
     private ConfigProvider globalConfigProvider;
 
+    @Getter
+    private RewardAdapter rewardAdapter;
+
+    @Getter
+    private LocationAdapter locationAdapter;
+
     @Override
     public void onEnable() {
 
@@ -35,11 +43,17 @@ public final class MiyukiEvents extends JavaPlugin {
 
         ListenerRegistry.of(this).register();
 
+        loadAdapters();
     }
 
     @Override
     public void onDisable() {
 
+    }
+
+    private void loadAdapters() {
+        this.rewardAdapter = new RewardAdapter(this);
+        this.locationAdapter = new LocationAdapter(this);
     }
 
 }

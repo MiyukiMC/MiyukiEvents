@@ -13,6 +13,9 @@ public class Word extends Game<Player> implements Chat {
 
     public Word(@NotNull ConfigProvider configProvider) {
         super(configProvider);
+        this.reward = getPlugin().getRewardAdapter().adapt(
+                getConfigProvider().provide(ConfigType.CONFIG).getConfigurationSection("Reward")
+        );
     }
 
     @Override
@@ -22,17 +25,27 @@ public class Word extends Game<Player> implements Chat {
 
     @Override
     public String getTypeName() {
-        return configProvider.provide(ConfigType.CONFIG).getString("Type");
+        return getConfigProvider().provide(ConfigType.CONFIG).getString("Type");
     }
 
     @Override
     public String getName() {
-        return configProvider.provide(ConfigType.CONFIG).getString("Name");
+        return getConfigProvider().provide(ConfigType.CONFIG).getString("Name");
     }
 
     @Override
-    public GameState getState() {
-        return null;
+    public String getPermission() {
+        return getConfigProvider().provide(ConfigType.CONFIG).getString("Permission");
+    }
+
+    @Override
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
+    @Override
+    public GameState getGameState() {
+        return gameState;
     }
 
     @Override
@@ -47,12 +60,12 @@ public class Word extends Game<Player> implements Chat {
 
     @Override
     public void onWin(Player player) {
-
+        giveReward(player);
     }
 
     @Override
     public void giveReward(Player player) {
-
+        this.reward.execute(player);
     }
 
 }

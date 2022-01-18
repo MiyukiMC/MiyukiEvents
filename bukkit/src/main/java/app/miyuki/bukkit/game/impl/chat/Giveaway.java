@@ -13,6 +13,9 @@ public class Giveaway extends Game<Player> implements Chat {
 
     public Giveaway(@NotNull ConfigProvider configProvider) {
         super(configProvider);
+        this.reward = getPlugin().getRewardAdapter().adapt(
+                getConfigProvider().provide(ConfigType.CONFIG).getConfigurationSection("Reward")
+        );
     }
 
     @Override
@@ -31,8 +34,18 @@ public class Giveaway extends Game<Player> implements Chat {
     }
 
     @Override
-    public GameState getState() {
-        return null;
+    public String getPermission() {
+        return getConfigProvider().provide(ConfigType.CONFIG).getString("Permission");
+    }
+
+    @Override
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
+    @Override
+    public GameState getGameState() {
+        return gameState;
     }
 
     @Override
@@ -47,7 +60,7 @@ public class Giveaway extends Game<Player> implements Chat {
 
     @Override
     public void onWin(Player player) {
-
+        giveReward(player);
     }
 
     @Override

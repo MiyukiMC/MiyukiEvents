@@ -4,7 +4,6 @@ import app.miyuki.bukkit.MiyukiEvents;
 import app.miyuki.bukkit.game.Chat;
 import app.miyuki.bukkit.game.Game;
 import app.miyuki.bukkit.game.GameState;
-import app.miyuki.bukkit.game.manager.GameManager;
 import lombok.AllArgsConstructor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,7 +18,7 @@ public class AsyncPlayerChat implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         for (Game game : plugin.getGameManager().getGames().values()) {
 
-            if (game.getState() == GameState.HAPPENING && game instanceof Chat) {
+            if (game.getGameState() == GameState.HAPPENING && game instanceof Chat) {
                 ((Chat) game).onChat(event);
             }
 

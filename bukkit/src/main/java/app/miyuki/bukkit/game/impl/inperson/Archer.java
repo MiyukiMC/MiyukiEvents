@@ -1,21 +1,50 @@
 package app.miyuki.bukkit.game.impl.inperson;
 
+import app.miyuki.bukkit.config.ConfigProvider;
+import app.miyuki.bukkit.config.ConfigType;
 import app.miyuki.bukkit.game.Game;
+import app.miyuki.bukkit.game.GameState;
 import app.miyuki.bukkit.game.InPerson;
-import app.miyuki.bukkit.game.repository.GameRepository;
-import app.miyuki.bukkit.user.User;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.jetbrains.annotations.NotNull;
 
-public class Archer extends GameRepository<String, User> implements Game<Player>, InPerson {
+public class Archer extends Game<Player> implements InPerson {
+
+    public Archer(@NotNull ConfigProvider configProvider) {
+        super(configProvider);
+        this.reward = getPlugin().getRewardAdapter().adapt(
+                getConfigProvider().provide(ConfigType.CONFIG).getConfigurationSection("Reward")
+        );
+    }
+
+    @Override
+    public String getTypeName() {
+        return getConfigProvider().provide(ConfigType.CONFIG).getString("Type");
+    }
 
     @Override
     public String getName() {
-        return null;
+        return getConfigProvider().provide(ConfigType.CONFIG).getString("Name");
+    }
+
+    @Override
+    public String getPermission() {
+        return getConfigProvider().provide(ConfigType.CONFIG).getString("Permission");
+    }
+
+    @Override
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
+    @Override
+    public GameState getGameState() {
+        return gameState;
     }
 
     @Override

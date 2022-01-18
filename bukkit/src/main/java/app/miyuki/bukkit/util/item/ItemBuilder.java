@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Arrays;
 import java.util.List;
 
+// Remake
 public class ItemBuilder {
 
     private ItemStack item;
