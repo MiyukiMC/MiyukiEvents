@@ -13,9 +13,6 @@ public class Lottery extends Game<Player> implements Chat {
 
     public Lottery(@NotNull ConfigProvider configProvider) {
         super(configProvider);
-        this.reward = getPlugin().getRewardAdapter().adapt(
-                getConfigProvider().provide(ConfigType.CONFIG).getConfigurationSection("Reward")
-        );
     }
 
     @Override

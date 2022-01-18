@@ -21,9 +21,6 @@ public class Math extends Game<Player> implements Chat {
 
     public Math(@NotNull ConfigProvider configProvider) {
         super(configProvider);
-        this.reward = getPlugin().getRewardAdapter().adapt(
-                getConfigProvider().provide(ConfigType.CONFIG).getConfigurationSection("Reward")
-        );
     }
 
     @Override

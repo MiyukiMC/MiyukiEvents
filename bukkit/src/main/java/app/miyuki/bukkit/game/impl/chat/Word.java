@@ -13,9 +13,6 @@ public class Word extends Game<Player> implements Chat {
 
     public Word(@NotNull ConfigProvider configProvider) {
         super(configProvider);
-        this.reward = getPlugin().getRewardAdapter().adapt(
-                getConfigProvider().provide(ConfigType.CONFIG).getConfigurationSection("Reward")
-        );
     }
 
     @Override

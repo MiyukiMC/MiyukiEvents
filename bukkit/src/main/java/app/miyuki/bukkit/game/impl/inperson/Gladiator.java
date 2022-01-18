@@ -19,9 +19,6 @@ public class Gladiator extends Game<List<Player>> implements InPerson {
 
     public Gladiator(@NotNull ConfigProvider configProvider) {
         super(configProvider);
-        this.reward = getPlugin().getRewardAdapter().adapt(
-                getConfigProvider().provide(ConfigType.CONFIG).getConfigurationSection("Reward")
-        );
     }
 
     @Override

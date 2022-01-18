@@ -2,6 +2,7 @@ package app.miyuki.bukkit.game;
 
 import app.miyuki.bukkit.MiyukiEvents;
 import app.miyuki.bukkit.config.ConfigProvider;
+import app.miyuki.bukkit.config.ConfigType;
 import app.miyuki.bukkit.messages.MessageDispatcher;
 import app.miyuki.bukkit.reward.Reward;
 import lombok.Getter;
@@ -26,6 +27,9 @@ public abstract class Game<W> {
     public Game(@NotNull ConfigProvider configProvider) {
         this.plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
         this.configProvider = configProvider;
+        this.reward = plugin.getRewardAdapter().adapt(
+                configProvider.provide(ConfigType.CONFIG).getConfigurationSection("Reward")
+        );
         messageDispatcher = new MessageDispatcher(configProvider);
     }
 

@@ -13,9 +13,6 @@ public class FastClick extends Game<Player> implements Chat {
 
     public FastClick(@NotNull ConfigProvider configProvider) {
         super(configProvider);
-        this.reward = getPlugin().getRewardAdapter().adapt(
-                getConfigProvider().provide(ConfigType.CONFIG).getConfigurationSection("Reward")
-        );
     }
 
     @Override
