@@ -2,7 +2,7 @@ package app.miyuki.bukkit.game.manager;
 
 import app.miyuki.bukkit.MiyukiEvents;
 import app.miyuki.bukkit.config.Config;
-import app.miyuki.bukkit.config.ConfigProvider;
+import app.miyuki.bukkit.config.GameConfigProvider;
 import app.miyuki.bukkit.config.ConfigType;
 import app.miyuki.bukkit.game.Game;
 import app.miyuki.bukkit.game.GameType;
@@ -25,7 +25,7 @@ import java.util.Map;
 public class GameManager implements Manager {
 
     public final @NonNull MiyukiEvents plugin;
-    private final @NonNull ConfigProvider globalConfigProvider;
+    private final @NonNull Config config;
     private final @NonNull String language;
 
     private static final ImmutableList<String> DEFAULT_GAMES = ImmutableList.of(
@@ -51,8 +51,6 @@ public class GameManager implements Manager {
 
         List<String> games = Lists.newArrayList();
 
-        val config = globalConfigProvider.provide(ConfigType.CONFIG);
-
         games.addAll(DEFAULT_GAMES);
 
         games.addAll(config.getStringList("CustomEvents"));
@@ -66,7 +64,7 @@ public class GameManager implements Manager {
                 internalPath = language + "/" + path;
             }
 
-            val configProvider = new ConfigProvider(path, internalPath);
+            val configProvider = new GameConfigProvider(path, internalPath);
 
             val config = configProvider.provide(ConfigType.CONFIG);
 

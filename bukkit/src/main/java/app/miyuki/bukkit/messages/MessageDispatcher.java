@@ -1,8 +1,8 @@
 package app.miyuki.bukkit.messages;
 
-import app.miyuki.bukkit.config.ConfigProvider;
+import app.miyuki.bukkit.config.Config;
+import app.miyuki.bukkit.config.GameConfigProvider;
 import app.miyuki.bukkit.config.ConfigType;
-import lombok.AllArgsConstructor;
 import lombok.val;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -13,14 +13,20 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.function.Function;
 
-@AllArgsConstructor
 public class MessageDispatcher {
 
-    private final ConfigProvider configProvider;
+    private final Config messages;
+
+    public MessageDispatcher(@NotNull GameConfigProvider configProvider) {
+        messages = configProvider.provide(ConfigType.MESSAGES);
+    }
+
+    public MessageDispatcher(@NotNull Config messages) {
+        this.messages = messages;
+    }
 
     public void dispatch(@NotNull CommandSender sender, @NotNull String path, @Nullable Function<String, String> format) {
 
-        val messages = configProvider.provide(ConfigType.MESSAGES);
 
         if (!messages.contains(path)) {
             new ChatMessage(new String[]{ "&r[&9&lMiyuki&d&lEvents&r] &cMessage not found, contact an administrator." })

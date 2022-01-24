@@ -1,6 +1,6 @@
 package app.miyuki.bukkit.game;
 
-import app.miyuki.bukkit.config.ConfigProvider;
+import app.miyuki.bukkit.config.GameConfigProvider;
 import app.miyuki.bukkit.game.impl.chat.FastClick;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -15,9 +15,9 @@ public enum GameType  {
 
     private final Class<? extends Game> gameClass;
 
-    public @Nullable Game instantiate(@NotNull ConfigProvider configProvider) {
+    public @Nullable Game instantiate(@NotNull GameConfigProvider configProvider) {
         try {
-            return gameClass.getConstructor(ConfigProvider.class).newInstance(configProvider);
+            return gameClass.getConstructor(GameConfigProvider.class).newInstance(configProvider);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
             return null;

@@ -1,6 +1,6 @@
 package app.miyuki.bukkit.game.impl.chat;
 
-import app.miyuki.bukkit.config.ConfigProvider;
+import app.miyuki.bukkit.config.GameConfigProvider;
 import app.miyuki.bukkit.config.ConfigType;
 import app.miyuki.bukkit.game.Chat;
 import app.miyuki.bukkit.game.Game;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class FastClick extends Game<Player> implements Chat {
 
-    public FastClick(@NotNull ConfigProvider configProvider) {
+    public FastClick(@NotNull GameConfigProvider configProvider) {
         super(configProvider);
     }
 
@@ -28,11 +28,6 @@ public class FastClick extends Game<Player> implements Chat {
     @Override
     public String getName() {
         return getConfigProvider().provide(ConfigType.CONFIG).getString("Name");
-    }
-
-    @Override
-    public String getPermission() {
-        return getConfigProvider().provide(ConfigType.CONFIG).getString("Permission");
     }
 
     @Override

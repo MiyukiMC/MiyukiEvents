@@ -2,9 +2,11 @@ package app.miyuki.bukkit;
 
 import app.miyuki.bukkit.adapter.impl.LocationAdapter;
 import app.miyuki.bukkit.adapter.impl.RewardAdapter;
+import app.miyuki.bukkit.commands.CommandRegistry;
 import app.miyuki.bukkit.config.Config;
-import app.miyuki.bukkit.config.ConfigProvider;
+import app.miyuki.bukkit.config.GameConfigProvider;
 import app.miyuki.bukkit.game.manager.GameManager;
+import app.miyuki.bukkit.game.queue.GameQueue;
 import app.miyuki.bukkit.language.LanguageEvaluator;
 import app.miyuki.bukkit.language.LanguageProvider;
 import app.miyuki.bukkit.listener.ListenerRegistry;
@@ -19,10 +21,10 @@ public final class MiyukiEvents extends JavaPlugin {
     private GameManager gameManager;
 
     @Getter
-    private MessageDispatcher globalMessageDispatcher;
+    private Config config;
 
     @Getter
-    private ConfigProvider globalConfigProvider;
+    private MessageDispatcher globalMessageDispatcher;
 
     @Getter
     private RewardAdapter rewardAdapter;
@@ -30,18 +32,26 @@ public final class MiyukiEvents extends JavaPlugin {
     @Getter
     private LocationAdapter locationAdapter;
 
+    @Getter
+    private GameQueue queue;
+
     @Override
     public void onEnable() {
 
         val language = new LanguageEvaluator().evaluate(new LanguageProvider().provide());
 
-        globalConfigProvider = new ConfigProvider("", language + "/config.yml");
+        config = new Config("config.yml", language + "/config.yml");
 
-        gameManager = new GameManager(this, globalConfigProvider, language);
+        gameManager = new GameManager(this, config, language);
 
-        globalMessageDispatcher = new MessageDispatcher(globalConfigProvider);
+        globalMessageDispatcher = new MessageDispatcher(new Config("messages.yml", language + "/messages.yml"));
 
         ListenerRegistry.of(this).register();
+
+        CommandRegistry.of(this).register();
+
+
+        queue = new GameQueue(this, gameManager);
 
         loadAdapters();
     }

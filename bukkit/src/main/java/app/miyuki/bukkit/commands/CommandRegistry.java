@@ -2,7 +2,6 @@ package app.miyuki.bukkit.commands;
 
 import app.miyuki.bukkit.MiyukiEvents;
 import com.google.common.reflect.ClassPath;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.val;

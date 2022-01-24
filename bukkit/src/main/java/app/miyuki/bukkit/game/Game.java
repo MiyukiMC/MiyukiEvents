@@ -1,24 +1,22 @@
 package app.miyuki.bukkit.game;
 
 import app.miyuki.bukkit.MiyukiEvents;
-import app.miyuki.bukkit.config.ConfigProvider;
+import app.miyuki.bukkit.config.GameConfigProvider;
 import app.miyuki.bukkit.config.ConfigType;
 import app.miyuki.bukkit.messages.MessageDispatcher;
 import app.miyuki.bukkit.reward.Reward;
-import lombok.AccessLevel;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class Game<W> {
 
-    @Getter(value = AccessLevel.PACKAGE)
     private final @NotNull MiyukiEvents plugin;
 
-    @Getter(value = AccessLevel.PROTECTED)
-    protected final @NotNull ConfigProvider configProvider;
+    @Getter
+    protected final @NotNull GameConfigProvider configProvider;
 
-    @Getter(value = AccessLevel.PROTECTED)
+    @Getter
     protected final @NotNull MessageDispatcher messageDispatcher;
 
     protected GameState gameState;
@@ -26,7 +24,7 @@ public abstract class Game<W> {
     @Getter
     protected Reward reward;
 
-    public Game(@NotNull ConfigProvider configProvider) {
+    public Game(@NotNull GameConfigProvider configProvider) {
         this.plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
         this.configProvider = configProvider;
         this.reward = plugin.getRewardAdapter().adapt(
@@ -39,17 +37,15 @@ public abstract class Game<W> {
 
     public abstract String getName();
 
-    public abstract String getPermission();
-
-    protected abstract void setGameState(GameState gameState);
+    public abstract void setGameState(GameState gameState);
 
     public abstract GameState getGameState();
 
-    protected abstract void start();
+    public abstract void start();
 
-    protected abstract void stop();
+    public abstract void stop();
 
-    protected abstract void onWin(W w);
+    public abstract void onWin(W w);
 
     protected abstract void giveReward(W w);
 

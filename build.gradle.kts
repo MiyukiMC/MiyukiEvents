@@ -43,8 +43,6 @@ tasks {
     }
     shadowJar {
         archiveFileName.set("MiyukiEvents-$version.jar")
-        relocate("co.aikar.commands", "app.miyuki.libs.acf")
-        relocate("co.aikar.locales", "app.miyuki.libs.locales")
         relocate("io.github.bananapuncher714.nbteditor", "app.miyuki.libs.nbteditor")
         relocate("org.intellij.lang.annotations", "app.miyuki.libs.intellij.lang.annotations")
         relocate("org.jetbrains.annotations", "app.miyuki.libs.jetbrains.annotations")

@@ -1,23 +1,7 @@
-
+#
+#
+#
 Type: 'word'
-
-Commands: ['word', 'palavra']
-
-Permission: 'miyukievents.word'
-Cost: 0
-Calls: 5
-CallInterval: 15
-
-
-Words:
-  Random:
-    Enabled: true
-    Characters: '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    MaxCharacters: 30
-  Words:
-    - ''
-    - ''
-    - ''
 
 Reward:
   Money: 10000
@@ -29,3 +13,36 @@ Tag:
   Enabled: false
   Name: 'miyukievents_word'
   Tag: '&c[Palavra]'
+
+Cost: 0
+Calls: 5
+CallInterval: 15
+
+Words:
+  Random:
+    Enabled: true
+    Characters: '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    MaxCharacters: 30
+  Words:
+    - 'banana'
+    - 'jaca'
+    - 'melancia'
+    - 'miyuki'
+
+AutoStart:
+  Enabled: true
+  Times:
+    - ''
+  
+Command:
+  Permission: 'miyukievents.word'
+  Names: ['palavra', 'word']
+
+SubCommands:
+  Start:
+    Permission: 'miyukievents.word.start'
+    Names: ['start', 'iniciar']
+
+
+
+

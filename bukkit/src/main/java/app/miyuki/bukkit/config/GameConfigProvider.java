@@ -3,17 +3,17 @@ package app.miyuki.bukkit.config;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ConfigProvider {
+public class GameConfigProvider {
 
     private final Config messages;
     private final Config config;
     private final Config data;
 
-    public ConfigProvider(@NotNull String path) {
+    public GameConfigProvider(@NotNull String path) {
         this(path, null);
     }
 
-    public ConfigProvider(@NotNull String path, @Nullable String internalPath) {
+    public GameConfigProvider(@NotNull String path, @Nullable String internalPath) {
 
         messages = new Config(
                 path + ConfigType.MESSAGES.getName(),
