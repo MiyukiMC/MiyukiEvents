@@ -10,7 +10,7 @@ repositories {
     }
 }
 
-// nChat, LegendChat, yClans, SimpleClans, WorldEdit, bStats (SOekd), utf8, cash plugins (yPoints, NextCash)
+// WorldEdit
 dependencies {
     compileOnly(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
@@ -22,9 +22,12 @@ dependencies {
 
     implementation("io.github.bananapuncher714:nbteditor:7.18.0")
 
+    implementation("org.bstats:bstats-bukkit:2.2.1")
+
     compileOnly("net.sacredlabyrinth.phaed.simpleclans:SimpleClans:2.15.0")
 
     compileOnly("com.github.cryptomorin:XSeries:8.5.0.1")
 
     compileOnly("com.zaxxer:HikariCP:4.0.3")
+
 }

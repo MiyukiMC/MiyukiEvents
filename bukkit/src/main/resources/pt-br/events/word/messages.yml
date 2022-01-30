@@ -1,0 +1,12 @@
+
+Start: '&aO evento foi iniciado'
+
+Stop:
+  - '&cO evento foi encerrado'
+
+Help:
+  - '&a/word <resposta>'
+
+HelpAdmin:
+  - '&c/word start'
+  - '&c/word stop'

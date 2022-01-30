@@ -42,6 +42,16 @@ SubCommands:
   Start:
     Permission: 'miyukievents.word.start'
     Names: ['start', 'iniciar']
+  Stop:
+    Permission: 'miyukievents.word.stop'
+    Names: ['stop', 'parar']
+  Help:
+    # Este comando não necessita de nenhuma permissão, ao contrário do HelpAdmin.
+    # É obrigatório que este comando tenha nomes, caso contrário será um nome padrão.
+    Names:  ['help']
+  HelpAdmin:
+    # Este comando não necessita de nenhum nome.
+    Permission: 'miyukievents.word.helpadmin'
 
 
 

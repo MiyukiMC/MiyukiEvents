@@ -37,14 +37,12 @@ dependencies {
 tasks {
     withType<JavaCompile> {
         options.encoding = "UTF-8"
-//        options.compilerArgs.add("-parameters")
-//        options.isFork = true
-//        options.forkOptions.executable = "javac"
     }
     shadowJar {
         archiveFileName.set("MiyukiEvents-$version.jar")
-        relocate("io.github.bananapuncher714.nbteditor", "app.miyuki.libs.nbteditor")
-        relocate("org.intellij.lang.annotations", "app.miyuki.libs.intellij.lang.annotations")
-        relocate("org.jetbrains.annotations", "app.miyuki.libs.jetbrains.annotations")
+        relocate("io.github.bananapuncher714.nbteditor", "app.miyuki.libs.miyukievents.nbteditor")
+        relocate("org.intellij.lang.annotations", "app.miyuki.libs.miyukievents.intellij.lang.annotations")
+        relocate("org.jetbrains.annotations", "app.miyuki.miyukievents.libs.jetbrains.annotations")
+        relocate("org.bstats", "app.miyuki.miyukievents.libs.bstats")
     }
 }
