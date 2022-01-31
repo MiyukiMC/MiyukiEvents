@@ -5,12 +5,15 @@ import app.miyuki.miyukievents.bukkit.commands.Command;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.HelpSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.StartSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.StopSubCommand;
+import app.miyuki.miyukievents.bukkit.game.Chat;
 import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
+import app.miyuki.miyukievents.bukkit.game.impl.chat.Word;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -39,7 +42,7 @@ public class WordCommand extends Command {
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
 
         if (game.getGameState() == GameState.HAPPENING) {
-            sender.sendMessage("debug");
+            ((Chat) game).onChat((Player) sender, args[0]);
             return true;
         }
 

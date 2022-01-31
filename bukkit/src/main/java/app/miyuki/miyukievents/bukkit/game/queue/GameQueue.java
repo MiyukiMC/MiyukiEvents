@@ -5,7 +5,6 @@ import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.manager.GameManager;
 import lombok.val;
-import lombok.var;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,7 +12,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class GameQueue extends BukkitRunnable {
-
 
     private final MiyukiEvents plugin;
     private final GameManager gameManager;
@@ -55,10 +53,8 @@ public class GameQueue extends BukkitRunnable {
         return queue.remove(game);
     }
 
-    public boolean isRegistred(@NotNull Game game) {
+    public boolean isRegistered(@NotNull Game game) {
         return queue.contains(game);
     }
-
-
 
 }

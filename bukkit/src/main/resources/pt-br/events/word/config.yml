@@ -24,9 +24,6 @@ Words:
     Characters: '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
     MaxCharacters: 30
   Words:
-    - 'banana'
-    - 'jaca'
-    - 'melancia'
     - 'miyuki'
 
 AutoStart:
