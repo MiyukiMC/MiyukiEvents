@@ -12,19 +12,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class Word extends Game<Player> implements Chat<Player> {
 
-    private final String word;
+    private String word;
 
     public Word(@NotNull GameConfigProvider configProvider) {
         super(configProvider);
-
-        if (configProvider.provide(ConfigType.CONFIG).getBoolean("Words.Random.Enabled")) {
-            this.word = RandomUtils.generateRandomString(
-                    configProvider.provide(ConfigType.CONFIG).getString("Words.Random.Characters").toCharArray(),
-                    configProvider.provide(ConfigType.CONFIG).getInt("Words.Random.MaxCharacters")
-            );
-        } else {
-            this.word = RandomUtils.getRandomElement(configProvider.provide(ConfigType.CONFIG).getStringList("Words.Words"));
-        }
     }
 
     @Override
@@ -51,6 +42,15 @@ public class Word extends Game<Player> implements Chat<Player> {
 
     @Override
     public void start() {
+        if (configProvider.provide(ConfigType.CONFIG).getBoolean("Words.Random.Enabled")) {
+            this.word = RandomUtils.generateRandomString(
+                    configProvider.provide(ConfigType.CONFIG).getString("Words.Random.Characters").toCharArray(),
+                    configProvider.provide(ConfigType.CONFIG).getInt("Words.Random.MaxCharacters")
+            );
+        } else {
+            this.word = RandomUtils.getRandomElement(configProvider.provide(ConfigType.CONFIG).getStringList("Words.Words"));
+        }
+
         Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Start", message -> message.replace("{word}", word)));
         setGameState(GameState.HAPPENING);
     }

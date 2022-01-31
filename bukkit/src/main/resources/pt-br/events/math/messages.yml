@@ -1,0 +1,16 @@
+Start:
+  - 'O evento comecou.'
+  - 'Resolva este calculo: '
+  - '{number1} {operator} {number2}'
+
+Win:
+  - 'O evento foi finalizado.'
+  - 'Ganhador: {winner}'
+  - 'O resultado era: {result}'
+
+Help:
+  - '/math help'
+
+HelpAdmin:
+  - '/math start'
+  - '/math stop'
