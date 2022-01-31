@@ -25,6 +25,7 @@ public class Math extends Game<Player> implements Chat<Player> {
         super(configProvider);
     }
 
+    // TODO: 31/01/2022 check cost to enter, needs vaultapi
     @Override
     public void onChat(Player player, String message) {
         if (!(StringUtils.isNumeric(message)))
@@ -83,7 +84,7 @@ public class Math extends Game<Player> implements Chat<Player> {
         this.reward.execute(player);
     }
 
-    public void setupResult() {
+    private void setupResult() {
         this.operator = RandomUtils.getRandomElement(getConfigProvider().provide(ConfigType.CONFIG).getStringList("SumTypes")).charAt(0);
 
         val min = getConfigProvider().provide(ConfigType.CONFIG).getInt("MinNumber");

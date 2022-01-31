@@ -1,8 +1,10 @@
 package app.miyuki.miyukievents.bukkit.game;
 
 import app.miyuki.miyukievents.bukkit.commands.Command;
+import app.miyuki.miyukievents.bukkit.commands.impl.chat.LotteryCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.chat.MathCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.chat.WordCommand;
+import app.miyuki.miyukievents.bukkit.game.impl.chat.Lottery;
 import app.miyuki.miyukievents.bukkit.game.impl.chat.Math;
 import app.miyuki.miyukievents.bukkit.game.impl.chat.Word;
 import lombok.AllArgsConstructor;
@@ -14,10 +16,11 @@ import java.lang.reflect.InvocationTargetException;
 
 @AllArgsConstructor
 @Getter
-public enum GameType  {
+public enum GameType {
 
     WORD(Word.class, WordCommand.class),
-    MATH(Math.class, MathCommand.class);
+    MATH(Math.class, MathCommand.class),
+    LOTTERY(Lottery.class, LotteryCommand.class);
 
     private final Class<? extends Game> gameClass;
     private final Class<? extends Command> commandClass;

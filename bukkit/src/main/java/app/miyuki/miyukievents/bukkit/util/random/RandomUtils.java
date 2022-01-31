@@ -2,6 +2,7 @@ package app.miyuki.miyukievents.bukkit.util.random;
 
 import lombok.experimental.UtilityClass;
 
+import javax.annotation.Nullable;
 import java.security.SecureRandom;
 import java.util.List;
 
@@ -40,11 +41,20 @@ public class RandomUtils {
         return randomNumber;
     }
 
+    @Nullable
     public<T> T getRandomElement(List<T> elements) {
         if (elements.size() < 1)
             return null;
 
         return elements.get(RANDOM.nextInt(elements.size()));
+    }
+
+    @Nullable
+    public<T> T getRandomElement(T[] array) {
+        if (array.length < 1)
+            return null;
+
+        return array[RANDOM.nextInt(array.length)];
     }
 
 }

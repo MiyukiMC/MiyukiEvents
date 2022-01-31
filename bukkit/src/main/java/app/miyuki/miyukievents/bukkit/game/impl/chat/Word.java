@@ -6,6 +6,7 @@ import app.miyuki.miyukievents.bukkit.game.Chat;
 import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
+import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -42,10 +43,12 @@ public class Word extends Game<Player> implements Chat<Player> {
 
     @Override
     public void start() {
-        if (configProvider.provide(ConfigType.CONFIG).getBoolean("Words.Random.Enabled")) {
+        val randomSection = configProvider.provide(ConfigType.CONFIG).getConfigurationSection("Words.Random");
+
+        if (randomSection.getBoolean("Enabled")) {
             this.word = RandomUtils.generateRandomString(
-                    configProvider.provide(ConfigType.CONFIG).getString("Words.Random.Characters").toCharArray(),
-                    configProvider.provide(ConfigType.CONFIG).getInt("Words.Random.MaxCharacters")
+                    randomSection.getString("Characters").toCharArray(),
+                    randomSection.getInt("MaxCharacters")
             );
         } else {
             this.word = RandomUtils.getRandomElement(configProvider.provide(ConfigType.CONFIG).getStringList("Words.Words"));
