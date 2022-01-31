@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @AllArgsConstructor
-public class LocationAdapter implements Adapter<Location, String>, Restorable<Location, String> {
+public class LocationAdapter implements Adapter<Location, String>, Restorable<String, Location> {
 
     private final MiyukiEvents plugin;
 
