@@ -11,7 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class Word extends Game<Player> implements Chat<Player> {
+public class Word extends Game<Player> implements Chat {
 
     private String word;
 

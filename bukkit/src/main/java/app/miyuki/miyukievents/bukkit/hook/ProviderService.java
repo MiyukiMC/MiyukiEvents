@@ -1,7 +1,11 @@
 package app.miyuki.miyukievents.bukkit.hook;
 
-public interface ProviderService {
+import org.jetbrains.annotations.Nullable;
+
+public interface ProviderService<T> {
 
     boolean hook();
+
+    @Nullable T provide();
 
 }

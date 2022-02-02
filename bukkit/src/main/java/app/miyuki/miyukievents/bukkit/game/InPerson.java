@@ -1,6 +1,8 @@
 package app.miyuki.miyukievents.bukkit.game;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -22,5 +24,10 @@ public interface InPerson {
     void onEntityDamage(EntityDamageEvent event);
 
     void onEntityDamageByEntity(EntityDamageByEntityEvent event);
+
+    void onBlockBreak(BlockBreakEvent event);
+
+    void onBlockPlace(BlockPlaceEvent event);
+
 
 }

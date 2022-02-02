@@ -6,6 +6,7 @@ import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import br.com.devpaulo.legendchat.api.events.ChatMessageEvent;
 import lombok.AllArgsConstructor;
+import lombok.val;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -16,16 +17,12 @@ public class LegendChat implements Listener {
 
     @EventHandler
     public void onPlayerChat(ChatMessageEvent event) {
-        if (event.getMessage().isEmpty())
+        val currentgame = plugin.getGameManager().getCurrentGame();
+
+        if (!(currentgame instanceof Chat))
             return;
 
-        for (Game game : plugin.getGameManager().getGames().values()) {
-
-            if (game.getGameState() == GameState.HAPPENING && game instanceof Chat) {
-                ((Chat) game).onChat(event.getSender(), event.getMessage().split(" ")[0]);
-            }
-
-        }
+        ((Chat) currentgame).onChat(event.getSender(), event.getMessage().split(" ")[0]);
     }
 
 }

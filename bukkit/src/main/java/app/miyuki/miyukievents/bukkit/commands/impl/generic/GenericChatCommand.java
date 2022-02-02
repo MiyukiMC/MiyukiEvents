@@ -1,10 +1,7 @@
-package app.miyuki.miyukievents.bukkit.commands.impl.chat;
+package app.miyuki.miyukievents.bukkit.commands.impl.generic;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.commands.Command;
-import app.miyuki.miyukievents.bukkit.commands.impl.generic.HelpSubCommand;
-import app.miyuki.miyukievents.bukkit.commands.impl.generic.StartSubCommand;
-import app.miyuki.miyukievents.bukkit.commands.impl.generic.StopSubCommand;
 import app.miyuki.miyukievents.bukkit.game.Chat;
 import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
@@ -17,23 +14,24 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LotteryCommand extends Command {
+public class GenericChatCommand extends Command {
 
     private final Game game;
     private final MessageDispatcher messageDispatcher;
     private final GameConfigProvider configProvider;
 
-    public LotteryCommand(@NotNull MiyukiEvents plugin, @NotNull Game game, @NotNull String name, @NotNull List<String> aliases) {
+    public GenericChatCommand(@NotNull MiyukiEvents plugin, @NotNull Game game, @NotNull String name, @NotNull List<String> aliases) {
         super(plugin, name, aliases, true);
 
         this.game = game;
-        this.messageDispatcher = game.getMessageDispatcher();
-        this.configProvider = game.getConfigProvider();
+        messageDispatcher = game.getMessageDispatcher();
+        configProvider = game.getConfigProvider();
 
         registerSubCommand(
                 new StartSubCommand(plugin, game, configProvider),
                 new StopSubCommand(plugin, game, configProvider, messageDispatcher),
-                new HelpSubCommand(plugin, configProvider, messageDispatcher)
+                new HelpSubCommand(plugin, configProvider, messageDispatcher),
+                new ReloadSubCommand(plugin, game, configProvider, messageDispatcher)
         );
     }
 
@@ -41,6 +39,7 @@ public class LotteryCommand extends Command {
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
 
         if (game.getGameState() == GameState.HAPPENING) {
+            // need fix
             ((Chat) game).onChat((Player) sender, args[0]);
             return true;
         }

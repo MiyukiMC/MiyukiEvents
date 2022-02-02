@@ -42,6 +42,9 @@ SubCommands:
   Stop:
     Permission: 'miyukievents.word.stop'
     Names: ['stop', 'parar']
+  Reload:
+    Permission: 'miyukievents.word.reload'
+    Names: ['reload', 'recarregar']
   Help:
     # Este comando não necessita de nenhuma permissão, ao contrário do HelpAdmin.
     # É obrigatório que este comando tenha nomes, caso contrário será um nome padrão.

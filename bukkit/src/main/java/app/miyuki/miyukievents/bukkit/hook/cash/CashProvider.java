@@ -8,19 +8,19 @@ import lombok.Getter;
 import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
+import org.jetbrains.annotations.Nullable;
 
-public class CashProvider implements ProviderService {
+public class CashProvider implements ProviderService<CashAPI> {
 
-    @Getter
-    private final CashAPI cashAPI = null;
+    private CashAPI cashAPI = null;
 
     public CashProvider(MiyukiEvents plugin) {
         val pluginManager = Bukkit.getPluginManager();
 
-        if (pluginManager.getPlugin("NextPoints") != null) {
-            Bukkit.getServicesManager().register(CashAPI.class, new YPoints(), plugin, ServicePriority.Highest);
-        } else if (pluginManager.getPlugin("yPoints") != null) {
+        if (pluginManager.getPlugin("NextCash") != null) {
             Bukkit.getServicesManager().register(CashAPI.class, new NextCash(), plugin, ServicePriority.Highest);
+        } else if (pluginManager.getPlugin("yPoints") != null) {
+            Bukkit.getServicesManager().register(CashAPI.class, new YPoints(), plugin, ServicePriority.Highest);
         }
 
     }
@@ -32,8 +32,14 @@ public class CashProvider implements ProviderService {
         if (registeredServiceProvider == null)
             return false;
 
-        val provider = registeredServiceProvider.getProvider();
-        return provider != null;
+        cashAPI = registeredServiceProvider.getProvider();
+        return true;
     }
+
+    @Override
+    public @Nullable CashAPI provide() {
+        return cashAPI;
+    }
+
 
 }

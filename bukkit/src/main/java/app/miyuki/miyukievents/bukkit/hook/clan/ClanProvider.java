@@ -8,12 +8,12 @@ import lombok.Getter;
 import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
+import org.jetbrains.annotations.Nullable;
 
 
-public class ClanProvider implements ProviderService {
+public class ClanProvider implements ProviderService<ClanAPI> {
 
-    @Getter
-    private final ClanAPI clanAPI = null;
+    private ClanAPI clanAPI = null;
 
     public ClanProvider(MiyukiEvents plugin) {
 
@@ -33,8 +33,14 @@ public class ClanProvider implements ProviderService {
         if (registeredServiceProvider == null)
             return false;
 
-        val provider = registeredServiceProvider.getProvider();
-        return provider != null;
+        clanAPI = registeredServiceProvider.getProvider();
+        return false;
     }
+
+    @Override
+    public @Nullable ClanAPI provide() {
+        return clanAPI;
+    }
+
 
 }
