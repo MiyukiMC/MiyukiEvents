@@ -2,10 +2,8 @@ package app.miyuki.miyukievents.bukkit.game.manager;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.config.Config;
-import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
+import app.miyuki.miyukievents.bukkit.game.*;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.Game;
-import app.miyuki.miyukievents.bukkit.game.GameType;
 import app.miyuki.miyukievents.bukkit.util.chat.ChatUtils;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -15,6 +13,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +33,18 @@ public class GameManager implements Manager {
 
     @Getter
     private final Map<String, Game> games = Maps.newHashMap();
+
+    @Nullable
+    public Game getCurrentGame() {
+        for (Game game : plugin.getGameManager().getGames().values()) {
+
+            if (game.getGameState() != GameState.QUEUE && game.getGameState() != GameState.STOPPED) {
+                return game;
+            }
+
+        }
+        return null;
+    }
 
     @Override
     public void load() {

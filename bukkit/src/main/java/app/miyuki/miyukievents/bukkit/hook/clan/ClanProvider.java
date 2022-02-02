@@ -1,6 +1,7 @@
 package app.miyuki.miyukievents.bukkit.hook.clan;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
+import app.miyuki.miyukievents.bukkit.hook.ProviderService;
 import app.miyuki.miyukievents.bukkit.hook.clan.impl.SimpleClans;
 import app.miyuki.miyukievents.bukkit.hook.clan.impl.YClans;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
 
 
-public class ClanProvider {
+public class ClanProvider implements ProviderService {
 
     @Getter
     private final ClanAPI clanAPI = null;
@@ -25,6 +26,7 @@ public class ClanProvider {
 
     }
 
+    @Override
     public boolean hook() {
         val registeredServiceProvider = Bukkit.getServicesManager().getRegistration(ClanAPI.class);
 

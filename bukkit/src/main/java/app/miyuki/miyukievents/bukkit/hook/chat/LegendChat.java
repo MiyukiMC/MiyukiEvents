@@ -1,4 +1,4 @@
-package app.miyuki.miyukievents.bukkit.hook.chat.impl;
+package app.miyuki.miyukievents.bukkit.hook.chat;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.game.Chat;

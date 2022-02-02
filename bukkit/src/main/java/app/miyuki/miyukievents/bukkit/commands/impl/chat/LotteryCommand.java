@@ -19,7 +19,7 @@ import java.util.List;
 
 public class LotteryCommand extends Command {
 
-    private Game game;
+    private final Game game;
     private final MessageDispatcher messageDispatcher;
     private final GameConfigProvider configProvider;
 
