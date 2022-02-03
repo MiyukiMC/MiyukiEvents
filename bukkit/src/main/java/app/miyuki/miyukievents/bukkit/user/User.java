@@ -35,4 +35,5 @@ public class User implements Cacheable<String> {
         return playerName.toLowerCase(Locale.ROOT);
     }
 
+
 }

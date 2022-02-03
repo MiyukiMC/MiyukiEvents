@@ -23,9 +23,9 @@ public class WorldEditProvider implements ProviderService<WorldEditAPI> {
 
         val version = plugin.getDescription().getVersion();
 
-        Class<?> clasz = version.startsWith("6.") ? Class.forName(WORLDEDIT6) : Class.forName(WORLDEDIT7);
+        Class<?> clazz = version.startsWith("6.") ? Class.forName(WORLDEDIT6) : Class.forName(WORLDEDIT7);
 
-        worldEditAPI = (WorldEditAPI) clasz.getConstructor().newInstance();
+        worldEditAPI = (WorldEditAPI) clazz.getConstructor().newInstance();
         return true;
 
     }

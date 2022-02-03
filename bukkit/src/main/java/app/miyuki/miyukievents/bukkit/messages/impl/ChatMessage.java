@@ -1,5 +1,6 @@
-package app.miyuki.miyukievents.bukkit.messages;
+package app.miyuki.miyukievents.bukkit.messages.impl;
 
+import app.miyuki.miyukievents.bukkit.messages.Message;
 import app.miyuki.miyukievents.bukkit.util.chat.ChatUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,19 +1,17 @@
 Start:
   - ''
-  - ''
-  - ''
+  - 'O evento loteria comecou'
+  - 'Adivinhe o número entre {minNumber} - {maxNumber}'
 Win:
   - ''
-  - ''
+  - 'O evento loteria acabou'
+  - 'O jogador {winner} ganhou'
   - ''
 NoWinner:
   - ''
-  - ''
+  - 'O evento loteria acabou sem nenhum ganhador'
   - ''
 EventCancelled:
   - ''
+  - 'O evento loteria foi cancelado'
   - ''
-  - ''
-NoMoney: '&b[Loteria] &cVocê não tem dinheiro suficiente para apostar na loteria.'
-NoPermission: '&b[Loteria] &cVocê não tem permissão para participar desse evento.'
-Lose: '&b[Loteria] &cVocê errou o número da sorte.'

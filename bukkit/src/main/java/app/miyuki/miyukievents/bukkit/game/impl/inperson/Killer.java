@@ -21,16 +21,6 @@ public class Killer extends Game<Player> implements InPerson {
     }
 
     @Override
-    public String getTypeName() {
-        return null;
-    }
-
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
     public void setGameState(GameState gameState) {
 
     }

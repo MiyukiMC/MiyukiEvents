@@ -15,12 +15,12 @@ public class PlayerInteract implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        val currentgame = plugin.getGameManager().getCurrentGame();
+        val currentGame = plugin.getGameManager().getCurrentGame();
 
-        if (!(currentgame instanceof InPerson))
+        if (!(currentGame instanceof InPerson))
             return;
 
-        ((InPerson) currentgame).onPlayerInteract(event);
+        ((InPerson) currentGame).onPlayerInteract(event);
     }
 
 }

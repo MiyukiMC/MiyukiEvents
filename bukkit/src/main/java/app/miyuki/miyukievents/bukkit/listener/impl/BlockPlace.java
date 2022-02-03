@@ -15,12 +15,12 @@ public class BlockPlace implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        val currentgame = plugin.getGameManager().getCurrentGame();
+        val currentGame = plugin.getGameManager().getCurrentGame();
 
-        if (!(currentgame instanceof InPerson))
+        if (!(currentGame instanceof InPerson))
             return;
 
-        ((InPerson) currentgame).onBlockPlace(event);
+        ((InPerson) currentGame).onBlockPlace(event);
     }
 
 }

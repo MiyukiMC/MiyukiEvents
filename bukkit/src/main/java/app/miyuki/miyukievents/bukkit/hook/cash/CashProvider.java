@@ -13,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class CashProvider implements ProviderService<CashAPI> {
 
-    @Getter
     private CashAPI cashAPI = null;
 
     public CashProvider(MiyukiEvents plugin) {

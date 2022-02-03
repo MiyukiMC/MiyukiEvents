@@ -15,12 +15,12 @@ public class EntityDamage implements Listener {
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
-        val currentgame = plugin.getGameManager().getCurrentGame();
+        val currentGame = plugin.getGameManager().getCurrentGame();
 
-        if (!(currentgame instanceof InPerson))
+        if (!(currentGame instanceof InPerson))
             return;
 
-        ((InPerson) currentgame).onEntityDamage(event);
+        ((InPerson) currentGame).onEntityDamage(event);
     }
 
 }

@@ -2,6 +2,7 @@
 #
 #
 Type: 'word'
+Name: 'word'
 
 Reward:
   Money: 10000
@@ -14,7 +15,9 @@ Tag:
   Name: 'miyukievents_word'
   Tag: '&c[Palavra]'
 
+Permission: 'miyukievents.word'
 Cost: 0
+
 Calls: 5
 CallInterval: 15
 
@@ -22,7 +25,9 @@ Words:
   Random:
     Enabled: true
     Characters: '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    MinCharacters: 12
     MaxCharacters: 30
+  IgnoreCase: false
   Words:
     - 'miyuki'
 
@@ -30,7 +35,7 @@ AutoStart:
   Enabled: true
   Times:
     - ''
-  
+
 Command:
   Permission: 'miyukievents.word'
   Names: ['palavra', 'word']

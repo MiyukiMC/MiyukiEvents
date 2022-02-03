@@ -7,9 +7,12 @@ import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import lombok.val;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Locale;
 
 public class Word extends Game<Player> implements Chat {
 
@@ -21,20 +24,18 @@ public class Word extends Game<Player> implements Chat {
 
     @Override
     public void onChat(Player player, String message) {
-        if (message.contains(word))
+        if (!player.hasPermission(getPermission()))
+            return;
+
+        if (!checkCost(player))
+            return;
+
+        if (configProvider.provide(ConfigType.CONFIG).getBoolean("Words.IgnoreCase"))
+            message = message.toLowerCase(Locale.ROOT);
+
+        if (message.contains(word.toLowerCase(Locale.ROOT)))
             onWin(player);
     }
-
-    @Override
-    public String getTypeName() {
-        return getConfigProvider().provide(ConfigType.CONFIG).getString("Type");
-    }
-
-    @Override
-    public String getName() {
-        return getConfigProvider().provide(ConfigType.CONFIG).getString("Name");
-    }
-
 
     @Override
     public void setGameState(GameState gameState) {
@@ -43,16 +44,7 @@ public class Word extends Game<Player> implements Chat {
 
     @Override
     public void start() {
-        val randomSection = configProvider.provide(ConfigType.CONFIG).getConfigurationSection("Words.Random");
-
-        if (randomSection.getBoolean("Enabled")) {
-            this.word = RandomUtils.generateRandomString(
-                    randomSection.getString("Characters").toCharArray(),
-                    randomSection.getInt("MaxCharacters")
-            );
-        } else {
-            this.word = RandomUtils.getRandomElement(configProvider.provide(ConfigType.CONFIG).getStringList("Words.Words"));
-        }
+        setupResult();
 
         Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Start", message -> message.replace("{word}", word)));
         setGameState(GameState.HAPPENING);
@@ -65,18 +57,35 @@ public class Word extends Game<Player> implements Chat {
 
     @Override
     public void onWin(Player player) {
-        System.out.println("SIFHRYJK5L5");
         stop();
         giveReward(player);
+
         Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Win", message ->
                 message.replace("{winner}", player.getName())));
     }
 
     @Override
     public void giveReward(Player player) {
-        System.out.println("7589505p350");
         this.reward.execute(player);
     }
 
+    private void setupResult() {
+        val randomSection = configProvider.provide(ConfigType.CONFIG).getConfigurationSection("Words.Random");
 
+        if (randomSection.getBoolean("Enabled")) {
+            val min = randomSection.getInt("MinCharacters");
+            val max = randomSection.getInt("MaxCharacters");
+
+            val length = RandomUtils.generateRandomNumber(min, max);
+
+            this.word = RandomUtils.generateRandomString(
+                    randomSection.getString("Characters").toCharArray(),
+                    length
+            );
+
+        } else {
+            this.word = RandomUtils.getRandomElement(configProvider.provide(ConfigType.CONFIG).getStringList("Words.Words"));
+        }
+
+    }
 }

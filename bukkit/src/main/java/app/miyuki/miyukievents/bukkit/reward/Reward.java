@@ -21,7 +21,6 @@ public class Reward {
     private List<String> commands;
 
     public void execute(@NotNull Player player) {
-        System.out.println("guik53443434");
         val playerName = player.getName();
 
         for (String command : commands) {
@@ -34,7 +33,7 @@ public class Reward {
         val plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
 
         if (NumberEvaluator.isValid(cash))
-            plugin.getCashProvider().getCashAPI().deposit(playerName, cash);
+            plugin.getCashProvider().provide().deposit(playerName, cash);
 
         if (NumberEvaluator.isValid(money))
             plugin.getVaultProvider().getEconomy().depositPlayer(player, money);

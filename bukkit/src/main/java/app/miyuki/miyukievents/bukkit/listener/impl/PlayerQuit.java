@@ -17,12 +17,12 @@ public class PlayerQuit implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        val game = plugin.getGameManager().getCurrentGame();
+        val currentGame = plugin.getGameManager().getCurrentGame();
 
-        if (!(game instanceof InPerson))
+        if (!(currentGame instanceof InPerson))
             return;
 
-        ((InPerson) game).onPlayerQuit(event);
+        ((InPerson) currentGame).onPlayerQuit(event);
     }
 
 }

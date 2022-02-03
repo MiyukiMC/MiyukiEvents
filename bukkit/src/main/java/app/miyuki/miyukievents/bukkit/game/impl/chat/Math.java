@@ -36,22 +36,13 @@ public class Math extends Game<Player> implements Chat {
     }
 
     @Override
-    public String getTypeName() {
-        return getConfigProvider().provide(ConfigType.CONFIG).getString("Type");
-    }
-
-    @Override
-    public String getName() {
-        return getConfigProvider().provide(ConfigType.CONFIG).getString("Name");
-    }
-
-    @Override
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
 
     @Override
     public void start() {
+        setGameState(GameState.HAPPENING);
         setupResult();
 
         Bukkit.getOnlinePlayers().forEach(player -> {
@@ -60,8 +51,6 @@ public class Math extends Game<Player> implements Chat {
                     .replace("{number1}", String.valueOf(numberOne))
                     .replace("{number2}", String.valueOf(numberTwo)));
         });
-
-        setGameState(GameState.HAPPENING);
     }
 
     @Override

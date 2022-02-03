@@ -25,36 +25,28 @@ public class Lottery extends Game<Player> implements Chat {
     // TODO: 31/01/2022  check cost to enter (needs VAULTAPI)
     @Override
     public void onChat(Player player, String message) {
-        // check cost
+        if (!player.hasPermission(getPermission()))
+            return;
+
+        if (!checkCost(player))
+            return;
 
         if (StringUtils.isNumeric(message))
             return;
 
         if (Integer.parseInt(message) == result)
             onWin(player);
-        else
-            messageDispatcher.dispatch(player, "Lose");
-    }
-
-    @Override
-    public String getTypeName() {
-        return getConfigProvider().provide(ConfigType.CONFIG).getString("Type");
-    }
-
-    @Override
-    public String getName() {
-        return getConfigProvider().provide(ConfigType.CONFIG).getString("Name");
     }
 
     @Override
     public void setGameState(GameState gameState) {
-
+        this.gameState = gameState;
     }
 
-    // TODO: 31/01/2022 Runnable calls
     @Override
     public void start() {
         setupResult();
+        setGameState(GameState.HAPPENING);
 
         Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "Start", message -> message
                 .replace("{minNumber}", String.valueOf(minNumber))
@@ -63,6 +55,7 @@ public class Lottery extends Game<Player> implements Chat {
 
     @Override
     public void stop() {
+        setGameState(GameState.STOPPED);
     }
 
     @Override
@@ -84,6 +77,8 @@ public class Lottery extends Game<Player> implements Chat {
         this.maxNumber = getConfigProvider().provide(ConfigType.CONFIG).getInt("MaxNumber");
 
         this.result = RandomUtils.generateRandomNumber(minNumber, maxNumber);
+
+        System.out.println(result);
     }
 
 }

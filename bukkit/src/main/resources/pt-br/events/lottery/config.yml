@@ -1,8 +1,9 @@
 Type: 'lottery'
-Name: ''
+Name: 'lottery'
 
 Permission: 'miyukievents.lottery'
 Cost: 0
+
 Calls: 5
 CallInterval: 15
 
@@ -19,3 +20,25 @@ Tag:
   Enabled: false
   Name: 'miyukievents_lottery'
   Tag: '&b[Loteria]'
+
+Command:
+  Permission: 'miyukievents.lottery'
+  Names: ['lottery', 'loteria']
+
+SubCommands:
+  Start:
+    Permission: 'miyukievents.lottery.start'
+    Names: ['start', 'iniciar']
+  Stop:
+    Permission: 'miyukievents.lottery.stop'
+    Names: ['stop', 'parar']
+  Reload:
+    Permission: 'miyukievents.lottery.reload'
+    Names: ['reload', 'recarregar']
+  Help:
+    # Este comando não necessita de nenhuma permissão, ao contrário do HelpAdmin.
+    # É obrigatório que este comando tenha nomes, caso contrário será um nome padrão.
+    Names:  ['help']
+  HelpAdmin:
+    # Este comando não necessita de nenhum nome.
+    Permission: 'miyukievents.lottery.helpadmin'

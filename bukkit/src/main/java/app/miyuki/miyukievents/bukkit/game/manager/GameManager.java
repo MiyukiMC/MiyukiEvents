@@ -28,7 +28,9 @@ public class GameManager implements Manager {
     private final @NonNull String language;
 
     private static final ImmutableList<String> DEFAULT_GAMES = ImmutableList.of(
-            "word"
+            "word",
+            "math",
+            "lottery"
     );
 
     @Getter

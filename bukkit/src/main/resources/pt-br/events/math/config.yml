@@ -5,8 +5,8 @@ Cost: 0
 Calls: 5
 CallInterval: 15
 
-MinNumber: 100
-MaxNumber: 10000
+MinNumber: 30
+MaxNumber: 1000
 SumTypes: # Esses são os 3 tipos máximos, não adicione nenhum, só retire caso não queira algum.
   - '+'
   - '-'
@@ -23,23 +23,24 @@ Tag:
   Name: 'miyukievents_math'
   Tag: '&3[Matemática]'
 
-Messages:
-  EventCall:
-    - ''
-    - ''
-    - ''
-  EventWin:
-    - ''
-    - ''
-    - ''
-  NoWinner:
-    - ''
-    - ''
-    - ''
-  EventCancelled:
-    - ''
-    - ''
-    - ''
-  NoMoney: '&b[Matemática] &cVocê não tem dinheiro para participar do evento.'
-  NoPermission: '&b[Matemática] &cVocê não tem permissão para participar desse evento.'
-  Lose: '&b[Matemática] &cVocê errou o resultado. Tente novamente.'
+Command:
+  Permission: 'miyukievents.math'
+  Names: ['matematica', 'math']
+
+SubCommands:
+  Start:
+    Permission: 'miyukievents.math.start'
+    Names: ['start', 'iniciar']
+  Stop:
+    Permission: 'miyukievents.math.stop'
+    Names: ['stop', 'parar']
+  Reload:
+    Permission: 'miyukievents.math.reload'
+    Names: ['reload', 'recarregar']
+  Help:
+    # Este comando não necessita de nenhuma permissão, ao contrário do HelpAdmin.
+    # É obrigatório que este comando tenha nomes, caso contrário será um nome padrão.
+    Names:  ['help']
+  HelpAdmin:
+    # Este comando não necessita de nenhum nome.
+    Permission: 'miyukievents.math.helpadmin'

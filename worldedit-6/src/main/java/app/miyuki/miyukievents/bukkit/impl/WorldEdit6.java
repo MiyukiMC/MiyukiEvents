@@ -13,6 +13,7 @@ import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.util.io.Closer;
 import com.sk89q.worldedit.world.registry.LegacyWorldData;
 import lombok.Cleanup;
+import lombok.SneakyThrows;
 import lombok.val;
 import lombok.var;
 import org.bukkit.Bukkit;
@@ -40,6 +41,7 @@ public class WorldEdit6 implements WorldEditAPI {
         };
     }
 
+    @SneakyThrows
     @Override
     public void pasteSchematic(@NotNull File file, @NotNull Location pos1, @NotNull Location pos2) {
         var format = ClipboardFormat.findByFile(file);

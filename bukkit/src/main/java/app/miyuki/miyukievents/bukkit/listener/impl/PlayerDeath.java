@@ -16,12 +16,12 @@ public class PlayerDeath implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        val currentgame = plugin.getGameManager().getCurrentGame();
+        val currentGame = plugin.getGameManager().getCurrentGame();
 
-        if (!(currentgame instanceof InPerson))
+        if (!(currentGame instanceof InPerson))
             return;
 
-        ((InPerson) currentgame).onPlayerDeath(event);
+        ((InPerson) currentGame).onPlayerDeath(event);
     }
 
 }

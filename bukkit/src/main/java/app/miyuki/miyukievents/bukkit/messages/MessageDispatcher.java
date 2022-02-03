@@ -3,6 +3,8 @@ package app.miyuki.miyukievents.bukkit.messages;
 import app.miyuki.miyukievents.bukkit.config.Config;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
+import app.miyuki.miyukievents.bukkit.messages.impl.ChatMessage;
+import app.miyuki.miyukievents.bukkit.messages.impl.JsonMessage;
 import lombok.val;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;

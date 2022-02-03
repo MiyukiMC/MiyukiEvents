@@ -1,12 +1,25 @@
 Start:
-  - 'O evento comecou.'
-  - 'Resolva este calculo: '
-  - '{number1} {operator} {number2}'
+  - ''
+  - 'O evento matemática comecou!'
+  - 'Responda: {number1} {operator} {number2}'
+  - ''
 
 Win:
-  - 'O evento foi finalizado.'
+  - ''
+  - 'O evento matemática acabou!'
   - 'Ganhador: {winner}'
   - 'O resultado era: {result}'
+  - ''
+
+Cancelled:
+  - ''
+  - 'O evento matemática foi cancelado um administrador'
+  - ''
+
+NoWinner:
+  - ''
+  - 'O evento matemática acabou sem ganhador.'
+  - ''
 
 Help:
   - '/math help'
