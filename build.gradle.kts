@@ -31,7 +31,8 @@ allprojects {
 
 dependencies {
     implementation(project(":bukkit"))
-    implementation(project(":bungeecord"))
+    implementation(project(":worldedit-6"))
+    implementation(project(":worldedit-7"))
 }
 
 tasks {

@@ -1,4 +1,4 @@
 rootProject.name = "MiyukiEvents"
 
-include(":bukkit", ":bungeecord")
+include(":bukkit", ":worldedit-6", "worldedit-7")
 
