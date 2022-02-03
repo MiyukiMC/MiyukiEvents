@@ -12,7 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class Math extends Game<Player> implements Chat<Player> {
+public class Math extends Game<Player> implements Chat {
 
     private Character operator;
 
@@ -60,6 +60,8 @@ public class Math extends Game<Player> implements Chat<Player> {
                     .replace("{number1}", String.valueOf(numberOne))
                     .replace("{number2}", String.valueOf(numberTwo)));
         });
+
+        setGameState(GameState.HAPPENING);
     }
 
     @Override

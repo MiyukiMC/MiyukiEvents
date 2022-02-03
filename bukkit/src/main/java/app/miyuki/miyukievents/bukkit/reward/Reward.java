@@ -1,6 +1,7 @@
 package app.miyuki.miyukievents.bukkit.reward;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
+import app.miyuki.miyukievents.bukkit.util.number.NumberEvaluator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.val;
@@ -20,16 +21,23 @@ public class Reward {
     private List<String> commands;
 
     public void execute(@NotNull Player player) {
+        System.out.println("guik53443434");
+        val playerName = player.getName();
+
         for (String command : commands) {
             Bukkit.dispatchCommand(
                     Bukkit.getConsoleSender(),
-                    command.replace("{player}", player.getName())
+                    command.replace("{player}", playerName)
             );
         }
 
         val plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
 
-        // deposit cash, money
+        if (NumberEvaluator.isValid(cash))
+            plugin.getCashProvider().getCashAPI().deposit(playerName, cash);
+
+        if (NumberEvaluator.isValid(money))
+            plugin.getVaultProvider().getEconomy().depositPlayer(player, money);
     }
 
 }

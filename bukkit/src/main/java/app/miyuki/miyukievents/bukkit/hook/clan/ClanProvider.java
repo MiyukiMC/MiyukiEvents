@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class ClanProvider implements ProviderService<ClanAPI> {
 
+    @Getter
     private ClanAPI clanAPI = null;
 
     public ClanProvider(MiyukiEvents plugin) {
@@ -34,7 +35,7 @@ public class ClanProvider implements ProviderService<ClanAPI> {
             return false;
 
         clanAPI = registeredServiceProvider.getProvider();
-        return false;
+        return true;
     }
 
     @Override

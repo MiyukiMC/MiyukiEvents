@@ -6,7 +6,9 @@ import app.miyuki.miyukievents.bukkit.commands.CommandRegistry;
 import app.miyuki.miyukievents.bukkit.config.Config;
 import app.miyuki.miyukievents.bukkit.game.manager.GameManager;
 import app.miyuki.miyukievents.bukkit.game.queue.GameQueue;
+import app.miyuki.miyukievents.bukkit.hook.cash.CashProvider;
 import app.miyuki.miyukievents.bukkit.hook.clan.ClanProvider;
+import app.miyuki.miyukievents.bukkit.hook.vault.VaultProvider;
 import app.miyuki.miyukievents.bukkit.language.LanguageEvaluator;
 import app.miyuki.miyukievents.bukkit.language.LanguageProvider;
 import app.miyuki.miyukievents.bukkit.listener.ListenerRegistry;
@@ -48,6 +50,12 @@ public final class MiyukiEvents extends JavaPlugin {
     @Getter
     private ClanProvider clanProvider;
 
+    @Getter
+    private CashProvider cashProvider;
+
+    @Getter
+    private VaultProvider vaultProvider;
+
     @Override
     public void onEnable() {
         this.language = new LanguageEvaluator().evaluate(new LanguageProvider().provide());
@@ -85,7 +93,17 @@ public final class MiyukiEvents extends JavaPlugin {
     }
 
     private void loadProviders() {
+        this.vaultProvider = new VaultProvider();
+        if (vaultProvider.hook())
+            getLogger().info("Vault Provider loaded successfully");
+
         this.clanProvider = new ClanProvider(this);
+        if (clanProvider.hook())
+            getLogger().info("Clan Provider loaded successfully");
+
+        this.cashProvider = new CashProvider(this);
+        if (cashProvider.hook())
+            getLogger().info("Cash Provider loaded successfully");
     }
 
     private void loadGlobalConfig() {

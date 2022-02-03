@@ -10,7 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class Game<W> {
 
-    private final @NotNull MiyukiEvents plugin;
+    @Getter
+    protected final @NotNull MiyukiEvents plugin;
 
     @Getter
     protected final @NotNull GameConfigProvider configProvider;

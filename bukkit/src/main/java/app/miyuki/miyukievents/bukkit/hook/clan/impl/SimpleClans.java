@@ -14,7 +14,6 @@ public class SimpleClans implements ClanAPI {
 
     private final net.sacredlabyrinth.phaed.simpleclans.SimpleClans clanAPI = net.sacredlabyrinth.phaed.simpleclans.SimpleClans.getInstance();
 
-
     @Override
     public boolean hasClan(String playerName) {
         return clanAPI.getClanManager().getClanByPlayerName(playerName) != null;

@@ -5,6 +5,7 @@ import app.miyuki.miyukievents.bukkit.game.Chat;
 import br.net.fabiozumbi12.UltimateChat.Bukkit.API.SendChannelMessageEvent;
 import lombok.AllArgsConstructor;
 import lombok.val;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,12 +23,14 @@ public class UltimateChat implements Listener {
         if (!(sender instanceof Player))
             return;
 
-        val currentgame = plugin.getGameManager().getCurrentGame();
+        val currentGame = plugin.getGameManager().getCurrentGame();
 
-        if (!(currentgame instanceof Chat))
+        if (!(currentGame instanceof Chat))
             return;
 
-        ((Chat) currentgame).onChat((Player) sender, event.getMessage().split(" ")[0]);
+        val player = (Player) sender;
+
+        Bukkit.getScheduler().runTask(plugin, () -> ((Chat) currentGame).onChat(player, event.getMessage().split(" ")[0]));
     }
 
 }

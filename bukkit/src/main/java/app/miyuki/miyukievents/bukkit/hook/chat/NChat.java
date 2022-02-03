@@ -2,9 +2,11 @@ package app.miyuki.miyukievents.bukkit.hook.chat;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.game.Chat;
+import app.miyuki.miyukievents.bukkit.game.GameState;
 import com.nickuc.chat.api.events.PublicMessageEvent;
 import lombok.AllArgsConstructor;
 import lombok.val;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -15,12 +17,16 @@ public class NChat implements Listener {
 
     @EventHandler
     public void onPlayerChat(PublicMessageEvent event) {
-        val currentgame = plugin.getGameManager().getCurrentGame();
+        System.out.println("SIM!!!!!!!!!!!!!!!!!!!");
+        val currentGame = plugin.getGameManager().getCurrentGame();
 
-        if (!(currentgame instanceof Chat))
+        if (!(currentGame instanceof Chat))
             return;
 
-        ((Chat) currentgame).onChat(event.getSender(), event.getMessage().split(" ")[0]);
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            if (currentGame.getGameState() == GameState.HAPPENING)
+                ((Chat) currentGame).onChat(event.getSender(), event.getMessage().split(" ")[0]);
+        });
     }
 
 }

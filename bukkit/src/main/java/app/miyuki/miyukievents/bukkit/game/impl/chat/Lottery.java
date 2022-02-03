@@ -11,7 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class Lottery extends Game<Player> implements Chat<Player> {
+public class Lottery extends Game<Player> implements Chat {
 
     private Integer minNumber;
     private Integer maxNumber;

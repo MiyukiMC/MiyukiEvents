@@ -1,13 +1,15 @@
 package app.miyuki.miyukievents.bukkit.hook.vault;
 
 import app.miyuki.miyukievents.bukkit.hook.ProviderService;
+import lombok.Getter;
 import lombok.val;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
 
-public class VaultAPI implements ProviderService<Economy> {
+public class VaultProvider implements ProviderService<Economy> {
 
+    @Getter
     private Economy economy = null;
 
     @Override
@@ -18,13 +20,12 @@ public class VaultAPI implements ProviderService<Economy> {
             return false;
 
         economy = registeredServiceProvider.getProvider();
-        return false;
+        return true;
     }
 
     @Override
     public @Nullable Economy provide() {
         return economy;
     }
-
 
 }

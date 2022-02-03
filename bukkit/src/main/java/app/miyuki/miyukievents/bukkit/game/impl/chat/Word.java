@@ -21,7 +21,7 @@ public class Word extends Game<Player> implements Chat {
 
     @Override
     public void onChat(Player player, String message) {
-        if (message.equals(word))
+        if (message.contains(word))
             onWin(player);
     }
 
@@ -65,6 +65,7 @@ public class Word extends Game<Player> implements Chat {
 
     @Override
     public void onWin(Player player) {
+        System.out.println("SIFHRYJK5L5");
         stop();
         giveReward(player);
         Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Win", message ->
@@ -73,6 +74,7 @@ public class Word extends Game<Player> implements Chat {
 
     @Override
     public void giveReward(Player player) {
+        System.out.println("7589505p350");
         this.reward.execute(player);
     }
 

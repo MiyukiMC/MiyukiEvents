@@ -5,7 +5,7 @@ Type: 'word'
 
 Reward:
   Money: 10000
-  Cash: 0
+  Cash: 1
   Commands:
     - 'give {player} diamond 64'
 
