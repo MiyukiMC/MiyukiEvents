@@ -2,6 +2,8 @@ Start:
   - ''
   - 'O evento loteria comecou'
   - 'Adivinhe o número entre {minNumber} - {maxNumber}'
+  - ''
+  - 'Tempo restante: {seconds} segundos'
 Win:
   - ''
   - 'O evento loteria acabou'
@@ -15,3 +17,9 @@ EventCancelled:
   - ''
   - 'O evento loteria foi cancelado'
   - ''
+Help:
+  - '/lottery help'
+HelpAdmin:
+  - '/lottery start'
+  - '/lottery stop'
+CommandUsedIncorrectly: 'Utilize /lottery <numero>!'

@@ -7,7 +7,6 @@ import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import lombok.val;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -37,11 +36,6 @@ public class Word extends Game<Player> implements Chat {
 
         if (message.contains(word))
             onWin(player);
-    }
-
-    @Override
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
     }
 
     @Override

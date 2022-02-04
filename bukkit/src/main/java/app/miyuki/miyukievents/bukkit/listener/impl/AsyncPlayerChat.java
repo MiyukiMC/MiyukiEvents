@@ -2,7 +2,6 @@ package app.miyuki.miyukievents.bukkit.listener.impl;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.game.Chat;
-import app.miyuki.miyukievents.bukkit.game.GameState;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.bukkit.Bukkit;
@@ -23,11 +22,11 @@ public class AsyncPlayerChat implements Listener {
         if (!(currentGame instanceof Chat))
             return;
 
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-
-            if (currentGame.getGameState() == GameState.HAPPENING)
-                ((Chat) currentGame).onChat(event.getPlayer(), event.getMessage().split(" ")[0]);
-        }, 3L);
+        Bukkit.getScheduler().runTaskLater(
+                plugin,
+                () -> ((Chat) currentGame).onChat(event.getPlayer(), event.getMessage().split(" ")[0]),
+                3L
+        );
     }
 
 }

@@ -25,7 +25,6 @@ public class Math extends Game<Player> implements Chat {
         super(configProvider);
     }
 
-    // TODO: 31/01/2022 check cost to enter, needs vaultapi
     @Override
     public void onChat(Player player, String message) {
         if (!(StringUtils.isNumeric(message)))
@@ -33,11 +32,6 @@ public class Math extends Game<Player> implements Chat {
 
         if (Integer.parseInt(message) == result)
             onWin(player);
-    }
-
-    @Override
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
     }
 
     @Override

@@ -6,10 +6,13 @@ import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
+import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Lottery extends Game<Player> implements Chat {
 
@@ -22,9 +25,11 @@ public class Lottery extends Game<Player> implements Chat {
         super(configProvider);
     }
 
-    // TODO: 31/01/2022  check cost to enter (needs VAULTAPI)
     @Override
     public void onChat(Player player, String message) {
+        if (gameState != GameState.HAPPENING)
+            return;
+
         if (!player.hasPermission(getPermission()))
             return;
 
@@ -39,23 +44,42 @@ public class Lottery extends Game<Player> implements Chat {
     }
 
     @Override
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
-    }
-
-    @Override
     public void start() {
         setupResult();
         setGameState(GameState.HAPPENING);
 
-        Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "Start", message -> message
-                .replace("{minNumber}", String.valueOf(minNumber))
-                .replace("{maxNumber}", String.valueOf(maxNumber))));
+        val config = configProvider.provide(ConfigType.CONFIG);
+
+        AtomicInteger calls = new AtomicInteger(config.getInt("Calls"));
+        val interval = config.getInt("CallInterval") * 20L;
+
+        schedulerManager.runAsync(0L, interval, () -> {
+
+
+            if (calls.get() > 0) {
+                val seconds = calls.get() * interval;
+
+                Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "Start", message -> message
+                        .replace("{minNumber}", String.valueOf(minNumber))
+                        .replace("{maxNumber}", String.valueOf(maxNumber))
+                        .replace("{seconds}", String.valueOf(seconds))));
+
+                calls.getAndDecrement();
+
+            } else {
+
+                Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "NoWinner"));
+                stop();
+
+            }
+        });
+
     }
 
     @Override
     public void stop() {
         setGameState(GameState.STOPPED);
+        schedulerManager.cancel();
     }
 
     @Override

@@ -2,14 +2,18 @@ package app.miyuki.miyukievents.bukkit.game;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
+import app.miyuki.miyukievents.bukkit.game.manager.GameSchedulerManager;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
 import app.miyuki.miyukievents.bukkit.reward.Reward;
 import app.miyuki.miyukievents.bukkit.util.number.NumberEvaluator;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.val;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public abstract class Game<W> {
 
@@ -23,7 +27,8 @@ public abstract class Game<W> {
     protected final @NotNull MessageDispatcher messageDispatcher;
 
     @Getter
-    protected GameState gameState;
+    @Setter
+    protected GameState gameState = GameState.STOPPED;
 
     @Getter
     protected Reward reward;
@@ -34,11 +39,15 @@ public abstract class Game<W> {
     @Getter
     protected double cost = 0.0;
 
+    @Getter
+    protected GameSchedulerManager schedulerManager;
+
+
     public Game(@NotNull GameConfigProvider configProvider) {
         this.plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
         this.configProvider = configProvider;
         this.reward = plugin.getRewardAdapter().adapt(
-                configProvider.provide(ConfigType.CONFIG).getConfigurationSection("Reward")
+                Objects.requireNonNull(configProvider.provide(ConfigType.CONFIG).getConfigurationSection("Reward"))
         );
         this.permission = configProvider.provide(ConfigType.CONFIG).getString("Permission");
 
@@ -48,7 +57,7 @@ public abstract class Game<W> {
             this.cost = cost;
 
         messageDispatcher = new MessageDispatcher(configProvider);
-        gameState = GameState.STOPPED;
+        schedulerManager = new GameSchedulerManager(plugin);
     }
 
     protected boolean checkCost(Player player) {
@@ -67,8 +76,6 @@ public abstract class Game<W> {
     public String getName() {
         return configProvider.provide(ConfigType.CONFIG).getString("Name");
     }
-
-    public abstract void setGameState(GameState gameState);
 
     public abstract void start();
 

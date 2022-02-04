@@ -30,7 +30,11 @@ public class UltimateChat implements Listener {
 
         val player = (Player) sender;
 
-        Bukkit.getScheduler().runTask(plugin, () -> ((Chat) currentGame).onChat(player, event.getMessage().split(" ")[0]));
+        Bukkit.getScheduler().runTaskLater(
+                plugin,
+                () -> ((Chat) currentGame).onChat(player, event.getMessage().split(" ")[0]),
+                3L
+        );
     }
 
 }

@@ -18,14 +18,13 @@ public class GenericChatCommand extends Command {
 
     private final Game game;
     private final MessageDispatcher messageDispatcher;
-    private final GameConfigProvider configProvider;
 
     public GenericChatCommand(@NotNull MiyukiEvents plugin, @NotNull Game game, @NotNull String name, @NotNull List<String> aliases) {
         super(plugin, name, aliases, true);
 
         this.game = game;
         messageDispatcher = game.getMessageDispatcher();
-        configProvider = game.getConfigProvider();
+        GameConfigProvider configProvider = game.getConfigProvider();
 
         registerSubCommand(
                 new StartSubCommand(plugin, game, configProvider),
@@ -38,8 +37,11 @@ public class GenericChatCommand extends Command {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
 
-        if (game.getGameState() == GameState.HAPPENING) {
-            // need fix
+        if (sender instanceof Player && game.getGameState() == GameState.HAPPENING) {
+            if (args.length == 0) {
+                messageDispatcher.dispatch(sender, "CommandUsedIncorrectly");
+                return false;
+            }
             ((Chat) game).onChat((Player) sender, args[0]);
             return true;
         }

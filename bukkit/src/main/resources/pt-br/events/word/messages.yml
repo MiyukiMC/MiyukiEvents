@@ -1,16 +1,13 @@
 Start:
   - 'Evento chat foi iniciado!'
   - 'Digite a palavra: {word}'
-
 Stop:
   - '&cO evento foi encerrado'
-
 Help:
   - '&a/word <resposta>'
-
+Win:
+  - 'O jogador {winner} foi o ganhador'
 HelpAdmin:
   - '&c/word start'
   - '&c/word stop'
-
-Win:
-  - 'O jogador {winner} foi o ganhador'
+CommandUsedIncorrectly: 'Utilize /word <palavra>!'

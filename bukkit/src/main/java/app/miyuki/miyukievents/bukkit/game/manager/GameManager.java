@@ -21,7 +21,7 @@ import java.util.Locale;
 import java.util.Map;
 
 @RequiredArgsConstructor
-public class GameManager implements Manager {
+public class GameManager {
 
     public final @NonNull MiyukiEvents plugin;
     private final @NonNull Config config;
@@ -48,7 +48,6 @@ public class GameManager implements Manager {
         return null;
     }
 
-    @Override
     public void load() {
 
         List<String> games = Lists.newArrayList();
@@ -95,12 +94,10 @@ public class GameManager implements Manager {
         }
     }
 
-    @Override
     public void reload() {
 
     }
 
-    @Override
     public void unload() {
 
     }

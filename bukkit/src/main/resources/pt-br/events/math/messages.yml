@@ -3,7 +3,6 @@ Start:
   - 'O evento matemática comecou!'
   - 'Responda: {number1} {operator} {number2}'
   - ''
-
 Win:
   - ''
   - 'O evento matemática acabou!'
@@ -15,15 +14,13 @@ Cancelled:
   - ''
   - 'O evento matemática foi cancelado um administrador'
   - ''
-
 NoWinner:
   - ''
   - 'O evento matemática acabou sem ganhador.'
   - ''
-
 Help:
   - '/math help'
-
 HelpAdmin:
   - '/math start'
   - '/math stop'
+CommandUsedIncorrectly: 'Utilize /math <numero>!'

@@ -7,7 +7,9 @@ CallInterval: 15
 
 MinNumber: 30
 MaxNumber: 1000
-SumTypes: # Esses são os 3 tipos máximos, não adicione nenhum, só retire caso não queira algum.
+
+# Esses são os 3 tipos máximos, não adicione nenhum, só retire caso não queira algum.
+SumTypes:
   - '+'
   - '-'
   - '*'
