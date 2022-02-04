@@ -32,7 +32,7 @@ public abstract class Game<W> {
     protected String permission;
 
     @Getter
-    protected Double cost;
+    protected double cost = 0.0;
 
     public Game(@NotNull GameConfigProvider configProvider) {
         this.plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
@@ -51,10 +51,13 @@ public abstract class Game<W> {
         gameState = GameState.STOPPED;
     }
 
-    public boolean checkCost(Player player) {
-        val economy = plugin.getVaultProvider().getEconomy();
+    protected boolean checkCost(Player player) {
+        val economy = plugin.getVaultProvider().provide();
 
-        return getCost() > 0.0 && !(economy.getBalance(player) >= getCost());
+        if (economy == null)
+            return true;
+
+        return economy.getBalance(player) >= getCost();
     }
 
     public String getTypeName() {

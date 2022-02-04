@@ -31,7 +31,7 @@ public class MessageDispatcher {
 
 
         if (!messages.contains(path)) {
-            new ChatMessage(new String[]{ "&r[&9&lMiyuki&d&lEvents&r] &cMessage not found, contact an administrator." })
+            new ChatMessage(new String[]{ "&r[&9&lMiyuki&d&lEvents&r] &cMessage '&7" + path +"' &cnot found, contact an administrator." })
                     .dispatch(sender, format);
             return;
         }

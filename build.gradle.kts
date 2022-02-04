@@ -45,5 +45,6 @@ tasks {
         relocate("org.intellij.lang.annotations", "app.miyuki.libs.miyukievents.intellij.lang.annotations")
         relocate("org.jetbrains.annotations", "app.miyuki.miyukievents.libs.jetbrains.annotations")
         relocate("org.bstats", "app.miyuki.miyukievents.libs.bstats")
+        relocate("com.cryptomorin.xseries", "app.miyuki.miyukievents.libs.xseries")
     }
 }

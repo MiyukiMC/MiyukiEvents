@@ -12,12 +12,7 @@ import org.bukkit.event.Listener;
 @RequiredArgsConstructor(staticName = "of")
 public class ListenerRegistry {
 
-    private static final String PACKAGE = "app.miyuki.miyukievents.bukkit.";
-
-    private static final ImmutableList<String> PACKAGES = ImmutableList.of(
-            "listener.impl",
-            "hook.chat"
-    );
+    private static final String LISTENERS = "app.miyuki.miyukievents.bukkit.listener.impl";
 
     private final MiyukiEvents plugin;
 
@@ -25,15 +20,13 @@ public class ListenerRegistry {
     public void register() {
         ClassPath classPath = ClassPath.from(plugin.getClass().getClassLoader());
 
-        for (String packagePath : PACKAGES) {
-            for (ClassPath.ClassInfo classInfo : classPath.getTopLevelClassesRecursive(PACKAGE + packagePath)) {
-                val listener = classInfo.load();
+        for (ClassPath.ClassInfo classInfo : classPath.getTopLevelClassesRecursive(LISTENERS)) {
+            val listener = classInfo.load();
 
-                if (!Listener.class.isAssignableFrom(listener))
-                    return;
+            if (!Listener.class.isAssignableFrom(listener))
+                return;
 
-                Bukkit.getPluginManager().registerEvents((Listener) listener.getConstructor(MiyukiEvents.class).newInstance(plugin), plugin);
-            }
+            Bukkit.getPluginManager().registerEvents((Listener) listener.getConstructor(MiyukiEvents.class).newInstance(plugin), plugin);
         }
 
     }

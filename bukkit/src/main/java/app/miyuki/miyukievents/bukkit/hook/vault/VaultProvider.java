@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class VaultProvider implements ProviderService<Economy> {
 
-    @Getter
     private Economy economy = null;
 
     @Override

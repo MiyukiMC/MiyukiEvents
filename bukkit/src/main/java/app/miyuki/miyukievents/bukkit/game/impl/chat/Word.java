@@ -30,10 +30,12 @@ public class Word extends Game<Player> implements Chat {
         if (!checkCost(player))
             return;
 
-        if (configProvider.provide(ConfigType.CONFIG).getBoolean("Words.IgnoreCase"))
+        if (configProvider.provide(ConfigType.CONFIG).getBoolean("Words.IgnoreCase")) {
             message = message.toLowerCase(Locale.ROOT);
+            word = word.toLowerCase(Locale.ROOT);
+        }
 
-        if (message.contains(word.toLowerCase(Locale.ROOT)))
+        if (message.contains(word))
             onWin(player);
     }
 

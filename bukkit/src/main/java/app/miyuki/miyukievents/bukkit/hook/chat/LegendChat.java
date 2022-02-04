@@ -23,10 +23,11 @@ public class LegendChat implements Listener {
         if (!(currentGame instanceof Chat))
             return;
 
-        Bukkit.getScheduler().runTask(plugin, () -> {
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+
             if (currentGame.getGameState() == GameState.HAPPENING)
                 ((Chat) currentGame).onChat(event.getSender(), event.getMessage().split(" ")[0]);
-        });
+        }, 3L);
     }
 
 }

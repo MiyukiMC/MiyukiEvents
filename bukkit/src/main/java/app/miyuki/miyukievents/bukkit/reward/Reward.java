@@ -16,8 +16,8 @@ import java.util.List;
 @Builder
 public class Reward {
 
-    private Double money;
-    private Double cash;
+    private double money;
+    private double cash;
     private List<String> commands;
 
     public void execute(@NotNull Player player) {
@@ -32,11 +32,23 @@ public class Reward {
 
         val plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
 
-        if (NumberEvaluator.isValid(cash))
-            plugin.getCashProvider().provide().deposit(playerName, cash);
+        if (NumberEvaluator.isValid(cash)) {
+            val cashAPI = plugin.getCashProvider().provide();
 
-        if (NumberEvaluator.isValid(money))
-            plugin.getVaultProvider().getEconomy().depositPlayer(player, money);
+            if (cashAPI == null)
+                return;
+
+            cashAPI.deposit(playerName, cash);
+        }
+
+        if (NumberEvaluator.isValid(money)) {
+            val economy = plugin.getVaultProvider().provide();
+
+            if (economy == null)
+                return;
+
+            economy.depositPlayer(player, money);
+        }
     }
 
 }

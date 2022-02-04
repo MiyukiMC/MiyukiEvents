@@ -8,8 +8,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class WorldEditProvider implements ProviderService<WorldEditAPI> {
 
-    private static String WORLDEDIT6 = "app.miyuki.miyukievents.bukkit.impl.WorldEdit6";
-    private static String WORLDEDIT7 = "app.miyuki.miyukievents.bukkit.impl.WorldEdit7";
+    private static final String WORLDEDIT6 = "app.miyuki.miyukievents.bukkit.impl.WorldEdit6";
+    private static final String WORLDEDIT7 = "app.miyuki.miyukievents.bukkit.impl.WorldEdit7";
 
     private WorldEditAPI worldEditAPI = null;
 

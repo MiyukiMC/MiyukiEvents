@@ -21,12 +21,10 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.10.9")
 
     implementation("io.github.bananapuncher714:nbteditor:7.18.0")
-
-    implementation("org.bstats:bstats-bukkit:2.2.1")
+    implementation("com.github.cryptomorin:XSeries:8.6.1")
+    implementation("org.bstats:bstats-bukkit:3.0.0")
 
     compileOnly("net.sacredlabyrinth.phaed.simpleclans:SimpleClans:2.15.0")
-
-    compileOnly("com.github.cryptomorin:XSeries:8.5.0.1")
 
     compileOnly("com.zaxxer:HikariCP:4.0.3")
 }

@@ -7,6 +7,7 @@ import app.miyuki.miyukievents.bukkit.config.Config;
 import app.miyuki.miyukievents.bukkit.game.manager.GameManager;
 import app.miyuki.miyukievents.bukkit.game.queue.GameQueue;
 import app.miyuki.miyukievents.bukkit.hook.cash.CashProvider;
+import app.miyuki.miyukievents.bukkit.hook.chat.ChatHook;
 import app.miyuki.miyukievents.bukkit.hook.clan.ClanProvider;
 import app.miyuki.miyukievents.bukkit.hook.vault.VaultProvider;
 import app.miyuki.miyukievents.bukkit.language.LanguageEvaluator;
@@ -70,6 +71,8 @@ public final class MiyukiEvents extends JavaPlugin {
 
         loadCommands();
         loadListeners();
+
+        ChatHook.of(this).hook();
 
         loadGameManager();
         loadGameQueue();

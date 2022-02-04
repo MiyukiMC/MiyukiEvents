@@ -11,7 +11,7 @@ public class PlayerPoints implements CashAPI {
 
     @Override
     public void deposit(String playerName, Double amount) {
-        val uuid = Bukkit.getPlayer(playerName).getUniqueId();
+        val uuid = Bukkit.getOfflinePlayer(playerName).getUniqueId();
 
         cashAPI.give(uuid, amount.intValue());
     }
