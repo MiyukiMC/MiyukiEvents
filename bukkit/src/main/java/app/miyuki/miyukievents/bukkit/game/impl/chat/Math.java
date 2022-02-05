@@ -28,17 +28,20 @@ public class Math extends Game<Player> implements Chat {
     }
 
     @Override
-    public void onChat(Player player, String message) {
+    public void onChat(Player player, String[] args) {
         if (gameState != GameState.HAPPENING)
+            return;
+
+        if (args.length < 1)
             return;
 
         if (!checkCost(player))
             return;
 
-        if (!(StringUtils.isNumeric(message)))
+        if (!(StringUtils.isNumeric(args[0])))
             return;
 
-        if (Integer.parseInt(message) == result)
+        if (Integer.parseInt(args[0]) == result)
             onWin(player);
     }
 

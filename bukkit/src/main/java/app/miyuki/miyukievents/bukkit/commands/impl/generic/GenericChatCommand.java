@@ -42,7 +42,7 @@ public class GenericChatCommand extends Command {
                 messageDispatcher.dispatch(sender, "CommandUsedIncorrectly");
                 return false;
             }
-            ((Chat) game).onChat((Player) sender, args[0]);
+            ((Chat) game).onChat((Player) sender, args);
             return true;
         }
 

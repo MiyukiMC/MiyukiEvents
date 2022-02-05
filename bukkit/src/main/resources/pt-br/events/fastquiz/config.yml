@@ -1,0 +1,51 @@
+Type: 'fastquiz'
+Name: 'fastquiz'
+
+Permission: 'miyukievents.fastquiz'
+Cost: 0
+
+Calls: 5
+CallInterval: 15
+
+Questions:
+  1:
+    Question: 'Qual a capital do Brasil?'
+    Answer: 'Brasilia'
+    IgnoreCase: true
+  2:
+    Question: 'Qual a capital dos EUA?'
+    Answer: 'Nova Iorque'
+    IgnoreCase: false
+
+Reward:
+  Money: 10000
+  Cash: 0
+  Commands:
+    - 'give {player} diamond 64'
+
+Tag:
+  Enabled: false
+  Name: 'miyukievents_fastquiz'
+  Tag: '&3[Fast-Quiz]'
+
+Command:
+  Permission: 'miyukievents.fastquiz'
+  Names: ['fastquiz', 'quizrapido']
+
+SubCommands:
+  Start:
+    Permission: 'miyukievents.fastquiz.start'
+    Names: ['start', 'iniciar']
+  Stop:
+    Permission: 'miyukievents.fastquiz.stop'
+    Names: ['stop', 'parar']
+  Reload:
+    Permission: 'miyukievents.fastquiz.reload'
+    Names: ['reload', 'recarregar']
+  Help:
+    # Este comando não necessita de nenhuma permissão, ao contrário do HelpAdmin.
+    # É obrigatório que este comando tenha nomes, caso contrário será um nome padrão.
+    Names:  ['help']
+  HelpAdmin:
+    # Este comando não necessita de nenhum nome.
+    Permission: 'miyukievents.fastquiz.helpadmin'

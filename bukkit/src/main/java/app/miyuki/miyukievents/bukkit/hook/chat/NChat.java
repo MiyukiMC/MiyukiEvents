@@ -24,7 +24,7 @@ public class NChat implements Listener {
 
         Bukkit.getScheduler().runTaskLater(
                 plugin,
-                () -> ((Chat) currentGame).onChat(event.getSender(), event.getMessage().split(" ")[0]),
+                () -> ((Chat) currentGame).onChat(event.getSender(), event.getMessage().split(" ")),
                 3L
         );
     }

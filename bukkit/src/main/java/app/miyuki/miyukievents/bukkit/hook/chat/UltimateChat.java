@@ -32,7 +32,7 @@ public class UltimateChat implements Listener {
 
         Bukkit.getScheduler().runTaskLater(
                 plugin,
-                () -> ((Chat) currentGame).onChat(player, event.getMessage().split(" ")[0]),
+                () -> ((Chat) currentGame).onChat(player, event.getMessage().split(" ")),
                 3L
         );
     }

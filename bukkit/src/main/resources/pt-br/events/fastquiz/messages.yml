@@ -1,0 +1,28 @@
+Start:
+  - ''
+  - 'O evento fastquiz comecou'
+  - 'Responda: {question}'
+  - ''
+  - 'Tempo restante: {seconds} segundos'
+Win:
+  - ''
+  - 'O evento fastquiz acabou'
+  - 'O jogador {winner} ganhou'
+  - 'A resposta era: {answer}'
+  - ''
+NoWinner:
+  - ''
+  - 'O evento fastquiz acabou sem nenhum ganhador'
+  - 'A resposta era: {answer}'
+  - ''
+Cancelled:
+  - ''
+  - 'O evento fastquiz foi cancelado'
+  - ''
+Help:
+  - '/fastquiz help'
+HelpAdmin:
+  - '/fastquiz start'
+  - '/fastquiz stop'
+  - '/fastquiz reload'
+

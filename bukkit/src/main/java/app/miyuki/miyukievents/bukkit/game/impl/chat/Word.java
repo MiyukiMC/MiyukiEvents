@@ -22,8 +22,11 @@ public class Word extends Game<Player> implements Chat {
     }
 
     @Override
-    public void onChat(Player player, String message) {
+    public void onChat(Player player, String[] args) {
         if (gameState != GameState.HAPPENING)
+            return;
+
+        if (args.length < 1)
             return;
 
         if (!player.hasPermission(getPermission()))
@@ -31,6 +34,8 @@ public class Word extends Game<Player> implements Chat {
 
         if (!checkCost(player))
             return;
+
+        String message = args[0];
 
         if (configProvider.provide(ConfigType.CONFIG).getBoolean("Words.IgnoreCase")) {
             message = message.toLowerCase(Locale.ROOT);
