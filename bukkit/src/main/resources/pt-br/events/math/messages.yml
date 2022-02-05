@@ -1,26 +1,37 @@
+# Mensagem de inicio do evento
+# {number1} = o primeiro numero
+# {number2} = o segundo numero
+# {operator} = o operador da conta
 Start:
   - ''
   - 'O evento matemática comecou!'
   - 'Responda: {number1} {operator} {number2}'
   - ''
+# Mensagem quando alguem ganha o evento
+# {winner} = nome do ganhador
+# {result} = resultado da conta
 Win:
   - ''
   - 'O evento matemática acabou!'
   - 'Ganhador: {winner}'
   - 'O resultado era: {result}'
   - ''
-
+# Mensagem quando o evento é cancelado
 Cancelled:
   - ''
   - 'O evento matemática foi cancelado um administrador'
   - ''
+# Mensagem quando o evento acaba automaticamente sem ganhador
 NoWinner:
   - ''
   - 'O evento matemática acabou sem ganhador.'
   - ''
+# Mensagem de ajuda normal
 Help:
   - '/math help'
+# Mensagem de ajuda admin
 HelpAdmin:
   - '/math start'
   - '/math stop'
+# Mensagem quando usa o comando errado
 CommandUsedIncorrectly: 'Utilize /math <numero>!'

@@ -70,7 +70,8 @@ public class Lottery extends Game<Player> implements Chat {
 
             } else {
 
-                Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "NoWinner"));
+                Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "NoWinner", message -> message
+                        .replace("{result}", String.valueOf(result))));
                 stop();
 
             }

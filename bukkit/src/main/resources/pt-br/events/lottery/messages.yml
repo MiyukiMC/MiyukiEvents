@@ -1,25 +1,39 @@
+# Mensagem de inicio do evento
+# {minNumber} - Número minimo da loteria
+# {maxNumber} - Número máximo da loteria
+# {seconds} - Segundos restantes
 Start:
   - ''
   - 'O evento loteria comecou'
   - 'Adivinhe o número entre {minNumber} - {maxNumber}'
   - ''
   - 'Tempo restante: {seconds} segundos'
+# Mensagem quando alguem ganha
+# {winner} - nome do jogador
+# {result} - numero sorteado
 Win:
   - ''
   - 'O evento loteria acabou'
   - 'O jogador {winner} ganhou'
   - ''
+# Mensagem quando o evento acaba sem nenhum ganhador
+# {result} - numero sorteado
 NoWinner:
   - ''
   - 'O evento loteria acabou sem nenhum ganhador'
+  - 'O numero sorteado era {result}'
   - ''
+# Mensagem quando o evento é cancelado
 Cancelled:
   - ''
   - 'O evento loteria foi cancelado'
   - ''
+# Mensagem de ajuda normal
 Help:
   - '/lottery help'
+# Mensagem de ajuda admin
 HelpAdmin:
   - '/lottery start'
   - '/lottery stop'
+# Mensagem quando o comando é utilizado incorretamente
 CommandUsedIncorrectly: 'Utilize /lottery <numero>!'

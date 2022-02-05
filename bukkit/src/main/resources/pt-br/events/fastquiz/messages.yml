@@ -1,26 +1,37 @@
+# Mensagem de inicio
+# {question} = a pergunta
+# {seconds} = o tempo restante
 Start:
   - ''
   - 'O evento fastquiz comecou'
   - 'Responda: {question}'
   - ''
   - 'Tempo restante: {seconds} segundos'
+# Mensagem quando alguem ganha
+# {winner} = nome do ganhador
+# {answer} = resposta da pergunta
 Win:
   - ''
   - 'O evento fastquiz acabou'
   - 'O jogador {winner} ganhou'
   - 'A resposta era: {answer}'
   - ''
+# Mensagem de quando o evento acaba e ninguem ganha
+# {answer} = a resposta
 NoWinner:
   - ''
   - 'O evento fastquiz acabou sem nenhum ganhador'
   - 'A resposta era: {answer}'
   - ''
+# Mensagem de quando o evento é cancelado
 Cancelled:
   - ''
   - 'O evento fastquiz foi cancelado'
   - ''
+# Mensagem de ajuda normal
 Help:
   - '/fastquiz help'
+# Mensagem de ajuda admin
 HelpAdmin:
   - '/fastquiz start'
   - '/fastquiz stop'

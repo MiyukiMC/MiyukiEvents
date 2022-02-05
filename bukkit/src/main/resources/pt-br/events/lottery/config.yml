@@ -1,37 +1,68 @@
+#
+# MODELO: lottery
+#
+# AVISO: Esta config.yml é uma configuração modelo para o tipo de jogo 'lottery'.
+#        Para ver quais os outros modelos disponiveis consulte a nossa wiki: https://github.com/MiyukiMC/MiyukiEvents/wiki
+
+# O tipo do evento
 Type: 'lottery'
+# O nome do evento
 Name: 'lottery'
 
+# Permissão para participar do evento
 Permission: 'miyukievents.lottery'
+# Custo do evento (Esse evento ele não cobra para participar, ele só verifica se ele tem essa quantia)
+# Não coloque valores negativos
 Cost: 0
 
+# Quantas chamadas terão
 Calls: 5
+# Quantos segundos cada chamada vai ter de intervalo
 CallInterval: 15
 
+# Numero minimo para ser sorteado
 MinNumber: 1
+# Numero máximo para ser sorteado
 MaxNumber: 1000
 
+# O prêmio
 Reward:
+  # Quantia de money (nunca coloque valor negativo)
   Money: 10000
+  # Quantia de cash (nunca coloque valor negativo)
+  # Se usar PlayerPoints não use valor quebrado
   Cash: 0
+  # Comandos que vão ser executados
+  # {player} = nome do player
   Commands:
     - 'give {player} diamond 64'
 
+# Sistema de Tag
 Tag:
+  # Ativar essa tag?
   Enabled: false
+  # Nome da tag
   Name: 'miyukievents_lottery'
+  # Como ela vai ser mostrada?
   Tag: '&b[Loteria]'
 
+# Comando
 Command:
+  # Permissão para usar ele
   Permission: 'miyukievents.lottery'
+  # Aliases do comando
   Names: ['lottery', 'loteria']
 
 SubCommands:
+  # Iniciar o evento
   Start:
     Permission: 'miyukievents.lottery.start'
     Names: ['start', 'iniciar']
+  # Parar o evento
   Stop:
     Permission: 'miyukievents.lottery.stop'
     Names: ['stop', 'parar']
+  # Recarregar a config.yml do evento
   Reload:
     Permission: 'miyukievents.lottery.reload'
     Names: ['reload', 'recarregar']

@@ -1,42 +1,66 @@
+# Tipo do evento
 Type: 'math'
+# Nome do evento
 Name: 'math'
 
+# Permissão para participar do evento
 Permission: 'miyukievents.math'
+# Custo do evento (Esse evento ele não cobra para participar, ele só verifica se ele tem essa quantia)
+# Não coloque valores negativos
 Cost: 0
 
+# Quantos segundos o evento durará
 ExpireTime: 60
 
+# Número minimo para ser sorteado
 MinNumber: 30
+# Número máximo para ser sorteado
 MaxNumber: 1000
 
-# Esses são os 3 tipos máximos, não adicione nenhum, só retire caso não queira algum.
+# Os 3 tipos suportados são: +, -, *, não adicione nenhum além desses, só retire caso não queira algum.
 SumTypes:
   - '+'
   - '-'
   - '*'
 
+# O prêmio
 Reward:
+  # Quantia de money (nunca coloque valor negativo)
   Money: 10000
+  # Quantia de cash (nunca coloque valor negativo)
+  # Se usar PlayerPoints não use valor quebrado
   Cash: 0
+  # Comandos que vão ser executados
+  # {player} = nome do player
   Commands:
     - 'give {player} diamond 64'
 
+# Sistema de Tag
 Tag:
+  # Ativar essa tag?
   Enabled: false
+  # Nome da tag
   Name: 'miyukievents_math'
+  # Como ela vai ser mostrada?
   Tag: '&3[Matemática]'
 
+# Comando
 Command:
+  # Permissão para usar ele
   Permission: 'miyukievents.math'
+  # Aliases do comando
   Names: ['matematica', 'math']
 
 SubCommands:
+  # Iniciar o evento
   Start:
     Permission: 'miyukievents.math.start'
     Names: ['start', 'iniciar']
+  # Parar o evento
   Stop:
     Permission: 'miyukievents.math.stop'
     Names: ['stop', 'parar']
+  # Recarregar a config.yml do evento
   Reload:
     Permission: 'miyukievents.math.reload'
     Names: ['reload', 'recarregar']
