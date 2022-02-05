@@ -1,0 +1,46 @@
+Type: 'pool'
+Name: 'pool'
+
+Permission: 'miyukievents.pool'
+Cost: 10000
+
+Calls: 3
+CallInterval: 10
+
+RandomTitles:
+  Enabled: true
+  Times: 5
+  Title: '[BOLAO]'
+  Subtitle: '{player}'
+
+Reward: # O prêmio em dinheiro total ja é depositado, só use se quiser algum prêmio adicional
+  Money: 0
+  Cash: 0
+  Commands: []
+
+Tag:
+  Enabled: false
+  Name: 'miyukievents_pool'
+  Tag: '&b[Bolao]'
+
+Command:
+  Permission: 'miyukievents.pool'
+  Names: ['pool', 'bolao']
+
+SubCommands:
+  Start:
+    Permission: 'miyukievents.pool.start'
+    Names: ['start', 'iniciar']
+  Stop:
+    Permission: 'miyukievents.pool.stop'
+    Names: ['stop', 'parar']
+  Reload:
+    Permission: 'miyukievents.pool.reload'
+    Names: ['reload', 'recarregar']
+  Help:
+    # Este comando não necessita de nenhuma permissão, ao contrário do HelpAdmin.
+    # É obrigatório que este comando tenha nomes, caso contrário será um nome padrão.
+    Names:  ['help']
+  HelpAdmin:
+    # Este comando não necessita de nenhum nome.
+    Permission: 'miyukievents.pool.helpadmin'

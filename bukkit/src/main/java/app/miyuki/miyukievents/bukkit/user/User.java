@@ -35,5 +35,11 @@ public class User implements Cacheable<String> {
         return playerName.toLowerCase(Locale.ROOT);
     }
 
+    public enum UserState {
+
+        IN_GAME,
+        LOBBY;
+
+    }
 
 }

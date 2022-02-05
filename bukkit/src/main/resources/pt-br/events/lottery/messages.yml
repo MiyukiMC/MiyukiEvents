@@ -13,7 +13,7 @@ NoWinner:
   - ''
   - 'O evento loteria acabou sem nenhum ganhador'
   - ''
-EventCancelled:
+Cancelled:
   - ''
   - 'O evento loteria foi cancelado'
   - ''

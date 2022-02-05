@@ -1,0 +1,35 @@
+Start:
+  - ''
+  - 'Evento bolão!'
+  - 'Valor de aposta: {cost}'
+  - 'Valor total: {totalValue}'
+  - 'Apostas totais: {size}'
+  - 'Tempo restante: {seconds} segundos'
+Win:
+  - 'O evento bolão acabou'
+  - 'O jogador {winner} ganhou.'
+  - 'Prêmio total: {money}'
+Cancelled:
+  - ''
+  - 'O evento bolão foi cancelado'
+  - ''
+NoWinner:
+  - 'O evento não teve o minimo de players'
+  - 'e foi cancelado!!!'
+Help:
+  - ''
+  - ''
+  - ''
+HelpAdmin:
+  - '/bolao start'
+  - '/bolao stop'
+Raffling:
+  - ''
+  - 'Sorteando um vencedor...'
+YouWin:
+  - 'Parabéns. Você ganhou!'
+  - 'Valor total: {money}'
+
+YouDontHaveBalance: 'Você não tem dinheiro suficiente para participar.'
+YouEntered: 'Você entrou no bolão. Boa sorte!'
+YouAlreadyEntered: 'Você já está no evento bolão.'

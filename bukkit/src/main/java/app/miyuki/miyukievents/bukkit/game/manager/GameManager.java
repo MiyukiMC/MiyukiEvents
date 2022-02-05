@@ -30,7 +30,8 @@ public class GameManager {
     private static final ImmutableList<String> DEFAULT_GAMES = ImmutableList.of(
             "word",
             "math",
-            "lottery"
+            "lottery",
+            "pool"
     );
 
     @Getter

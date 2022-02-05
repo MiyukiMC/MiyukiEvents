@@ -42,7 +42,6 @@ public abstract class Game<W> {
     @Getter
     protected GameSchedulerManager schedulerManager;
 
-
     public Game(@NotNull GameConfigProvider configProvider) {
         this.plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
         this.configProvider = configProvider;
