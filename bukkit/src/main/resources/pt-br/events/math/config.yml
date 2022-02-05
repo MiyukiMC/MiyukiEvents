@@ -2,8 +2,8 @@ Type: 'math'
 
 Permission: 'miyukievents.math'
 Cost: 0
-Calls: 5
-CallInterval: 15
+
+ExpireTime: 60
 
 MinNumber: 30
 MaxNumber: 1000

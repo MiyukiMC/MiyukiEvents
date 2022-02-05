@@ -18,7 +18,7 @@ Tag:
 Permission: 'miyukievents.word'
 Cost: 0
 
-Expire:
+ExpireTime: 60
 
 Words:
   Random:

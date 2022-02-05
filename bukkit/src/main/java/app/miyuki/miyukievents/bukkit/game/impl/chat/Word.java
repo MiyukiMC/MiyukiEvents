@@ -23,6 +23,9 @@ public class Word extends Game<Player> implements Chat {
 
     @Override
     public void onChat(Player player, String message) {
+        if (gameState != GameState.HAPPENING)
+            return;
+
         if (!player.hasPermission(getPermission()))
             return;
 
@@ -41,14 +44,23 @@ public class Word extends Game<Player> implements Chat {
     @Override
     public void start() {
         setupResult();
-
-        Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Start", message -> message.replace("{word}", word)));
         setGameState(GameState.HAPPENING);
+
+        Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Start", message -> message
+                .replace("{word}", word)));
+
+        val expireTime = configProvider.provide(ConfigType.CONFIG).getInt("ExpireTime");
+
+        schedulerManager.runAsync(expireTime * 20L, () -> {
+            Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "NoWinner"));
+            stop();
+        });
     }
 
     @Override
     public void stop() {
         setGameState(GameState.STOPPED);
+        schedulerManager.cancel();
     }
 
     @Override

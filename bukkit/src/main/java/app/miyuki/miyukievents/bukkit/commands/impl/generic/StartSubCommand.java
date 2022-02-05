@@ -55,6 +55,7 @@ public class StartSubCommand extends SubCommand {
             return false;
         }
 
+        game.setGameState(GameState.QUEUE);
         plugin.getQueue().register(game);
 
         globalMessageDispatcher.dispatch(sender, "GameAddedToQueue");

@@ -36,7 +36,7 @@ public class Lottery extends Game<Player> implements Chat {
         if (!checkCost(player))
             return;
 
-        if (StringUtils.isNumeric(message))
+        if (!StringUtils.isNumeric(message))
             return;
 
         if (Integer.parseInt(message) == result)
@@ -51,10 +51,9 @@ public class Lottery extends Game<Player> implements Chat {
         val config = configProvider.provide(ConfigType.CONFIG);
 
         AtomicInteger calls = new AtomicInteger(config.getInt("Calls"));
-        val interval = config.getInt("CallInterval") * 20L;
+        val interval = config.getInt("CallInterval");
 
-        schedulerManager.runAsync(0L, interval, () -> {
-
+        schedulerManager.runAsync(0L, interval * 20L, () -> {
 
             if (calls.get() > 0) {
                 val seconds = calls.get() * interval;
@@ -88,7 +87,8 @@ public class Lottery extends Game<Player> implements Chat {
         giveReward(player);
 
         Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Win", message -> message
-                .replace("{result}", String.valueOf(result))));
+                .replace("{result}", String.valueOf(result))
+                .replace("{winner}", player.getName())));
     }
 
     @Override

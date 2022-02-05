@@ -12,6 +12,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class Math extends Game<Player> implements Chat {
 
     private Character operator;
@@ -27,6 +29,12 @@ public class Math extends Game<Player> implements Chat {
 
     @Override
     public void onChat(Player player, String message) {
+        if (gameState != GameState.HAPPENING)
+            return;
+
+        if (!checkCost(player))
+            return;
+
         if (!(StringUtils.isNumeric(message)))
             return;
 
@@ -39,17 +47,25 @@ public class Math extends Game<Player> implements Chat {
         setGameState(GameState.HAPPENING);
         setupResult();
 
+        val expireTime = configProvider.provide(ConfigType.CONFIG).getInt("ExpireTime");
+
         Bukkit.getOnlinePlayers().forEach(player -> {
             messageDispatcher.dispatch(player, "Start", message -> message
                     .replace("{operator}", String.valueOf(operator))
                     .replace("{number1}", String.valueOf(numberOne))
                     .replace("{number2}", String.valueOf(numberTwo)));
         });
+
+        schedulerManager.runAsync(expireTime * 20L, () -> {
+            Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "NoWinner"));
+            stop();
+        });
     }
 
     @Override
     public void stop() {
         setGameState(GameState.STOPPED);
+        schedulerManager.cancel();
     }
 
     @Override

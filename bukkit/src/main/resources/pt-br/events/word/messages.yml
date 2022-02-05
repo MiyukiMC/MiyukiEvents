@@ -10,4 +10,7 @@ Win:
 HelpAdmin:
   - '&c/word start'
   - '&c/word stop'
+NoWinner:
+  - 'Evento chat'
+  - 'Ninguém ganhou!'
 CommandUsedIncorrectly: 'Utilize /word <palavra>!'
