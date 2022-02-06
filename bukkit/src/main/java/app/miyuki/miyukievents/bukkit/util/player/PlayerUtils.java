@@ -1,10 +1,9 @@
-package app.miyuki.miyukievents.bukkit.util.random;
+package app.miyuki.miyukievents.bukkit.util.player;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import lombok.experimental.UtilityClass;
 import lombok.val;
 import lombok.var;
-import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

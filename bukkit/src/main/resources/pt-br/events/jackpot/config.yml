@@ -1,0 +1,76 @@
+#
+# MODELO: jackpot
+#
+# AVISO: Esta config.yml é uma configuração modelo para o tipo de jogo 'lottery'.
+#        Para ver quais os outros modelos disponiveis consulte a nossa wiki: https://github.com/MiyukiMC/MiyukiEvents/wiki
+
+# O tipo do evento
+Type: 'jackpot'
+# O nome do evento
+Name: 'jackpot'
+
+# Permissão para participar do evento
+Permission: 'miyukievents.jackpot'
+# Custo do evento (Esse evento ele não cobra para participar, ele só verifica se ele tem essa quantia)
+# Não coloque valores negativos
+Cost: 0
+
+# O máximo de aposta para cada player.
+MaxBet: 10000.0
+
+# Quantas chamadas terão
+Calls: 5
+# Quantos segundos cada chamada vai ter de intervalo
+CallInterval: 15
+
+# O prêmio
+Reward:
+  # O prêmio do evento em si já vem direto, se você quiser colocar algum prêmio adicional coloque aqui
+  # Quantia de money (nunca coloque valor negativo)
+  Money: 0
+  # Quantia de cash (nunca coloque valor negativo)
+  # Se usar PlayerPoints não use valor quebrado
+  Cash: 0
+  # Comandos que vão ser executados
+  # {player} = nome do player
+  Commands: []
+
+# Sistema de Tag
+Tag:
+  # Ativar essa tag?
+  Enabled: false
+  # Nome da tag
+  Name: 'miyukievents_jackpot'
+  # Como ela vai ser mostrada?
+  Tag: '&b[Jackpot]'
+
+# Comando
+Command:
+  # Permissão para usar ele
+  Permission: 'miyukievents.jackpot'
+  # Aliases do comando
+  Names: ['jackpot']
+
+SubCommands:
+  # Iniciar o evento
+  Start:
+    Permission: 'miyukievents.jackpot.start'
+    Names: ['start', 'iniciar']
+  # Parar o evento
+  Stop:
+    Permission: 'miyukievents.jackpot.stop'
+    Names: ['stop', 'parar']
+  # Recarregar a config.yml do evento
+  Reload:
+    Permission: 'miyukievents.jackpot.reload'
+    Names: ['reload', 'recarregar']
+  Chance:
+    Permission: 'miyukievents.jackpot.chance'
+    Names: ['chance']
+  Help:
+    # Este comando não necessita de nenhuma permissão, ao contrário do HelpAdmin.
+    # É obrigatório que este comando tenha nomes, caso contrário será um nome padrão.
+    Names:  ['help']
+  HelpAdmin:
+    # Este comando não necessita de nenhum nome.
+    Permission: 'miyukievents.jackpot.helpadmin'

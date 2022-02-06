@@ -1,0 +1,71 @@
+# Mensagem de inicio do evento
+# {maxBet} - Valor máximo para apostar
+# {size} - A quantidade de participantes do evento
+# {seconds} - Segundos restantes
+# {total} - Total apostado já no jackpot
+Start:
+  - ''
+  - 'O evento jackpot comecou'
+  - 'Aposte o quanto você quiser e tenha chance de ganhar a bolada.'
+  - 'Valor máximo de aposta: {maxBet}'
+  - 'Total apostado já: {total}'
+  - 'Participantes: {size}'
+  - ''
+  - 'Tempo restante: {seconds} segundos'
+# Mensagem quando alguem ganha
+# {winner} - nome do jogador
+# {total} - Quantidade de dinheiro total que o jogador ganhou
+# {chance} - Chance do jogador que ganhou.
+Win:
+  - ''
+  - 'O evento jackpot acabou'
+  - 'O jogador {winner} ganhou {total}'
+  - 'Com {chance}% de chance.'
+  - ''
+# Mensagem quando o evento acaba sem nenhum ganhador
+# {result} - numero sorteado
+NoWinner:
+  - ''
+  - 'O evento jackpot acabou sem nenhum ganhador'
+  - ''
+# Mensagem quando o evento é cancelado
+Cancelled:
+  - ''
+  - 'O evento jackpot foi cancelado'
+  - ''
+# Mensagem de ajuda normal
+Help:
+  - '/jackpot help'
+  - '/jackpot chance'
+# Mensagem de ajuda admin
+HelpAdmin:
+  - '/jackpot start'
+  - '/jackpot stop'
+
+# Mensagem quando o comando é utilizado incorretamente
+CommandUsedIncorrectly: 'Utilize /jackpot <sua aposta>!'
+
+# Mensagem quando o jogador entra no evento
+# {money} - money que ele colocou
+# {chance} - chance atual do jogador de ganhar
+YouEntered: 'Você entrou no jackpot com {money}. Sua chance atual é de {chance}'
+
+# Mensagem quando o jogador não tem dinheiro suficiente para apostar
+YouDontHaveMoney: 'Você não tem dinheiro suficiente para apostar.'
+
+# Mensagem quando o jogador já apostou a quantidade máxima
+YouAlreadyBetTheMost: 'Você já apostou a quantidade máxima.'
+
+# Mensagem da chance do jogador no jackpot
+# {chance} - chance atual do jogador de ganhar o evento
+YourChance: 'Sua chance atual no jackpot é de {chance}%.'
+
+# Mensagem de quando o jogador verifica a chance mas não está no jackpot
+YouAreNotInTheJackpot: 'Você não está no jackpot. Para entrar digite /jackpot <valor>'
+
+# Mensagem de quando o jogador não informa um valor válido para participar
+EnterAValidValue: 'Insira um valor válido para participar do jackpot.'
+
+# Mensagem de quando o jogador insire um valor maior que o máximo permitido
+ValueGreaterMax: 'Você inseriu um valor maior que o máximo. Tente novamente'
+

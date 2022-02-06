@@ -43,7 +43,6 @@ public class GenericHelpSubCommand extends SubCommand {
         return null;
     }
 
-
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
 

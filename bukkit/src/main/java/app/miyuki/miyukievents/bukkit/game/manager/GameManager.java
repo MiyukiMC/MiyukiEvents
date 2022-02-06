@@ -31,7 +31,8 @@ public class GameManager {
             "math",
             "lottery",
             "pool",
-            "fastquiz"
+            "fastquiz",
+            "jackpot"
     );
 
     @Getter

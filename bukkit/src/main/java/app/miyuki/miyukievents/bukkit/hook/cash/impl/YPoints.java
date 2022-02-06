@@ -6,16 +6,12 @@ import lombok.val;
 
 public class YPoints implements CashAPI {
 
-    private final yPointsAPI cashAPI = yPointsAPI.ypointsapi;
-
     @Override
     public void deposit(String playerName, Double amount) {
-        val account = cashAPI.getPlayer(playerName);
+        val account = yPointsAPI.getAccount(playerName);
 
-        if (account == null)
-            return;
-
-        account.deposit(amount);
+        if (account != null)
+            account.deposit(amount);
     }
 
 }

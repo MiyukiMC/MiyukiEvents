@@ -1,10 +1,12 @@
 package app.miyuki.miyukievents.bukkit.util.random;
 
 import lombok.experimental.UtilityClass;
+import lombok.val;
 
 import javax.annotation.Nullable;
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Map;
 
 @UtilityClass
 public class RandomUtils {
@@ -55,6 +57,29 @@ public class RandomUtils {
             return null;
 
         return array[RANDOM.nextInt(array.length)];
+    }
+
+    @Nullable
+    public String getWeightedRandom(Map<String, Double> weights) {
+        String result = null;
+        double bestValue = Double.MAX_VALUE;
+
+        for (String element : weights.keySet()) {
+            double value = -Math.log(RANDOM.nextDouble()) / weights.get(element);
+
+            if (value < bestValue) {
+                bestValue = value;
+                result = element;
+            }
+        }
+
+        return result;
+    }
+
+    public double getChance(Map<String, Double> weights, String playerName) {
+        val chance = (weights.get(playerName) / weights.entrySet().stream().mapToDouble(it -> it.getValue()).sum()) * 100;
+
+        return Math.round(chance * 100) / 100.0;
     }
 
 }

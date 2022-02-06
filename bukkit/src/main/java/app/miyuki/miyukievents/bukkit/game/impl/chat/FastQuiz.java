@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class FastQuiz extends Game<Player> implements Chat {
+public class FastQuiz extends Chat<Player> {
 
     private final List<Question> questions = Lists.newArrayList();
 

@@ -19,7 +19,6 @@ import java.util.Map;
 
 public class ItemSerialAdapter implements Adapter<String, ItemStack[]>, Restorable<ItemStack[], String> {
 
-
     @Override
     @SneakyThrows
     public @Nullable String adapt(ItemStack @NotNull [] items) {
@@ -41,7 +40,8 @@ public class ItemSerialAdapter implements Adapter<String, ItemStack[]>, Restorab
 
     @Override
     @SneakyThrows
-    public ItemStack @Nullable [] restore(@NotNull String data) {
+    @Nullable
+    public ItemStack[] restore(@NotNull String data) {
         @Cleanup val inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
         @Cleanup val dataInput = new BukkitObjectInputStream(inputStream);
         val items = new ItemStack[dataInput.readInt()];

@@ -8,7 +8,7 @@ import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.impl.inperson.TeamDeathmatch;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
-import app.miyuki.miyukievents.bukkit.util.random.PlayerUtils;
+import app.miyuki.miyukievents.bukkit.util.player.PlayerUtils;
 import lombok.val;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
