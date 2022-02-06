@@ -30,12 +30,8 @@ public class GameQueue extends BukkitRunnable {
         if (queue.isEmpty())
             return;
 
-        for (Game game : gameManager.getGames().values()) {
-
-            if (game.getGameState() == GameState.HAPPENING)
-                return;
-
-        }
+        if (gameManager.getCurrentGame() != null)
+            return;
 
         val game = queue.poll();
 

@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Lottery extends Game<Player> implements Chat {
+public class Lottery extends Chat<Player> {
 
     private Integer minNumber;
     private Integer maxNumber;

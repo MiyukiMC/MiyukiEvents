@@ -166,7 +166,6 @@ public class Config {
         return config.createSection(path, map);
     }
 
-    @NotNull
     public String getString(@NotNull String path) {
         return Objects.requireNonNull(config.getString(path));
     }

@@ -11,8 +11,6 @@ import org.jetbrains.annotations.Nullable;
 @AllArgsConstructor
 public class RewardAdapter implements Adapter<Reward, ConfigurationSection> {
 
-    private final MiyukiEvents plugin;
-
     @Override
     public @Nullable Reward adapt(@NotNull ConfigurationSection configurationSection) {
         return Reward.builder()

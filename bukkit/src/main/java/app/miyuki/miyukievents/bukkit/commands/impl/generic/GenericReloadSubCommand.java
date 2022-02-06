@@ -3,45 +3,40 @@ package app.miyuki.miyukievents.bukkit.commands.impl.generic;
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.commands.SubCommand;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.Game;
+import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
-import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
 import lombok.val;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class StopSubCommand extends SubCommand {
+public class GenericReloadSubCommand extends SubCommand {
 
 
     private final GameConfigProvider configProvider;
-    private final MessageDispatcher messageDispatcher;
     private final Game game;
 
-    public StopSubCommand(
+    public GenericReloadSubCommand(
             @NotNull MiyukiEvents plugin,
             @NotNull Game game,
-            @NotNull GameConfigProvider configProvider,
-            @NotNull MessageDispatcher messageDispatcher
+            @NotNull GameConfigProvider configProvider
     ) {
         super(plugin, true);
         this.game = game;
         this.configProvider = configProvider;
-        this.messageDispatcher = messageDispatcher;
     }
 
     @Override
     public List<String> getAliases() {
-        return configProvider.provide(ConfigType.CONFIG).getStringList("SubCommands.Stop.Names");
+        return configProvider.provide(ConfigType.CONFIG).getStringList("SubCommands.Reload.Names");
     }
 
     @Override
     public @Nullable String getPermission() {
-        return configProvider.provide(ConfigType.CONFIG).getString("SubCommands.Stop.Permission");
+        return configProvider.provide(ConfigType.CONFIG).getString("SubCommands.Reload.Permission");
     }
 
 
@@ -50,19 +45,19 @@ public class StopSubCommand extends SubCommand {
 
         val globalMessageDispatcher = plugin.getGlobalMessageDispatcher();
 
-        if (game.getGameState() == GameState.STOPPED) {
-            globalMessageDispatcher.dispatch(sender, "NoGamesGoingOn");
+        val gameState = game.getGameState();
+
+        if (gameState != GameState.STOPPED) {
+            globalMessageDispatcher.dispatch(sender, "NeedStopGameToReload");
             return false;
         }
 
-        plugin.getQueue().unregister(game);
-        game.stop();
+        configProvider.reload();
 
-        Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Stop"));
-
-        globalMessageDispatcher.dispatch(sender, "GameCanceled");
+        globalMessageDispatcher.dispatch(sender, "GameReloadedSuccessfully");
 
         return true;
     }
 
 }
+

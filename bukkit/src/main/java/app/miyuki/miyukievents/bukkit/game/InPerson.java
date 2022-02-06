@@ -1,5 +1,8 @@
 package app.miyuki.miyukievents.bukkit.game;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -8,26 +11,45 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public interface InPerson {
+@Setter
+@Getter
+public abstract class InPerson<W> extends Game<W> {
 
-    void join(Player player);
+    @Nullable
+    protected Location lobby = null;
 
-    void leave(Player player);
+    @Nullable
+    protected Location cabin = null;
 
-    void onPlayerQuit(PlayerQuitEvent event);
+    @Nullable
+    protected Location exit = null;
 
-    void onPlayerDeath(PlayerDeathEvent event);
+    public InPerson(@NotNull GameConfigProvider configProvider) {
+        super(configProvider);
+    }
 
-    void onPlayerInteract(PlayerInteractEvent event);
+    public abstract void join(Player player);
 
-    void onEntityDamage(EntityDamageEvent event);
+    public abstract void leave(Player player);
 
-    void onEntityDamageByEntity(EntityDamageByEntityEvent event);
+    public abstract void onPlayerQuit(PlayerQuitEvent event);
 
-    void onBlockBreak(BlockBreakEvent event);
+    public abstract void onPlayerDeath(PlayerDeathEvent event);
 
-    void onBlockPlace(BlockPlaceEvent event);
+    public abstract void onPlayerInteract(PlayerInteractEvent event);
+
+    public abstract void onEntityDamage(EntityDamageEvent event);
+
+    public abstract void onEntityDamageByEntity(EntityDamageByEntityEvent event);
+
+    public abstract void onBlockBreak(BlockBreakEvent event);
+
+    public abstract void onBlockPlace(BlockPlaceEvent event);
+
+
 
 
 }

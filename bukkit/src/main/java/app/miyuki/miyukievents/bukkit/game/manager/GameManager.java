@@ -15,10 +15,9 @@ import lombok.val;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.io.File;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class GameManager {
@@ -54,16 +53,24 @@ public class GameManager {
 
         List<String> games = Lists.newArrayList();
 
-        games.addAll(DEFAULT_GAMES);
+        val eventsFolder = new File(plugin.getDataFolder(), "events");
 
-        games.addAll(config.getStringList("CustomEvents"));
+        if (!eventsFolder.exists()) {
+            games.addAll(DEFAULT_GAMES);
+        } else {
+            games.addAll(
+                    Arrays.stream(Objects.requireNonNull(eventsFolder.listFiles()))
+                            .map(File::getName)
+                            .collect(Collectors.toList())
+            );
+        }
 
         for (String gameName : games) {
 
             val path = "events/" + gameName + "/";
             String internalPath = null;
 
-            if (games.contains(gameName)) {
+            if (DEFAULT_GAMES.contains(gameName)) {
                 internalPath = language + "/" + path;
             }
 

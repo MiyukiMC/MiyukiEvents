@@ -1,0 +1,102 @@
+#
+# MODELO: teamdeathmatch
+#
+# AVISO: Esta config.yml é uma configuração modelo para o tipo de jogo 'teamdeathmath'.
+#        Para ver quais os outros modelos disponiveis consulte a nossa wiki: https://github.com/MiyukiMC/MiyukiEvents/wiki
+
+Name: 'archer'
+
+# Este é um dos tipos disponívels. Nele o time
+# Para saber quais os tipos que existem, acesse nossa wiki: https://github.com/MiyukiMC/MiyukiEvents/wiki
+Type: 'teamdeathmatch'
+
+# Numeros de times que terão no evento.
+# IMPORTATE: Você deve configurar um kit para cada time utilizando /archer setkit (1,2,3...).
+#            Isso vale também para as entradas!
+#            NUNCA coloque um número menor que 2.
+Teams: 3
+
+# Ative ou desative o kit setado. Caso true, será necessário setar os kits utilizando o comando /archer setkit.
+KitSetted: true
+
+# Quantidade mínima que será necessário para o evento iniciar.
+# IMPORTATE: Você deve colocar SEMPRE um número MAIOR ou IGUAL que o número colocado no 'Teams'
+MinimumPlayers: 3
+
+# Quantas kills o time precisa fazer para vencer a partida.
+Kills: 20
+
+# Todas as flechas serão explosivas, ou seja, quando a flecha acertar algo ela irá explodir.
+ExplosiveArrow: false
+# A flecha irá mantar em um tiro.
+HitKillArrow: true
+# O jogador que cair na água irá morrer.
+KillerWater: true
+# Cancelar a pessoa de craftar itens.
+Crafting: false
+# Permitir quebrar blocos durante a partida.
+BlockBreak: false
+# Permitir colocar blocos durante a partida.
+BlockPlace: false
+# Liberar a sopa de ser tomada para
+Soup:
+  Enabled: false
+  # Numero de corações que ela irá regenerar.
+  HealthRegen: 3.5
+
+Schematic:
+  # Ativar/Desativar o sistema de schematic.
+  Enabled: false
+  # Configure as suas schematic aqui. Nela você irá configurar os tempos em que as schematics serão colocadas.
+  # Sempre deixe uma schematic padrão, onde o segundo deverá ser 0.
+  # Essa será a schematic default da arena.
+  # Formato: segundos:nome da schematic
+  Schematics: []
+
+Reward:
+  Money: 10000
+  Cash: 0
+  Commands:
+    - 'give {player} diamond 64'
+
+Tag:
+  Enabled: false
+  Name: 'miyukievents_archer'
+  Tag: '&c[Palavra]'
+
+Permission: 'miyukievents.archer'
+Cost: 0
+
+AutoStart:
+  Enabled: true
+  Times:
+    - ''
+
+Command:
+  Permission: 'miyukievents.archer'
+  Names: ['archer', 'arqueiro']
+
+SubCommands:
+  Start:
+    Permission: 'miyukievents.archer.start'
+    Names: ['start', 'iniciar']
+  Stop:
+    Permission: 'miyukievents.archer.stop'
+    Names: ['stop', 'parar']
+  Reload:
+    Permission: 'miyukievents.archer.reload'
+    Names: ['reload', 'recarregar']
+  SetKit:
+    Permission: 'miyukievents.archer.setkit'
+    Names: ['setkit', 'setarkit']
+  Help:
+    # Este comando não necessita de nenhuma permissão, ao contrário do HelpAdmin.
+    # É obrigatório que este comando tenha nomes, caso contrário será um nome padrão.
+    Names:  ['help']
+  HelpAdmin:
+    # Este comando não necessita de nenhum nome.
+    Permission: 'miyukievents.archer.helpadmin'
+
+
+
+

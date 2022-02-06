@@ -1,8 +1,12 @@
 #
+# MODELO: word
 #
-#
-Type: 'word'
+# AVISO: Esta config.yml é uma configuração modelo para o tipo de jogo 'word'.
+#        Para ver quais os outros modelos disponiveis consulte a nossa wiki: https://github.com/MiyukiMC/MiyukiEvents/wiki
+
 Name: 'word'
+
+Type: 'word'
 
 Reward:
   Money: 10000

@@ -2,7 +2,7 @@ package app.miyuki.miyukievents.bukkit.game;
 
 import app.miyuki.miyukievents.bukkit.commands.Command;
 import app.miyuki.miyukievents.bukkit.commands.impl.command.PoolCommand;
-import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericChatCommand;
+import app.miyuki.miyukievents.bukkit.commands.impl.chat.GenericChatCommand;
 import app.miyuki.miyukievents.bukkit.game.impl.chat.FastQuiz;
 import app.miyuki.miyukievents.bukkit.game.impl.chat.Lottery;
 import app.miyuki.miyukievents.bukkit.game.impl.chat.Math;

@@ -13,8 +13,6 @@ import org.jetbrains.annotations.Nullable;
 @AllArgsConstructor
 public class LocationAdapter implements Adapter<Location, String>, Restorable<String, Location> {
 
-    private final MiyukiEvents plugin;
-
     @Override
     public @Nullable Location adapt(@NotNull String string) {
         val split = string.split(";");

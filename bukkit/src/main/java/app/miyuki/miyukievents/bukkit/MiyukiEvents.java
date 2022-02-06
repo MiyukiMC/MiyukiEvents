@@ -1,5 +1,6 @@
 package app.miyuki.miyukievents.bukkit;
 
+import app.miyuki.miyukievents.bukkit.adapter.impl.ItemSerialAdapter;
 import app.miyuki.miyukievents.bukkit.adapter.impl.LocationAdapter;
 import app.miyuki.miyukievents.bukkit.adapter.impl.RewardAdapter;
 import app.miyuki.miyukievents.bukkit.commands.CommandRegistry;
@@ -41,6 +42,9 @@ public final class MiyukiEvents extends JavaPlugin {
 
     @Getter
     private LocationAdapter locationAdapter;
+
+    @Getter
+    private ItemSerialAdapter itemSerialAdapter;
 
     @Getter
     private GameQueue queue;
@@ -134,8 +138,9 @@ public final class MiyukiEvents extends JavaPlugin {
     }
 
     private void loadAdapters() {
-        this.rewardAdapter = new RewardAdapter(this);
-        this.locationAdapter = new LocationAdapter(this);
+        this.rewardAdapter = new RewardAdapter();
+        this.locationAdapter = new LocationAdapter();
+        this.itemSerialAdapter = new ItemSerialAdapter();
     }
 
     private void loadMetrics() {

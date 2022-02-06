@@ -3,9 +3,7 @@ package app.miyuki.miyukievents.bukkit.commands.impl.generic;
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.commands.SubCommand;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
-import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
 import lombok.val;
 import org.bukkit.command.CommandSender;
@@ -14,54 +12,52 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ReloadSubCommand extends SubCommand {
+public class GenericHelpSubCommand extends SubCommand {
 
 
-    private final GameConfigProvider configProvider;
     private final MessageDispatcher messageDispatcher;
-    private final Game game;
+    private final GameConfigProvider configProvider;
 
-    public ReloadSubCommand(
+    public GenericHelpSubCommand(
             @NotNull MiyukiEvents plugin,
-            @NotNull Game game,
             @NotNull GameConfigProvider configProvider,
             @NotNull MessageDispatcher messageDispatcher
     ) {
         super(plugin, true);
-        this.game = game;
-        this.configProvider = configProvider;
         this.messageDispatcher = messageDispatcher;
+        this.configProvider = configProvider;
     }
 
     @Override
     public List<String> getAliases() {
-        return configProvider.provide(ConfigType.CONFIG).getStringList("SubCommands.Reload.Names");
+        val names = configProvider.provide(ConfigType.CONFIG).getStringList("SubCommands.Help.Names");
+
+        if (names.isEmpty())
+            names.add("help");
+
+        return names;
     }
 
     @Override
     public @Nullable String getPermission() {
-        return configProvider.provide(ConfigType.CONFIG).getString("SubCommands.Reload.Permission");
+        return null;
     }
 
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
 
-        val globalMessageDispatcher = plugin.getGlobalMessageDispatcher();
+        val config = configProvider.provide(ConfigType.CONFIG);
+        val permission = config.getString("SubCommands.HelpAdmin.Permission");
 
-        val gameState = game.getGameState();
-
-        if (gameState != GameState.STOPPED) {
-            globalMessageDispatcher.dispatch(sender, "NeedStopGameToReload");
-            return false;
-        }
-
-        configProvider.reload();
-
-        globalMessageDispatcher.dispatch(sender, "GameReloadedSuccessfully");
+        if (sender.hasPermission(permission))
+            messageDispatcher.dispatch(sender, "HelpAdmin");
+        else
+            messageDispatcher.dispatch(sender, "Help");
 
         return true;
     }
 
-}
 
+
+}

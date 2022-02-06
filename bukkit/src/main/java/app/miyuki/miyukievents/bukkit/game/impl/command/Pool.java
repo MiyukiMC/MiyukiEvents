@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class Pool extends Game<Player> implements Command {
+public class Pool extends Command<Player> {
 
     private final List<Player> players = Lists.newArrayList();
 

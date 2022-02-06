@@ -1,7 +1,11 @@
-package app.miyuki.miyukievents.bukkit.commands.impl.generic;
+package app.miyuki.miyukievents.bukkit.commands.impl.chat;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.commands.Command;
+import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericHelpSubCommand;
+import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericReloadSubCommand;
+import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericStartSubCommand;
+import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericStopSubCommand;
 import app.miyuki.miyukievents.bukkit.game.Chat;
 import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
@@ -27,10 +31,10 @@ public class GenericChatCommand extends Command {
         GameConfigProvider configProvider = game.getConfigProvider();
 
         registerSubCommand(
-                new StartSubCommand(plugin, game, configProvider),
-                new StopSubCommand(plugin, game, configProvider, messageDispatcher),
-                new HelpSubCommand(plugin, configProvider, messageDispatcher),
-                new ReloadSubCommand(plugin, game, configProvider, messageDispatcher)
+                new GenericStartSubCommand(plugin, game, configProvider),
+                new GenericStopSubCommand(plugin, game, configProvider, messageDispatcher),
+                new GenericHelpSubCommand(plugin, configProvider, messageDispatcher),
+                new GenericReloadSubCommand(plugin, game, configProvider)
         );
     }
 

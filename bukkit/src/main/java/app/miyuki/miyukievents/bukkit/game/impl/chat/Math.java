@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Math extends Game<Player> implements Chat {
+public class Math extends Chat<Player> {
 
     private Character operator;
 

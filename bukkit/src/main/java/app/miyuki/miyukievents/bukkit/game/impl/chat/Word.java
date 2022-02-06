@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
-public class Word extends Game<Player> implements Chat {
+public class Word extends Chat<Player> {
 
     private String word;
 

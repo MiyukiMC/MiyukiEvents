@@ -1,0 +1,7 @@
+
+Join: '&aVocê entrou no evento Archer, aguarde que em breve ele irá iniciar.'
+IncorrectSetKitCommand: '&cComando incorreto! Use /archer setkit (1,2,3...)'
+InvalidTeamNumber: '&cO número do time específicado é inválido!'
+NumberOutOfTeamRange: '&cNão existe nenhum time no número específicado! Use um numero entre 1 e {maxteam}'
+NeedStopGame: '&cVocê precisa parar o evento para setar os kits.'
+SetKitSuccessfully: '&aO kit para o time {team} setada com sucesso.'
