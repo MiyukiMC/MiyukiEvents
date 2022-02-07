@@ -23,7 +23,6 @@ Win:
   - 'Com {chance}% de chance.'
   - ''
 # Mensagem quando o evento acaba sem nenhum ganhador
-# {result} - numero sorteado
 NoWinner:
   - ''
   - 'O evento jackpot acabou sem nenhum ganhador'

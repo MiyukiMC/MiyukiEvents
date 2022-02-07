@@ -44,7 +44,7 @@ public class DefaultCommand extends Command {
                 messageDispatcher.dispatch(sender, "CommandUsedIncorrectly");
                 return false;
             }
-            if ( game.getGameState() == GameState.HAPPENING)
+            if (game.getGameState() == GameState.HAPPENING)
                 ((Chat) game).onChat((Player) sender, args);
             else
                 messageDispatcher.dispatch(sender, "");

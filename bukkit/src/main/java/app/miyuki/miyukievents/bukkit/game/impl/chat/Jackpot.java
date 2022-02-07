@@ -34,6 +34,11 @@ public class Jackpot extends Command<Player> {
 
     @Override
     public void onCommand(Player player, String[] args) {
+        if (gameState != GameState.HAPPENING) {
+            plugin.getGlobalMessageDispatcher().dispatch(player, "GameNotFound");
+            return;
+        }
+
         if (!player.hasPermission(getPermission())) {
             plugin.getGlobalMessageDispatcher().dispatch(player, "NoPermission");
             return;
@@ -48,7 +53,7 @@ public class Jackpot extends Command<Player> {
 
         val playerBet = players.get(player.getName());
 
-        if (playerBet != null && playerBet > maxBet) {
+        if (playerBet != null && playerBet == maxBet) {
             messageDispatcher.dispatch(player, "YouAlreadyBetTheMost");
             return;
         }
@@ -102,8 +107,16 @@ public class Jackpot extends Command<Player> {
 
                 calls.getAndDecrement();
             } else {
-                val winner = Bukkit.getPlayer(RandomUtils.getWeightedRandom(players));
-                onWin(winner);
+                if (players.size() >= 2) {
+                    val winner = Bukkit.getPlayer(RandomUtils.getWeightedRandom(players));
+                    onWin(winner);
+                } else {
+                    Bukkit.getOnlinePlayers().forEach(player -> {
+                        messageDispatcher.dispatch(player, "NoWinner");
+                    });
+                    stop();
+                }
+
             }
         });
     }

@@ -91,8 +91,10 @@ public class Math extends Chat<Player> {
     private void setupResult() {
         this.operator = RandomUtils.getRandomElement(getConfigProvider().provide(ConfigType.CONFIG).getStringList("SumTypes")).charAt(0);
 
-        val min = getConfigProvider().provide(ConfigType.CONFIG).getInt("MinNumber");
-        val max = getConfigProvider().provide(ConfigType.CONFIG).getInt("MaxNumber");
+        val config = configProvider.provide(ConfigType.CONFIG);
+
+        val min = config.getInt("MinNumber");
+        val max = config.getInt("MaxNumber");
 
         this.numberOne = RandomUtils.generateRandomNumber(min, max);
         this.numberTwo = RandomUtils.generateRandomNumber(min, max);

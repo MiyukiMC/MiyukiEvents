@@ -42,7 +42,7 @@ public class Word extends Chat<Player> {
             word = word.toLowerCase(Locale.ROOT);
         }
 
-        if (message.contains(word))
+        if (message.equals(word))
             onWin(player);
     }
 

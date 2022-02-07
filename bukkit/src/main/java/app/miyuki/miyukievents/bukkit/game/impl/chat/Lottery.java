@@ -101,8 +101,9 @@ public class Lottery extends Chat<Player> {
     }
 
     private void setupResult() {
-        this.minNumber = getConfigProvider().provide(ConfigType.CONFIG).getInt("MinNumber");
-        this.maxNumber = getConfigProvider().provide(ConfigType.CONFIG).getInt("MaxNumber");
+        val config = configProvider.provide(ConfigType.CONFIG);
+        this.minNumber = config.getInt("MinNumber");
+        this.maxNumber = config.getInt("MaxNumber");
 
         this.result = RandomUtils.generateRandomNumber(minNumber, maxNumber);
 

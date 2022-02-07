@@ -145,7 +145,7 @@ public final class MiyukiEvents extends JavaPlugin {
 
     private void loadMetrics() {
         if (globalConfig.getBoolean("Metrics")) {
-            new Metrics(this, 14120);
+            new Metrics(this, 14218);
             getLogger().log(Level.FINE, "Metrics loaded successfully");
         }
     }
