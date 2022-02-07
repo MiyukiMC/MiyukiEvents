@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
-public class TeamDeathmatch extends InPerson<List<Player>> {
+public class Deathmatch extends InPerson<List<Player>> {
 
     private final HashMap<Player, Integer> players = new HashMap<>();
 
@@ -47,7 +47,9 @@ public class TeamDeathmatch extends InPerson<List<Player>> {
     @Nullable
     private Location exit = null;
 
-    public TeamDeathmatch(@NotNull GameConfigProvider configProvider) {
+    private int teams;
+
+    public Deathmatch(@NotNull GameConfigProvider configProvider) {
         super(configProvider);
 
         val config = configProvider.provide(ConfigType.CONFIG);
@@ -57,20 +59,29 @@ public class TeamDeathmatch extends InPerson<List<Player>> {
         val locationAdapter = plugin.getLocationAdapter();
         val itemSerialAdapter = plugin.getItemSerialAdapter();
 
-        for (int i = 1; i <= config.getInt("Teams"); i++) {
+        teams = config.contains("Teams") ? config.getInt("Teams") : -1;
 
-            ItemStack[] kit = null;
-            Location entry = null;
+        if (teams != -1) {
+            for (int i = 1; i <= config.getInt("Teams"); i++) {
 
-            if (data.contains("Entry." + i))
-                kit = itemSerialAdapter.restore(data.getString("Kit." + i));
+                ItemStack[] kit = null;
+                Location entry = null;
 
-            if (data.contains("Entry." + i))
-                entry = locationAdapter.adapt(data.getString("Entry." + i));
+                if (data.contains("Entry." + i))
+                    kit = itemSerialAdapter.restore(data.getString("Kit." + i));
 
-            kits.put(i, kit);
-            entries.put(i, entry);
+                if (data.contains("Entry." + i))
+                    entry = locationAdapter.adapt(data.getString("Entry." + i));
+
+                kits.put(i, kit);
+                entries.put(i, entry);
+            }
+        } else if (data.contains("Entry")) {
+
+            entries.put(0, locationAdapter.adapt(data.getString("Entry")));
+
         }
+
 
         if (data.contains("Lobby"))
             this.lobby = locationAdapter.adapt(data.getString("Lobby"));

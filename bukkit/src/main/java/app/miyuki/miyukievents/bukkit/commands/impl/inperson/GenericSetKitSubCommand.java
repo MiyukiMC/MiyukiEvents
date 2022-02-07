@@ -1,18 +1,18 @@
-package app.miyuki.miyukievents.bukkit.commands.impl.inperson.teamdeathmatch;
+package app.miyuki.miyukievents.bukkit.commands.impl.inperson;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.commands.SubCommand;
+import app.miyuki.miyukievents.bukkit.commands.evaluator.TeamArgsEvaluator;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
-import app.miyuki.miyukievents.bukkit.game.impl.inperson.TeamDeathmatch;
+import app.miyuki.miyukievents.bukkit.game.impl.inperson.Deathmatch;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
 import app.miyuki.miyukievents.bukkit.util.player.PlayerUtils;
+import com.google.common.collect.ImmutableList;
 import lombok.val;
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.IntRange;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class SetKitSubCommand extends SubCommand {
+public class GenericSetKitSubCommand extends SubCommand {
 
 
     private final Game game;
@@ -32,7 +32,7 @@ public class SetKitSubCommand extends SubCommand {
 
     private final int teams;
 
-    public SetKitSubCommand(
+    public GenericSetKitSubCommand(
             @NotNull MiyukiEvents plugin,
             @NotNull Game game,
             @NotNull GameConfigProvider configProvider,
@@ -43,7 +43,9 @@ public class SetKitSubCommand extends SubCommand {
         this.messageDispatcher = messageDispatcher;
         this.configProvider = configProvider;
 
-        teams = configProvider.provide(ConfigType.CONFIG).getInt("Teams");
+        val config = configProvider.provide(ConfigType.CONFIG);
+
+        teams = config.contains("Teams") ? config.getInt("Teams") : -1;
     }
 
     @Override
@@ -60,25 +62,15 @@ public class SetKitSubCommand extends SubCommand {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
 
-        if (args.length == 0) {
-            messageDispatcher.dispatch(sender, "IncorrectSetKitCommand");
-            return false;
+        if (teams != -1) {
+            if (!TeamArgsEvaluator.of(messageDispatcher).evaluate(sender, teams, args, "IncorrectSetKitCommand"))
+                return false;
         }
 
-        if (StringUtils.isNumeric(args[0])) {
-            messageDispatcher.dispatch(sender, "InvalidTeamNumber");
-            return false;
-        }
-
-        val teamNumber = Integer.parseInt(args[0]);
-
-        if (!(new IntRange(1, 3).containsInteger(teamNumber))) {
-            messageDispatcher.dispatch(sender, "NumberOutOfTeamRange", it -> it.replace("{maxteam}", String.valueOf(teams)));
-            return false;
-        }
+        val teamNumber = teams != -1 ? Integer.parseInt(args[0]) : -1;
 
         if (game.getGameState() != GameState.STOPPED) {
-            messageDispatcher.dispatch(sender, "NeedStopGame");
+            plugin.getGlobalMessageDispatcher().dispatch(sender, "NeedStopGame");
             return false;
         }
 
@@ -91,12 +83,13 @@ public class SetKitSubCommand extends SubCommand {
 
         val data = configProvider.provide(ConfigType.DATA);
 
-        data.set("Kit." + teamNumber, serializedInventory);
+        data.set("Kit" + (teamNumber != -1 ? "." + teamNumber : ""), serializedInventory);
+
         data.saveConfig();
 
-        val kits = ((TeamDeathmatch) game).getKits();
+        val kits = ((Deathmatch) game).getKits();
 
-        kits.put(teamNumber, items);
+        kits.put(teamNumber != -1 ? teamNumber : 0, items);
 
         PlayerUtils.setInventoryFromString(player, serializedInventory);
 
@@ -106,6 +99,10 @@ public class SetKitSubCommand extends SubCommand {
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String[] args) {
+
+        if (teams == -1)
+            return ImmutableList.of();
+
         return IntStream.rangeClosed(1, teams)
                 .boxed()
                 .map(String::valueOf)

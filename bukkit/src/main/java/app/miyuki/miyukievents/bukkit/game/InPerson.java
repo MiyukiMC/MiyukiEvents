@@ -14,9 +14,15 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@Setter
+import java.util.HashMap;
+
 @Getter
+@Setter
 public abstract class InPerson<W> extends Game<W> {
+
+    @NotNull
+    @Getter
+    protected final HashMap<Integer, @Nullable Location> entries = new HashMap<>();
 
     @Nullable
     protected Location lobby = null;
@@ -48,7 +54,6 @@ public abstract class InPerson<W> extends Game<W> {
     public abstract void onBlockBreak(BlockBreakEvent event);
 
     public abstract void onBlockPlace(BlockPlaceEvent event);
-
 
 
 

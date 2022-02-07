@@ -38,7 +38,7 @@ Crafting: false
 BlockBreak: false
 # Permitir colocar blocos durante a partida.
 BlockPlace: false
-# Liberar a sopa de ser tomada para
+# Liberar a sopa de ser tomada para regenerar a vida
 Soup:
   Enabled: false
   # Numero de corações que ela irá regenerar.
@@ -83,12 +83,24 @@ SubCommands:
   Stop:
     Permission: 'miyukievents.archer.stop'
     Names: ['stop', 'parar']
-  Reload:
-    Permission: 'miyukievents.archer.reload'
-    Names: ['reload', 'recarregar']
   SetKit:
     Permission: 'miyukievents.archer.setkit'
     Names: ['setkit', 'setarkit']
+  SetEntry:
+    Permission: 'miyukievents.archer.setentry'
+    Names: ['setentry', 'setentrada', "setarentrada"]
+  SetLobby:
+    Permission: 'miyukievents.archer.setlobby'
+    Names: ['setlobby', 'setarlobby']
+  SetCabin:
+    Permission: 'miyukievents.archer.setcabin'
+    Names: ['setcabin', 'setarcamarote']
+  SetExit:
+    Permission: 'miyukievents.archer.setexit'
+    Names: ['setexit', 'setsaida']
+  Reload:
+    Permission: 'miyukievents.archer.reload'
+    Names: ['reload', 'recarregar']
   Help:
     # Este comando não necessita de nenhuma permissão, ao contrário do HelpAdmin.
     # É obrigatório que este comando tenha nomes, caso contrário será um nome padrão.

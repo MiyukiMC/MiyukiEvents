@@ -41,8 +41,9 @@ public class GameConfigProvider {
                 return data;
             case MESSAGES:
                 return messages;
+            default:
+                throw new IllegalArgumentException("invalid config type");
         }
-        throw new IllegalArgumentException("invalid config type");
     }
 
     public void load() {
