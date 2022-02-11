@@ -1,7 +1,6 @@
 package app.miyuki.miyukievents.bukkit.game.impl.chat;
 
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.Chat;
 import app.miyuki.miyukievents.bukkit.game.Command;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
@@ -34,7 +33,7 @@ public class Jackpot extends Command<Player> {
 
     @Override
     public void onCommand(Player player, String[] args) {
-        if (gameState != GameState.HAPPENING) {
+        if (gameState != GameState.STARTED) {
             plugin.getGlobalMessageDispatcher().dispatch(player, "GameNotFound");
             return;
         }
@@ -85,7 +84,7 @@ public class Jackpot extends Command<Player> {
 
     @Override
     public void start() {
-        setGameState(GameState.HAPPENING);
+        setGameState(GameState.STARTED);
         val config = configProvider.provide(ConfigType.CONFIG);
 
         this.maxBet = config.getInt("MaxBet");

@@ -2,7 +2,6 @@ package app.miyuki.miyukievents.bukkit.game.impl.command;
 
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Command;
-import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.util.chat.ChatUtils;
@@ -28,7 +27,7 @@ public class Pool extends Command<Player> {
 
     @Override
     public void onCommand(Player player, String[] args) {
-        if (gameState != GameState.HAPPENING)
+        if (gameState != GameState.STARTED)
             return;
 
         if (!player.hasPermission(getPermission())) {
@@ -54,7 +53,7 @@ public class Pool extends Command<Player> {
     @Override
     public void start() {
         players.clear();
-        setGameState(GameState.HAPPENING);
+        setGameState(GameState.STARTED);
 
         val config = configProvider.provide(ConfigType.CONFIG);
 

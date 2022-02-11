@@ -62,9 +62,8 @@ public class GenericSetKitSubCommand extends SubCommand {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
 
-        if (teams != -1) {
-            if (!TeamArgsEvaluator.of(messageDispatcher).evaluate(sender, teams, args, "IncorrectSetKitCommand"))
-                return false;
+        if (teams != -1 && !TeamArgsEvaluator.of(messageDispatcher).evaluate(sender, teams, args, "IncorrectSetKitCommand")) {
+            return false;
         }
 
         val teamNumber = teams != -1 ? Integer.parseInt(args[0]) : -1;

@@ -40,7 +40,7 @@ public class PoolCommand extends Command {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
 
-        if (sender instanceof Player && game.getGameState() == GameState.HAPPENING) {
+        if (sender instanceof Player && game.getGameState() == GameState.STARTED) {
             val player = (Player) sender;
 
             if (args.length > 0) {

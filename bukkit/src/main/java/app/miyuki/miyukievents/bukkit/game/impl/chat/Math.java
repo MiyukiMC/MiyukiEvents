@@ -2,7 +2,6 @@ package app.miyuki.miyukievents.bukkit.game.impl.chat;
 
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Chat;
-import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
@@ -11,8 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Math extends Chat<Player> {
 
@@ -29,7 +26,7 @@ public class Math extends Chat<Player> {
 
     @Override
     public void onChat(Player player, String[] args) {
-        if (gameState != GameState.HAPPENING)
+        if (gameState != GameState.STARTED)
             return;
 
         if (args.length < 1)
@@ -47,7 +44,7 @@ public class Math extends Chat<Player> {
 
     @Override
     public void start() {
-        setGameState(GameState.HAPPENING);
+        setGameState(GameState.STARTED);
         setupResult();
 
         val expireTime = configProvider.provide(ConfigType.CONFIG).getInt("ExpireTime");

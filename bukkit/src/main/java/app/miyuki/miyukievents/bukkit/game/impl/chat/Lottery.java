@@ -2,7 +2,6 @@ package app.miyuki.miyukievents.bukkit.game.impl.chat;
 
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Chat;
-import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
@@ -27,7 +26,7 @@ public class Lottery extends Chat<Player> {
 
     @Override
     public void onChat(Player player, String[] args) {
-        if (gameState != GameState.HAPPENING)
+        if (gameState != GameState.STARTED)
             return;
 
         if (args.length < 1)
@@ -49,7 +48,7 @@ public class Lottery extends Chat<Player> {
     @Override
     public void start() {
         setupResult();
-        setGameState(GameState.HAPPENING);
+        setGameState(GameState.STARTED);
 
         val config = configProvider.provide(ConfigType.CONFIG);
 

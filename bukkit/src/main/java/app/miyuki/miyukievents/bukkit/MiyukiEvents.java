@@ -11,6 +11,7 @@ import app.miyuki.miyukievents.bukkit.hook.cash.CashProvider;
 import app.miyuki.miyukievents.bukkit.hook.chat.ChatHook;
 import app.miyuki.miyukievents.bukkit.hook.clan.ClanProvider;
 import app.miyuki.miyukievents.bukkit.hook.vault.VaultProvider;
+import app.miyuki.miyukievents.bukkit.hook.worldedit.WorldEditProvider;
 import app.miyuki.miyukievents.bukkit.language.LanguageEvaluator;
 import app.miyuki.miyukievents.bukkit.language.LanguageProvider;
 import app.miyuki.miyukievents.bukkit.listener.ListenerRegistry;
@@ -60,6 +61,9 @@ public final class MiyukiEvents extends JavaPlugin {
 
     @Getter
     private VaultProvider vaultProvider;
+
+    @Getter
+    private WorldEditProvider worldEditProvider;
 
     @Override
     public void onEnable() {
@@ -111,6 +115,10 @@ public final class MiyukiEvents extends JavaPlugin {
         this.cashProvider = new CashProvider(this);
         if (cashProvider.hook())
             getLogger().info("Cash Provider loaded successfully");
+
+        this.worldEditProvider = new WorldEditProvider();
+        if (worldEditProvider.hook())
+            getLogger().info("WorldEdit Provider loaded successfully");
     }
 
     private void loadGlobalConfig() {

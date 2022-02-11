@@ -1,11 +1,12 @@
 package app.miyuki.miyukievents.bukkit.messages;
 
 import app.miyuki.miyukievents.bukkit.config.Config;
-import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
+import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.messages.impl.ChatMessage;
 import app.miyuki.miyukievents.bukkit.messages.impl.JsonMessage;
 import lombok.val;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -70,6 +71,13 @@ public class MessageDispatcher {
         dispatch(sender, path, null);
     }
 
+    public void globalDispatch(@NotNull String path) {
+        Bukkit.getOnlinePlayers().forEach(player -> dispatch(player, path, null));
+    }
+
+    public void globalDispatch(@NotNull String path, @Nullable Function<String, String> format) {
+        Bukkit.getOnlinePlayers().forEach(player -> dispatch(player, path, format));
+    }
 
 
 }

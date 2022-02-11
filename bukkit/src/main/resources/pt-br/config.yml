@@ -13,5 +13,33 @@ Database:
 
 Metrics: true
 
-# Caso crie um evento customizado, registre-o aqui.
-CustomEvents: []
+NumberFormatter:
+  Format: '{number} {suffix}'
+  GroupSeparator: '.'
+  DecimalSeparator: ','
+  # Em qual sufixo irá começar a formatação.
+  # Caso seja 1, irá começar a formatar a partir do K.
+  # Caso coloque 2, irá começar a formatar a partir do M.
+  Start: 1
+  Suffixes:
+    - 'K'
+    - 'M'
+    - 'B'
+    - 'T'
+    - 'Q'
+    - 'QI'
+    - 'S'
+    - 'SS'
+    - 'O'
+    - 'N'
+    - 'D'
+    - 'UN'
+    - 'DD'
+    - 'TR'
+    - 'QT'
+    - 'QN'
+    - 'SD'
+    - 'SPD'
+    - 'OD'
+    - 'ND'
+    - 'VG'

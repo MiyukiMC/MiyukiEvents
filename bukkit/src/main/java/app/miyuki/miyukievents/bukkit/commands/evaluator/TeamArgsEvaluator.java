@@ -12,11 +12,10 @@ public class TeamArgsEvaluator {
 
     private final MessageDispatcher messageDispatcher;
 
-
-    public boolean evaluate(@NotNull CommandSender sender, int teams, String[] args, String incorretMessage) {
+    public boolean evaluate(@NotNull CommandSender sender, int teams, String[] args, String incorrectMessage) {
 
         if (args.length == 0) {
-            messageDispatcher.dispatch(sender, incorretMessage);
+            messageDispatcher.dispatch(sender, incorrectMessage);
             return false;
         }
 

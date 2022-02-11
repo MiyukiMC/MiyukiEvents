@@ -1,12 +1,17 @@
 Join: '&aVocê entrou no evento Archer, aguarde que em breve ele irá iniciar.'
+Leave: '&aVocê você saiu do evento archer..'
 SetKitSuccessfully: '&aO kit para o time {team} setada com sucesso.' # DEV: tirar o teams no deathmatch
 SetLobbySuccessfully: '&aO lobby foi setado com sucesso.'
 SetCabinSuccessfully: '&aO camarote foi setado com sucesso.'
 SetExitSuccessfully: '&aA saída foi setado com sucesso.'
 SetEntrySuccessfully: '&aA entrada do time {team} foi setado com sucesso.'
 
-
 IncorrectSetKitCommand: '&cComando incorreto! Use /archer setkit (1,2,3...)'
 IncorrectSetEntryCommand: '&cComando incorreto! Use /archer setentry (1,2,3...)'
 InvalidTeamNumber: '&cO número do time específicado é inválido!'
 NumberOutOfTeamRange: '&cNão existe nenhum time no número específicado! Use um numero entre 1 e {maxteam}'
+
+NotEnoughPlayers:
+  - ' '
+  - '&cO evento foi cancelado pois não atingiu o mínimo de jogadores necessários.'
+  - ' '

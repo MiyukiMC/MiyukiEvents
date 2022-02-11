@@ -2,7 +2,9 @@ package app.miyuki.miyukievents.bukkit.game.impl.inperson;
 
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
+import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.InPerson;
+import app.miyuki.miyukievents.bukkit.util.player.PlayerUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
@@ -19,8 +21,9 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.List;
+import java.io.File;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Deathmatch extends InPerson<List<Player>> {
 
@@ -31,6 +34,8 @@ public class Deathmatch extends InPerson<List<Player>> {
 
     @Getter
     private final HashMap<Integer, @Nullable Location> entries = new HashMap<>();
+
+    private final HashMap<Integer, Integer> score = new HashMap<>();
 
     @Getter
     @Setter
@@ -47,7 +52,7 @@ public class Deathmatch extends InPerson<List<Player>> {
     @Nullable
     private Location exit = null;
 
-    private int teams;
+    private final int teams;
 
     public Deathmatch(@NotNull GameConfigProvider configProvider) {
         super(configProvider);
@@ -97,6 +102,78 @@ public class Deathmatch extends InPerson<List<Player>> {
     @Override
     public void start() {
 
+        val config = configProvider.provide(ConfigType.CONFIG);
+
+        setGameState(GameState.STARTING);
+
+        AtomicInteger calls = new AtomicInteger(config.getInt("Calls"));
+        val interval = config.getInt("CallInterval");
+
+        schedulerManager.runAsync(0L, interval * 20L, () -> {
+
+            if (calls.get() > 0) {
+                val seconds = calls.get() * interval;
+
+                messageDispatcher.globalDispatch( "Start", message -> message
+                        .replace("{size}", String.valueOf(players.size()))
+                        .replace("{totalValue}", String.valueOf(players.size() * getCost()))
+                        .replace("{cost}", String.valueOf(getCost()))
+                        .replace("{seconds}", String.valueOf(seconds)));
+            } else {
+
+                schedulerManager.cancel();
+
+                setGameState(GameState.STARTED);
+
+                if (players.size() < config.getInt("MinimumPlayers")) {
+                    messageDispatcher.globalDispatch("NotEnoughPlayers");
+                    stop();
+                    return;
+                }
+
+                val worldEdit = plugin.getWorldEditProvider().provide();
+
+                if (config.getBoolean("Schematic.Enabled") && worldEdit != null) {
+
+                    val data = configProvider.provide(ConfigType.DATA);
+
+                    val locationAdapter = plugin.getLocationAdapter();
+
+                    for (String schematic : config.getStringList("Schematic.Schematics")) {
+
+                        val schematicSplit = schematic.split(":");
+
+                        val time = Integer.parseInt(schematicSplit[0]) * 20L;
+                        val name = schematicSplit[1].toUpperCase(Locale.ROOT);
+
+                        String path = "Schematic." + name;
+
+                        if (!data.contains("Schematic." + name + "."))
+                            return;
+
+                        val fileName = data.getString(path + "FileName");
+                        val pos1 = locationAdapter.adapt(data.getString(path + "Pos1"));
+                        val pos2 = locationAdapter.adapt(data.getString(path + "Pos2"));
+
+                        val file = new File(config.getFile().getParentFile(), "schematics/" + name);
+
+                        if (!file.exists())
+                            continue;
+
+                        schedulerManager.run(time, () -> {
+                            players.keySet().forEach(this::teleportToDesignatedEntrance);
+                            worldEdit.pasteSchematic(file, pos1, pos2);
+                        });
+
+                    }
+                }
+
+
+            }
+
+            calls.getAndDecrement();
+        });
+
     }
 
     @Override
@@ -116,18 +193,32 @@ public class Deathmatch extends InPerson<List<Player>> {
 
     @Override
     public void join(Player player) {
-        players.put(player, -1);
-//        messageDispatcher.dispatch();
+        players.put(player, players.size());
+        messageDispatcher.dispatch(player, "Join");
+        player.teleport(this.lobby);
     }
 
     @Override
     public void leave(Player player) {
+        players.remove(player);
 
+        if (isSetted()) {
+            PlayerUtils.clearInventory(player);
+        }
+
+        player.teleport(this.exit);
+
+        checkWin();
     }
 
     @Override
     public void onPlayerQuit(PlayerQuitEvent event) {
+        val player = event.getPlayer();
 
+        if (players.containsKey(player))
+            return;
+
+        leave(player);
     }
 
     @Override
@@ -159,5 +250,109 @@ public class Deathmatch extends InPerson<List<Player>> {
     public void onBlockPlace(BlockPlaceEvent event) {
 
     }
+    private boolean isTeamSupported() {
+        return teams == -1;
+    }
+
+    private boolean isSetted() {
+        return configProvider.provide(ConfigType.CONFIG).getBoolean("KitSetted");
+    }
+
+    private void checkWin() {
+
+        if (gameState != GameState.STARTING)
+            return;
+
+        val config = configProvider.provide(ConfigType.CONFIG);
+
+        val type = config.getString("GameType.Type").toUpperCase(Locale.ROOT);
+        val score = config.getInt("GameType.Score");
+
+        if (isTeamSupported()) {
+
+            if (type.equals("SCORE")) {
+
+                for (Map.Entry<Player, Integer> entry : players.entrySet()) {
+
+                    val playerScore = this.score.get(entry.getValue());
+
+                    if (playerScore == score) {
+                        onWin(Collections.singletonList(entry.getKey()));
+                        break;
+                    }
+                }
+
+            } else {
+
+                if (players.size() == 1) {
+                    onWin(Collections.singletonList((Player) players.values().toArray()[0]));
+                }
+
+            }
+
+        } else {
+
+            if (type.equals("SCORE")) {
+
+                for (Map.Entry<Integer, Integer> entry : this.score.entrySet()) {
+
+                    if (entry.getValue() == score) {
+
+                        onWin(getPlayersByTeam(entry.getKey()));
+                        break;
+                    }
+
+                }
+
+            } else {
+
+                int lastTeam = -1;
+
+                for (Map.Entry<Player, Integer> entry : players.entrySet()) {
+
+                    if (lastTeam == -1) {
+                        lastTeam = entry.getValue();
+                        continue;
+                    }
+
+                    if (lastTeam != entry.getValue()) {
+                        onWin(getPlayersByTeam(entry.getValue()));
+                        break;
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    private List<Player> getPlayersByTeam(int team) {
+
+        List<Player> players = new ArrayList<>();
+
+        for (Map.Entry<Player, Integer> entry : this.players.entrySet()) {
+
+            if (entry.getValue() == team)
+                players.add(entry.getKey());
+
+        }
+
+        return players;
+    }
+
+    private void organizeTeams() {
+
+    }
+
+    private void teleportToDesignatedEntrance(Player player) {
+
+        val entry = isTeamSupported() ? entries.get(players.get(player)) : entries.get(0);
+
+        player.teleport(entry);
+
+    }
+
 
 }

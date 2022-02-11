@@ -41,7 +41,7 @@ public class GenericChatCommand extends Command {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
 
-        if (sender instanceof Player && game.getGameState() == GameState.HAPPENING) {
+        if (sender instanceof Player && game.getGameState() == GameState.STARTED) {
             if (args.length == 0) {
                 messageDispatcher.dispatch(sender, "CommandUsedIncorrectly");
                 return false;

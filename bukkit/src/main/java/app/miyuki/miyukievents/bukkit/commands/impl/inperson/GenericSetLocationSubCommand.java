@@ -12,7 +12,6 @@ import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
 import com.google.common.collect.ImmutableList;
 import lombok.AllArgsConstructor;
 import lombok.val;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -64,9 +63,8 @@ public class GenericSetLocationSubCommand extends SubCommand {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
 
-        if (teams == -1 && locationType == LocationType.ENTRY) {
-            if (!TeamArgsEvaluator.of(messageDispatcher).evaluate(sender, teams, args, "IncorrectSetEntryCommand"))
-                return false;
+        if (teams == -1 && locationType == LocationType.ENTRY && !TeamArgsEvaluator.of(messageDispatcher).evaluate(sender, teams, args, "IncorrectSetEntryCommand")) {
+            return false;
         }
 
         val globalMessageDispatcher = plugin.getGlobalMessageDispatcher();
@@ -101,6 +99,8 @@ public class GenericSetLocationSubCommand extends SubCommand {
             case LOBBY:
                 inPersonGame.setLobby(playerLocation);
                 break;
+            default:
+                return false;
         }
 
         messageDispatcher.dispatch(sender, locationType.messagePath, it -> it.replace("{team}", String.valueOf(teamNumber)));

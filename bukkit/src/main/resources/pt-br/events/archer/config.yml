@@ -23,8 +23,16 @@ KitSetted: true
 # IMPORTATE: Você deve colocar SEMPRE um número MAIOR ou IGUAL que o número colocado no 'Teams'
 MinimumPlayers: 3
 
-# Quantas kills o time precisa fazer para vencer a partida.
-Kills: 20
+# Configure aqui os tipos de jogos possiveis.
+# Dependendo do tipo, o evento se comportará de uma forma diferente.
+GameType:
+  # Tipos possíveis:
+  # LASTSURVIVOR: O ultimo time que estiver vivo será o ganhador.
+  # SCORE: O time que chegar matar mais e atingir a meta de mortes será o ganhador.
+  Type: SCORE
+  # Caso a opção 'Type' seja SCORE, coloque aqui quantas kills necessárias para o time ganhar.
+  Score: 100
+
 
 # Todas as flechas serão explosivas, ou seja, quando a flecha acertar algo ela irá explodir.
 ExplosiveArrow: false
@@ -48,7 +56,7 @@ Schematic:
   # Ativar/Desativar o sistema de schematic.
   Enabled: false
   # Configure as suas schematic aqui. Nela você irá configurar os tempos em que as schematics serão colocadas.
-  # Sempre deixe uma schematic padrão, onde o segundo deverá ser 0.
+  # SEMPRE deixe uma schematic padrão, onde o segundo deverá ser 0.
   # Essa será a schematic default da arena.
   # Formato: segundos:nome da schematic
   Schematics: []

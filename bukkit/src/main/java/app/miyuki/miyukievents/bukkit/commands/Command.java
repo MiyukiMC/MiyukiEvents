@@ -17,7 +17,7 @@ public abstract class Command extends org.bukkit.command.Command {
     protected final @NotNull MiyukiEvents plugin;
 
     protected final List<SubCommand> subcommands = new ArrayList<>();
-    private final @NotNull boolean console;
+    private final boolean console;
 
     public Command(@NotNull MiyukiEvents plugin, @NotNull String name, @NotNull List<String> aliases, boolean console) {
         super(name);

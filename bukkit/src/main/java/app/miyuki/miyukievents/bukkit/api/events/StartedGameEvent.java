@@ -7,8 +7,6 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.Instant;
-
 @AllArgsConstructor
 public class StartedGameEvent extends Event {
 
@@ -16,9 +14,6 @@ public class StartedGameEvent extends Event {
 
     @Getter
     private Game game;
-
-    @Getter
-    private final Instant moment;
 
     @NotNull
     @Override
