@@ -1,8 +1,6 @@
 package app.miyuki.miyukievents.bukkit.listener.impl;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
-import app.miyuki.miyukievents.bukkit.game.Game;
-import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.InPerson;
 import lombok.AllArgsConstructor;
 import lombok.val;

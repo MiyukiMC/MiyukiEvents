@@ -1,6 +1,5 @@
 package app.miyuki.miyukievents.bukkit.adapter.impl;
 
-import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.adapter.Adapter;
 import app.miyuki.miyukievents.bukkit.adapter.Restorable;
 import lombok.AllArgsConstructor;

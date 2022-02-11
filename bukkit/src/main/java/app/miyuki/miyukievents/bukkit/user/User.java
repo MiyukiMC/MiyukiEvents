@@ -38,7 +38,7 @@ public class User implements Cacheable<String> {
     public enum UserState {
 
         IN_GAME,
-        LOBBY;
+        LOBBY
 
     }
 

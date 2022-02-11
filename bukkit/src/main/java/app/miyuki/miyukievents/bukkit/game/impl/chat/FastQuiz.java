@@ -119,7 +119,7 @@ public class FastQuiz extends Chat<Player> {
 
     @AllArgsConstructor
     @Getter
-    private class Question {
+    private static class Question {
 
         private String question;
         private String answer;

@@ -2,8 +2,6 @@ package app.miyuki.miyukievents.bukkit.hook.chat;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.game.Chat;
-import app.miyuki.miyukievents.bukkit.game.Game;
-import app.miyuki.miyukievents.bukkit.game.GameState;
 import br.com.devpaulo.legendchat.api.events.ChatMessageEvent;
 import lombok.AllArgsConstructor;
 import lombok.val;

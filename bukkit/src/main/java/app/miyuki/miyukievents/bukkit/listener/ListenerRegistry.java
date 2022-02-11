@@ -1,7 +1,6 @@
 package app.miyuki.miyukievents.bukkit.listener;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
-import com.google.common.collect.ImmutableList;
 import com.google.common.reflect.ClassPath;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

@@ -13,7 +13,7 @@ import java.util.List;
 // Remake
 public class ItemBuilder {
 
-    private ItemStack item;
+    private final ItemStack item;
 
     private ItemBuilder(Material material) {
         item = new ItemStack(material);

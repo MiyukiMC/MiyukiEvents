@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.val;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 @AllArgsConstructor

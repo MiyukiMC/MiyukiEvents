@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SimpleClans implements ClanAPI {

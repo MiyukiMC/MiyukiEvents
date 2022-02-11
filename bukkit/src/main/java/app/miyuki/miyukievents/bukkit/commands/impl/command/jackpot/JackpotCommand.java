@@ -20,7 +20,7 @@ import java.util.List;
 
 public class JackpotCommand extends Command {
 
-    private Game game;
+    private final Game game;
 
     public JackpotCommand(@NotNull MiyukiEvents plugin, @NotNull Game game, @NotNull String name, @NotNull List<String> aliases) {
         super(plugin, name, aliases, true);

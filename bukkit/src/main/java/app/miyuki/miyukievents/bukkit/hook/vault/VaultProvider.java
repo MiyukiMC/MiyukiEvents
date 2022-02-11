@@ -1,7 +1,6 @@
 package app.miyuki.miyukievents.bukkit.hook.vault;
 
 import app.miyuki.miyukievents.bukkit.hook.ProviderService;
-import lombok.Getter;
 import lombok.val;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;

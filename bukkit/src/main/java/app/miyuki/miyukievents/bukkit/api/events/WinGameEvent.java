@@ -25,7 +25,7 @@ public class WinGameEvent extends Event {
     public enum WinnerType {
 
         PLAYER,
-        CLAN;
+        CLAN
 
     }
 

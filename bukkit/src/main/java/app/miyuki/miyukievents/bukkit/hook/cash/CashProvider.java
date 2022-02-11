@@ -5,7 +5,6 @@ import app.miyuki.miyukievents.bukkit.hook.ProviderService;
 import app.miyuki.miyukievents.bukkit.hook.cash.impl.NextCash;
 import app.miyuki.miyukievents.bukkit.hook.cash.impl.PlayerPoints;
 import app.miyuki.miyukievents.bukkit.hook.cash.impl.YPoints;
-import lombok.Getter;
 import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
