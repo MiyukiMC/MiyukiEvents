@@ -30,7 +30,6 @@ public abstract class SubCommand {
         return execute(sender, args);
     }
 
-
     public abstract boolean execute(@NotNull CommandSender sender, @NotNull String[] args);
 
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String[] args) {

@@ -36,7 +36,7 @@ public class NumberFormatter {
 
     public String format(BigDecimal amount) {
 
-        amount = amount.setScale(2, RoundingMode.HALF_DOWN);
+        val roundedAmount = amount.setScale(2, RoundingMode.HALF_DOWN);
 
         val decimalFormatSymbols = new DecimalFormatSymbols();
         decimalFormatSymbols.setDecimalSeparator(DECIMAL_SEPARATOR);
@@ -44,7 +44,7 @@ public class NumberFormatter {
 
         val decimalFormat = new DecimalFormat("#,##0.00", decimalFormatSymbols);
 
-        var formatted = decimalFormat.format(amount);
+        var formatted = decimalFormat.format(roundedAmount);
 
         val commaIndex = formatted.indexOf(decimalFormatSymbols.getGroupingSeparator());
         val comma = formatted.split(Pattern.quote(String.valueOf(decimalFormatSymbols.getGroupingSeparator()))).length - 1;

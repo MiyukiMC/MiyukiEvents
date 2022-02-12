@@ -2,6 +2,7 @@ package app.miyuki.miyukievents.bukkit.util.chat;
 
 import lombok.experimental.UtilityClass;
 import lombok.val;
+import lombok.var;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,30 +28,32 @@ public class ChatUtils {
     https://github.com/RoinujNosde/SimpleClans/blob/dev/src/main/java/net/sacredlabyrinth/phaed/simpleclans/utils/ChatUtils.java
      */
     public String colorize(@NotNull String text) {
+        var coloredText = text;
         if (HEX_COLOR_SUPPORT) {
-            val matcher = HEX_COLOR_PATTERN.matcher(text);
+            val matcher = HEX_COLOR_PATTERN.matcher(coloredText);
             StringBuffer buffer = new StringBuffer();
             while (matcher.find()) {
                 matcher.appendReplacement(buffer, net.md_5.bungee.api.ChatColor.of("#" + matcher.group(1)).toString());
             }
-            text = matcher.appendTail(buffer).toString();
+            coloredText = matcher.appendTail(buffer).toString();
         }
-        return ChatColor.translateAlternateColorCodes('&', text);
+        return ChatColor.translateAlternateColorCodes('&', coloredText);
     }
 
     /*
     https://github.com/RoinujNosde/SimpleClans/blob/dev/src/main/java/net/sacredlabyrinth/phaed/simpleclans/utils/ChatUtils.java
      */
     public String stripColors(String text) {
+        var colorlessText = text;
         if (HEX_COLOR_SUPPORT) {
-            val matcher = HEX_COLOR_PATTERN.matcher(text);
+            val matcher = HEX_COLOR_PATTERN.matcher(colorlessText);
             StringBuffer buffer = new StringBuffer();
             while (matcher.find()) {
                 matcher.appendReplacement(buffer, "");
             }
-            text = matcher.appendTail(buffer).toString();
+            colorlessText = matcher.appendTail(buffer).toString();
         }
-        return ChatColor.stripColor(text);
+        return ChatColor.stripColor(colorlessText);
     }
 
 }

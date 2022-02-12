@@ -5,8 +5,8 @@ import app.miyuki.miyukievents.bukkit.commands.Command;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericHelpSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericReloadSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericStopSubCommand;
-import app.miyuki.miyukievents.bukkit.commands.impl.inperson.GenericSetKitSubCommand;
-import app.miyuki.miyukievents.bukkit.commands.impl.inperson.GenericSetLocationSubCommand;
+import app.miyuki.miyukievents.bukkit.commands.impl.inperson.InPersonSetKitSubCommand;
+import app.miyuki.miyukievents.bukkit.commands.impl.inperson.InPersonSetLocationSubCommand;
 import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
@@ -28,13 +28,13 @@ public class DeathmatchCommand extends Command {
         GameConfigProvider configProvider = game.getConfigProvider();
 
         registerSubCommand(
-                new GenericSetKitSubCommand(plugin, game, configProvider, messageDispatcher),
+                new InPersonSetKitSubCommand(plugin, game, configProvider, messageDispatcher),
                 new GenericStopSubCommand(plugin, game, configProvider, messageDispatcher),
                 new GenericHelpSubCommand(plugin, configProvider, messageDispatcher),
-                new GenericSetLocationSubCommand(plugin,game, configProvider, messageDispatcher, GenericSetLocationSubCommand.LocationType.CABIN),
-                new GenericSetLocationSubCommand(plugin,game, configProvider, messageDispatcher, GenericSetLocationSubCommand.LocationType.ENTRY),
-                new GenericSetLocationSubCommand(plugin,game, configProvider, messageDispatcher, GenericSetLocationSubCommand.LocationType.EXIT),
-                new GenericSetLocationSubCommand(plugin,game, configProvider, messageDispatcher, GenericSetLocationSubCommand.LocationType.LOBBY),
+                new InPersonSetLocationSubCommand(plugin,game, configProvider, messageDispatcher, InPersonSetLocationSubCommand.LocationType.CABIN),
+                new InPersonSetLocationSubCommand(plugin,game, configProvider, messageDispatcher, InPersonSetLocationSubCommand.LocationType.ENTRY),
+                new InPersonSetLocationSubCommand(plugin,game, configProvider, messageDispatcher, InPersonSetLocationSubCommand.LocationType.EXIT),
+                new InPersonSetLocationSubCommand(plugin,game, configProvider, messageDispatcher, InPersonSetLocationSubCommand.LocationType.LOBBY),
                 new GenericReloadSubCommand(plugin, game, configProvider)
         );
     }

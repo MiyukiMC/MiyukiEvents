@@ -33,6 +33,7 @@ public class Jackpot extends Command<Player> {
 
     @Override
     public void onCommand(Player player, String[] args) {
+
         if (gameState != GameState.STARTED) {
             plugin.getGlobalMessageDispatcher().dispatch(player, "GameNotFound");
             return;
@@ -96,13 +97,11 @@ public class Jackpot extends Command<Player> {
             val seconds = calls.get() * interval;
 
             if (calls.get() > 0) {
-                Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "Start", message -> message
+                messageDispatcher.globalDispatch("Start", message -> message
                         .replace("{size}", String.valueOf(players.size()))
-                        .replace("{total}", String.valueOf(
-                                players.entrySet().stream().mapToDouble(it -> it.getValue()).sum()
-                        ))
+                        .replace("{total}", String.valueOf(players.values().stream().mapToDouble(v -> v).sum()))
                         .replace("{maxBet}", String.valueOf(maxBet))
-                        .replace("{seconds}", String.valueOf(seconds))));
+                        .replace("{seconds}", String.valueOf(seconds)));
 
                 calls.getAndDecrement();
             } else {

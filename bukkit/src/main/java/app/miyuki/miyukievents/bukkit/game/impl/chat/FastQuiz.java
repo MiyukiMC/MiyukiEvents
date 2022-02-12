@@ -14,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class FastQuiz extends Chat<Player> {
@@ -126,12 +125,7 @@ public class FastQuiz extends Chat<Player> {
         private boolean ignoreCase;
 
         private boolean compareAnswer(String message) {
-            if (ignoreCase) {
-                message = message.toLowerCase(Locale.ROOT);
-                this.answer = answer.toLowerCase(Locale.ROOT);
-            }
-
-            return message.equals(answer);
+            return ignoreCase ? message.equalsIgnoreCase(answer) : message.equals(answer);
         }
 
     }

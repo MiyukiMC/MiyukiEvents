@@ -4,10 +4,11 @@ import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Command;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
+import app.miyuki.miyukievents.bukkit.util.TitleAnimation;
 import app.miyuki.miyukievents.bukkit.util.chat.ChatUtils;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
-import com.cryptomorin.xseries.messages.Titles;
 import com.google.common.collect.Lists;
+import javafx.util.Pair;
 import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -15,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Pool extends Command<Player> {
 
@@ -81,34 +81,31 @@ public class Pool extends Command<Player> {
                 } else {
                     val section = config.getConfigurationSection("RandomTitles");
                     if (section.getBoolean("Enabled")) {
+
                         Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "Raffling"));
 
-                        AtomicInteger titleCalls = new AtomicInteger(config.getInt("Calls"));
+                        List<Pair<String, String>> titles = Lists.newArrayList();
 
-                        val title = ChatUtils.colorize(section.getString("Title"));
-                        val subtitle = ChatUtils.colorize(section.getString("Subtitle"));
+                        Player lastPlayer = null;
 
-                        AtomicReference<Player> winner = new AtomicReference<>();
+                        for (int i = 0; i < config.getInt("Calls"); i++) {
 
-                        schedulerManager.runAsync(0L, 20L, () -> {
+                            lastPlayer = RandomUtils.getRandomElement(players);
 
-                            if (titleCalls.get() > 0) {
-                                val randomPlayer = RandomUtils.getRandomElement(players);
-                                winner.set(randomPlayer);
-                                Bukkit.getOnlinePlayers().forEach(player -> {
-                                    Titles.sendTitle(
-                                            player,
-                                            title.replace("{player}", randomPlayer.getName()),
-                                            subtitle.replace("{player}", randomPlayer.getName()
-                                            ));
-                                });
+                            val title = ChatUtils.colorize(section.getString("Title").replace("{player}", lastPlayer.getName()));
+                            val subtitle = ChatUtils.colorize(section.getString("Subtitle").replace("{player}", lastPlayer.getName()));
 
-                                titleCalls.getAndDecrement();
-                            } else {
-                                onWin(winner.get());
-                            }
+                            titles.add(new Pair<>(title, subtitle));
 
-                        });
+                        }
+
+                        Player finalLastPlayer = lastPlayer;
+                        TitleAnimation.Builder()
+                                .animation(titles)
+                                .period(20L) // colocar isso na config
+                                .callback(() -> onWin(finalLastPlayer))
+                                .build()
+                                .start();
 
                     } else {
                         onWin(RandomUtils.getRandomElement(players));

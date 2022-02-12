@@ -8,6 +8,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 @AllArgsConstructor
 public class GameSchedulerManager {
@@ -28,6 +29,14 @@ public class GameSchedulerManager {
         tasks.add(Bukkit.getScheduler().runTaskTimer(plugin, runnable, delay, period));
     }
 
+    public void run(long delay, long period, Consumer<BukkitTask> task) {
+        Bukkit.getScheduler().runTaskTimer(plugin, task, delay, period);
+    }
+
+    public void run(long delay, Consumer<BukkitTask> task) {
+        Bukkit.getScheduler().runTaskLater(plugin, task, delay);
+    }
+
     public void runAsync(Runnable runnable) {
         tasks.add(Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable));
     }
@@ -38,6 +47,14 @@ public class GameSchedulerManager {
 
     public void runAsync(long delay, long period, Runnable runnable) {
         tasks.add(Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, runnable, delay, period));
+    }
+
+    public void runAsync(long delay, Consumer<BukkitTask> task) {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, task, delay);
+    }
+
+    public void runAsync(long delay, long period, Consumer<BukkitTask> task) {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, task, delay, period);
     }
 
     public void cancel() {

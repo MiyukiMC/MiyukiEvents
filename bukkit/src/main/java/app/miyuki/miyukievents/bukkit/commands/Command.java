@@ -71,6 +71,11 @@ public abstract class Command extends org.bukkit.command.Command {
 
             if (StringUtil.startsWithIgnoreCase(name, subcommandName)) {
 
+                val permission = subCommand.getPermission();
+
+                if (permission == null || !sender.hasPermission(permission))
+                    continue;
+
                 if (args.length == 1) {
                     match.add(name);
                 } else {

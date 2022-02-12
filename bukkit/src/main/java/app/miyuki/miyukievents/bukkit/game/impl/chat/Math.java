@@ -7,7 +7,6 @@ import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -49,15 +48,13 @@ public class Math extends Chat<Player> {
 
         val expireTime = configProvider.provide(ConfigType.CONFIG).getInt("ExpireTime");
 
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            messageDispatcher.dispatch(player, "Start", message -> message
-                    .replace("{operator}", String.valueOf(operator))
-                    .replace("{number1}", String.valueOf(numberOne))
-                    .replace("{number2}", String.valueOf(numberTwo)));
-        });
+        messageDispatcher.globalDispatch("Start", message -> message
+                .replace("{operator}", String.valueOf(operator))
+                .replace("{number1}", String.valueOf(numberOne))
+                .replace("{number2}", String.valueOf(numberTwo)));
 
         schedulerManager.runAsync(expireTime * 20L, () -> {
-            Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "NoWinner"));
+            messageDispatcher.globalDispatch("NoWinner");
             stop();
         });
     }
@@ -73,11 +70,9 @@ public class Math extends Chat<Player> {
         stop();
         giveReward(player);
 
-        Bukkit.getOnlinePlayers().forEach(it -> {
-            messageDispatcher.dispatch(player, "Win", message -> message
-                    .replace("{winner}", player.getName())
-                    .replace("{result}", String.valueOf(result)));
-        });
+        messageDispatcher.globalDispatch("Win", message -> message
+                .replace("{winner}", player.getName())
+                .replace("{result}", String.valueOf(result)));
     }
 
     @Override
@@ -105,6 +100,9 @@ public class Math extends Chat<Player> {
                 break;
             case '*':
                 this.result = numberOne * numberTwo;
+                break;
+            default:
+                this.result = 0;
                 break;
         }
     }

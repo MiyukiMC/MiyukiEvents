@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class GenericSetLocationSubCommand extends SubCommand {
+public class InPersonSetLocationSubCommand extends SubCommand {
 
     private final GameConfigProvider configProvider;
     private final MessageDispatcher messageDispatcher;
@@ -30,12 +30,12 @@ public class GenericSetLocationSubCommand extends SubCommand {
 
     private final int teams;
 
-    public GenericSetLocationSubCommand(
+    public InPersonSetLocationSubCommand(
             @NotNull MiyukiEvents plugin,
             @NotNull Game game,
             @NotNull GameConfigProvider configProvider,
             @NotNull MessageDispatcher messageDispatcher,
-            @NotNull GenericSetLocationSubCommand.LocationType locationType
+            @NotNull InPersonSetLocationSubCommand.LocationType locationType
     ) {
         super(plugin, false);
         this.game = game;

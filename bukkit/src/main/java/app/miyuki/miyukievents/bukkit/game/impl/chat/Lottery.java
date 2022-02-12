@@ -7,7 +7,6 @@ import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,19 +25,12 @@ public class Lottery extends Chat<Player> {
 
     @Override
     public void onChat(Player player, String[] args) {
-        if (gameState != GameState.STARTED)
-            return;
 
-        if (args.length < 1)
-            return;
-
-        if (!player.hasPermission(getPermission()))
-            return;
-
-        if (!checkCost(player))
-            return;
-
-        if (!StringUtils.isNumeric(args[0]))
+        if (gameState != GameState.STARTED
+                || args.length < 1
+                || !player.hasPermission(getPermission())
+                || !checkCost(player)
+                || !StringUtils.isNumeric(args[0]))
             return;
 
         if (Integer.parseInt(args[0]) == result)
@@ -60,17 +52,17 @@ public class Lottery extends Chat<Player> {
             if (calls.get() > 0) {
                 val seconds = calls.get() * interval;
 
-                Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "Start", message -> message
+                messageDispatcher.globalDispatch("Start", message -> message
                         .replace("{minNumber}", String.valueOf(minNumber))
                         .replace("{maxNumber}", String.valueOf(maxNumber))
-                        .replace("{seconds}", String.valueOf(seconds))));
+                        .replace("{seconds}", String.valueOf(seconds)));
 
                 calls.getAndDecrement();
 
             } else {
 
-                Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "NoWinner", message -> message
-                        .replace("{result}", String.valueOf(result))));
+                messageDispatcher.globalDispatch("NoWinner", message -> message
+                        .replace("{result}", String.valueOf(result)));
                 stop();
 
             }
@@ -89,9 +81,9 @@ public class Lottery extends Chat<Player> {
         stop();
         giveReward(player);
 
-        Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Win", message -> message
+        messageDispatcher.globalDispatch("Win", message -> message
                 .replace("{result}", String.valueOf(result))
-                .replace("{winner}", player.getName())));
+                .replace("{winner}", player.getName()));
     }
 
     @Override

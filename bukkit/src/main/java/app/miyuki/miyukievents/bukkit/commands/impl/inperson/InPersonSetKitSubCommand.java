@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class GenericSetKitSubCommand extends SubCommand {
+public class InPersonSetKitSubCommand extends SubCommand {
 
 
     private final Game game;
@@ -32,7 +32,7 @@ public class GenericSetKitSubCommand extends SubCommand {
 
     private final int teams;
 
-    public GenericSetKitSubCommand(
+    public InPersonSetKitSubCommand(
             @NotNull MiyukiEvents plugin,
             @NotNull Game game,
             @NotNull GameConfigProvider configProvider,

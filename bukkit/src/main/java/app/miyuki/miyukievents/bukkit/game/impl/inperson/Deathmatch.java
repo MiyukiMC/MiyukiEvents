@@ -116,7 +116,6 @@ public class Deathmatch extends InPerson<List<Player>> {
 
                 messageDispatcher.globalDispatch( "Start", message -> message
                         .replace("{size}", String.valueOf(players.size()))
-                        .replace("{totalValue}", String.valueOf(players.size() * getCost()))
                         .replace("{cost}", String.valueOf(getCost()))
                         .replace("{seconds}", String.valueOf(seconds)));
             } else {
@@ -155,7 +154,7 @@ public class Deathmatch extends InPerson<List<Player>> {
                         val pos1 = locationAdapter.adapt(data.getString(path + "Pos1"));
                         val pos2 = locationAdapter.adapt(data.getString(path + "Pos2"));
 
-                        val file = new File(config.getFile().getParentFile(), "schematics/" + name);
+                        val file = new File(config.getFile().getParentFile(), "schematics/" + fileName);
 
                         if (!file.exists())
                             continue;
@@ -178,7 +177,13 @@ public class Deathmatch extends InPerson<List<Player>> {
 
     @Override
     public void stop() {
+        setGameState(GameState.STOPPIMG);
 
+        schedulerManager.cancel();
+        players.keySet().forEach(this::leave);
+        score.clear();
+
+        setGameState(GameState.STOPPED);
     }
 
     @Override
@@ -223,6 +228,8 @@ public class Deathmatch extends InPerson<List<Player>> {
 
     @Override
     public void onPlayerDeath(PlayerDeathEvent event) {
+
+
 
     }
 
@@ -343,6 +350,21 @@ public class Deathmatch extends InPerson<List<Player>> {
     }
 
     private void organizeTeams() {
+        val players = new ArrayList<>(this.players.keySet());
+
+        Collections.shuffle(players);
+
+        int i = 1;
+        for (Player player : players) {
+
+            this.players.put(player, i);
+
+            i++;
+
+            if (i > teams)
+                i = 1;
+
+        }
 
     }
 
