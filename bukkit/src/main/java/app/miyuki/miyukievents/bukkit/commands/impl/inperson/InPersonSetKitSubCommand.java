@@ -25,7 +25,6 @@ import java.util.stream.IntStream;
 
 public class InPersonSetKitSubCommand extends SubCommand {
 
-
     private final Game<?> game;
     private final MessageDispatcher messageDispatcher;
     private final GameConfigProvider configProvider;

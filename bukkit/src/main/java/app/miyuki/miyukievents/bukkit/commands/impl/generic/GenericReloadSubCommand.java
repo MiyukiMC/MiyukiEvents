@@ -15,7 +15,6 @@ import java.util.List;
 
 public class GenericReloadSubCommand extends SubCommand {
 
-
     private final GameConfigProvider configProvider;
     private final Game<?> game;
 

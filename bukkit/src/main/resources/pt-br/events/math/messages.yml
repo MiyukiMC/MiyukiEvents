@@ -19,7 +19,7 @@ Win:
 # Mensagem quando o evento é cancelado
 Cancelled:
   - ''
-  - 'O evento matemática foi cancelado um administrador'
+  - 'O evento matemática foi cancelado por um administrador'
   - ''
 # Mensagem quando o evento acaba automaticamente sem ganhador
 NoWinner:

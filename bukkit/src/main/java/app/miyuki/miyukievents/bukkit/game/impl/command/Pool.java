@@ -4,7 +4,7 @@ import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Command;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
-import app.miyuki.miyukievents.bukkit.util.TitleAnimation;
+import app.miyuki.miyukievents.bukkit.util.title.TitleAnimation;
 import app.miyuki.miyukievents.bukkit.util.chat.ChatUtils;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import com.google.common.collect.Lists;
@@ -44,7 +44,6 @@ public class Pool extends Command<Player> {
             messageDispatcher.dispatch(player, "YouDontHaveBalance");
             return;
         }
-
 
         plugin.getVaultProvider().provide().ifPresent(economy -> economy.withdrawPlayer(player, getCost()));
         players.add(player);
@@ -101,7 +100,7 @@ public class Pool extends Command<Player> {
                         Player finalLastPlayer = lastPlayer;
                         TitleAnimation.Builder()
                                 .animation(titles)
-                                .period(20L) // colocar isso na config
+                                .period(config.getInt("Interval"))
                                 .callback(() -> onWin(finalLastPlayer))
                                 .build()
                                 .start();
@@ -120,10 +119,13 @@ public class Pool extends Command<Player> {
     public void stop() {
         setGameState(GameState.STOPPED);
         schedulerManager.cancel();
+
+        players.forEach(player -> plugin.getVaultProvider().provide().ifPresent(economy -> economy.depositPlayer(player, getCost())));
     }
 
     @Override
     public void onWin(Player player) {
+        players.clear();
         stop();
         val total = players.size() * getCost();
 
@@ -134,12 +136,14 @@ public class Pool extends Command<Player> {
         messageDispatcher.dispatch(player, "YouWin", message -> message
                 .replace("{money}", String.valueOf(total)));
 
-        plugin.getVaultProvider().provide().ifPresent(economy -> economy.depositPlayer(player, total));
         giveReward(player);
     }
 
     @Override
     protected void giveReward(Player player) {
+        val total = players.size() * getCost();
+
+        plugin.getVaultProvider().provide().ifPresent(economy -> economy.depositPlayer(player, total));
         this.reward.execute(player);
     }
 

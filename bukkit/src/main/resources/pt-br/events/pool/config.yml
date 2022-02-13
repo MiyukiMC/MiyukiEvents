@@ -10,6 +10,7 @@ CallInterval: 10
 RandomTitles:
   Enabled: true
   Times: 5
+  Interval: 20 # em ticks, 20 ticks -> 1 segundo
   Title: '[BOLAO]'
   Subtitle: '{player}'
 

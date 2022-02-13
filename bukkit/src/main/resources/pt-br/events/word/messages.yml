@@ -1,7 +1,7 @@
 Start:
   - 'Evento chat foi iniciado!'
   - 'Digite a palavra: {word}'
-Stop:
+Cancelled:
   - '&cO evento foi encerrado'
 Help:
   - '&a/word <resposta>'

@@ -68,7 +68,6 @@ public class Jackpot extends Command<Player> {
             return;
         }
 
-
         if (playerBet != null) {
             val oldValue = players.get(player.getName());
             players.replace(player.getName(), money + oldValue);
@@ -85,10 +84,10 @@ public class Jackpot extends Command<Player> {
 
     @Override
     public void start() {
-        setGameState(GameState.STARTED);
+        players.clear();
         val config = configProvider.provide(ConfigType.CONFIG);
-
         this.maxBet = config.getInt("MaxBet");
+        setGameState(GameState.STARTED);
 
         AtomicInteger calls = new AtomicInteger(config.getInt("Calls"));
         val interval = config.getInt("CallInterval");
@@ -121,15 +120,17 @@ public class Jackpot extends Command<Player> {
     public void stop() {
         setGameState(GameState.STOPPED);
         schedulerManager.cancel();
+
+        players.forEach((player, value) -> economy.depositPlayer(Bukkit.getPlayer(player), value));
     }
 
     @Override
     public void onWin(Player player) {
-        stop();
-
         giveReward(player);
-
         val total = players.values().stream().mapToDouble(value -> value).sum();
+
+        players.clear();
+        stop();
 
         messageDispatcher.globalDispatch("Win", message -> message
                 .replace("{chance}", String.valueOf(RandomUtils.getChance(players, player.getName())))

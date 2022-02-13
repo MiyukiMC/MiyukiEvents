@@ -219,7 +219,7 @@ public class Deathmatch extends InPerson<List<Player>> {
 
     @Override
     protected void giveReward(List<Player> players) {
-
+        this.reward.execute(players);
     }
 
     @Override

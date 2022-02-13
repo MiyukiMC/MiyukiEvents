@@ -32,12 +32,18 @@ public class Reward {
 
         val plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
 
-        if (NumberEvaluator.isValid(cash)) {
+        if (NumberEvaluator.isValid(cash))
             plugin.getCashProvider().provide().ifPresent(cashAPI -> cashAPI.deposit(playerName, cash));
-        }
 
-        if (NumberEvaluator.isValid(money)) {
-            plugin.getVaultProvider().provide().ifPresent(economy -> economy.depositPlayer(player, money));
+
+        if (NumberEvaluator.isValid(money))
+            plugin.getVaultProvider().provide().ifPresent(economy -> economy.depositPlayer(Bukkit.getPlayer(playerName), money));
+
+    }
+
+    public void execute(@NotNull List<Player> players) {
+        for (Player player : players) {
+            this.execute(player);
         }
     }
 

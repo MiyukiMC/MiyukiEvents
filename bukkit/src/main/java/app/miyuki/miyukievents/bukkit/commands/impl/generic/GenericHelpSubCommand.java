@@ -14,7 +14,6 @@ import java.util.List;
 
 public class GenericHelpSubCommand extends SubCommand {
 
-
     private final MessageDispatcher messageDispatcher;
     private final GameConfigProvider configProvider;
 

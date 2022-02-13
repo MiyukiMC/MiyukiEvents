@@ -18,7 +18,6 @@ import java.util.List;
 
 public class GenericStartSubCommand extends SubCommand {
 
-
     private final MessageDispatcher messageDispatcher;
     private final GameConfigProvider configProvider;
     private final Game<?> game;

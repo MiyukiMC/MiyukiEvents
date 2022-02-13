@@ -21,7 +21,7 @@ public class NumberFormatter {
     private final char GROUP_SEPARATOR;
     private final char DECIMAL_SEPARATOR;
     private final int START;
-    private final List<String> SUFFIXIES;
+    private final List<String> SUFFIXES;
 
     static {
         val config = JavaPlugin.getPlugin(MiyukiEvents.class).getGlobalConfig();
@@ -31,7 +31,7 @@ public class NumberFormatter {
         GROUP_SEPARATOR = section.getString("GroupSeparator").charAt(0);
         DECIMAL_SEPARATOR = section.getString("DecimalSeparator").charAt(0);
         START = section.getInt("Start");
-        SUFFIXIES = section.getStringList("Suffixes");
+        SUFFIXES = section.getStringList("Suffixes");
     }
 
     public String format(BigDecimal amount) {
@@ -65,7 +65,7 @@ public class NumberFormatter {
             formatted = formatted.substring(0, commaIndex + 3);
 
             try {
-                suffix = SUFFIXIES.get(comma - 1);
+                suffix = SUFFIXES.get(comma - 1);
             } catch (IndexOutOfBoundsException exception) {
                 return "ERROR";
             }
@@ -81,7 +81,5 @@ public class NumberFormatter {
     public String format(double amount) {
         return format(BigDecimal.valueOf(amount));
     }
-
-
 
 }

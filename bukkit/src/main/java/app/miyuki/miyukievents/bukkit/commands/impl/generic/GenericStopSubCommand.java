@@ -17,7 +17,6 @@ import java.util.List;
 
 public class GenericStopSubCommand extends SubCommand {
 
-
     private final GameConfigProvider configProvider;
     private final MessageDispatcher messageDispatcher;
     private final Game<?> game;
@@ -44,7 +43,6 @@ public class GenericStopSubCommand extends SubCommand {
         return configProvider.provide(ConfigType.CONFIG).getString("SubCommands.Stop.Permission");
     }
 
-
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
 
@@ -58,7 +56,7 @@ public class GenericStopSubCommand extends SubCommand {
         plugin.getQueue().unregister(game);
         game.stop();
 
-        Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Stop"));
+        Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Cancelled"));
 
         globalMessageDispatcher.dispatch(sender, "GameCanceled");
 

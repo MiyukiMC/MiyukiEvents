@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public class WorldEditProvider implements ProviderService<WorldEditAPI> {
 
-    private static final String WORLDEDIT6 = "app.miyuki.miyukievents.bukkit.impl.WorldEdit6";
-    private static final String WORLDEDIT7 = "app.miyuki.miyukievents.bukkit.impl.WorldEdit7";
+    private static final String WORLD_EDIT_6 = "app.miyuki.miyukievents.bukkit.impl.WorldEdit6";
+    private static final String WORLD_EDIT_7 = "app.miyuki.miyukievents.bukkit.impl.WorldEdit7";
 
     private WorldEditAPI worldEditAPI = null;
 
@@ -24,7 +24,7 @@ public class WorldEditProvider implements ProviderService<WorldEditAPI> {
 
         val version = plugin.getDescription().getVersion();
 
-        Class<?> clazz = version.startsWith("6.") ? Class.forName(WORLDEDIT6) : Class.forName(WORLDEDIT7);
+        Class<?> clazz = version.startsWith("6.") ? Class.forName(WORLD_EDIT_6) : Class.forName(WORLD_EDIT_7);
 
         worldEditAPI = (WorldEditAPI) clazz.getConstructor().newInstance();
         return true;

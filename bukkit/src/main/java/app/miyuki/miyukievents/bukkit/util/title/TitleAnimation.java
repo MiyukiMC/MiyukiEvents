@@ -1,4 +1,4 @@
-package app.miyuki.miyukievents.bukkit.util;
+package app.miyuki.miyukievents.bukkit.util.title;
 
 
 import app.miyuki.miyukievents.bukkit.game.manager.GameSchedulerManager;
