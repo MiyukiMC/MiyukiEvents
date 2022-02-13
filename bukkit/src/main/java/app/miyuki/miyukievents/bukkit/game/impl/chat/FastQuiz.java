@@ -97,6 +97,11 @@ public class FastQuiz extends Chat<Player> {
         this.reward.execute(player);
     }
 
+    @Override
+    public boolean isEconomyRequired() {
+        return false;
+    }
+
     private void setupQuestions() {
         questions.clear();
 

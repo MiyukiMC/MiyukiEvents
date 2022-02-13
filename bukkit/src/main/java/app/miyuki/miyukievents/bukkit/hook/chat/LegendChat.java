@@ -23,7 +23,7 @@ public class LegendChat implements Listener {
 
         Bukkit.getScheduler().runTaskLater(
                 plugin,
-                () -> ((Chat) currentGame).onChat(event.getSender(), event.getMessage().split(" ")),
+                () -> ((Chat<?>) currentGame).onChat(event.getSender(), event.getMessage().split(" ")),
                 3L
         );
     }

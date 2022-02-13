@@ -18,7 +18,7 @@ public class CommandRegistry {
     private final MiyukiEvents plugin;
 
     @SneakyThrows
-    public void register(Game game, Class<?> commandClass) {
+    public void register(Game<?> game, Class<?> commandClass) {
 
         val commandMapField = Bukkit.getPluginManager().getClass().getDeclaredField("commandMap");
         commandMapField.setAccessible(true);

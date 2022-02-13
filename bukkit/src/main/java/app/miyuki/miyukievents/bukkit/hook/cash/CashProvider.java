@@ -8,7 +8,8 @@ import app.miyuki.miyukievents.bukkit.hook.cash.impl.YPoints;
 import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
-import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class CashProvider implements ProviderService<CashAPI> {
 
@@ -39,8 +40,8 @@ public class CashProvider implements ProviderService<CashAPI> {
     }
 
     @Override
-    public @Nullable CashAPI provide() {
-        return cashAPI;
+    public Optional<CashAPI> provide() {
+        return Optional.ofNullable(cashAPI);
     }
 
 

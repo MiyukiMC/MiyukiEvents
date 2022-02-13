@@ -17,10 +17,10 @@ import java.util.List;
 
 public class DeathmatchCommand extends Command {
 
-    private final Game game;
+    private final Game<?> game;
     private final MessageDispatcher messageDispatcher;
 
-    public DeathmatchCommand(@NotNull MiyukiEvents plugin, @NotNull Game game, @NotNull String name, @NotNull List<String> aliases) {
+    public DeathmatchCommand(@NotNull MiyukiEvents plugin, @NotNull Game<?> game, @NotNull String name, @NotNull List<String> aliases) {
         super(plugin, name, aliases, true);
 
         this.game = game;

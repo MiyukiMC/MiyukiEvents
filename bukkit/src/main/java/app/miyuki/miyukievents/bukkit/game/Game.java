@@ -17,7 +17,6 @@ import java.util.Objects;
 
 public abstract class Game<W> {
 
-    @Getter
     protected final @NotNull MiyukiEvents plugin;
 
     @Getter
@@ -31,16 +30,16 @@ public abstract class Game<W> {
     protected GameState gameState = GameState.STOPPED;
 
     @Getter
-    protected Reward reward;
+    protected final Reward reward;
 
     @Getter
-    protected String permission;
+    protected final String permission;
 
     @Getter
     protected double cost = 0.0;
 
     @Getter
-    protected GameSchedulerManager schedulerManager;
+    protected final GameSchedulerManager schedulerManager;
 
     public Game(@NotNull GameConfigProvider configProvider) {
         this.plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
@@ -60,12 +59,7 @@ public abstract class Game<W> {
     }
 
     protected boolean checkCost(Player player) {
-        val economy = plugin.getVaultProvider().provide();
-
-        if (economy == null)
-            return true;
-
-        return economy.getBalance(player) >= getCost();
+        return plugin.getVaultProvider().provide().map(value -> value.getBalance(player) >= getCost()).orElse(true);
     }
 
     public String getTypeName() {
@@ -83,5 +77,7 @@ public abstract class Game<W> {
     public abstract void onWin(W w);
 
     protected abstract void giveReward(W w);
+
+    public abstract boolean isEconomyRequired();
 
 }

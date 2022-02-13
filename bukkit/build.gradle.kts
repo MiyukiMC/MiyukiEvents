@@ -10,7 +10,6 @@ repositories {
     }
 }
 
-// WorldEdit
 dependencies {
     compileOnly(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 

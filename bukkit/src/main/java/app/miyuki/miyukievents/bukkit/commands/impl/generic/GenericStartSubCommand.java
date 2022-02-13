@@ -21,11 +21,11 @@ public class GenericStartSubCommand extends SubCommand {
 
     private final MessageDispatcher messageDispatcher;
     private final GameConfigProvider configProvider;
-    private final Game game;
+    private final Game<?> game;
 
     public GenericStartSubCommand(
             @NotNull MiyukiEvents plugin,
-            @NotNull Game game,
+            @NotNull Game<?> game,
             @NotNull MessageDispatcher messageDispatcher,
             @NotNull GameConfigProvider configProvider
     ) {
@@ -83,15 +83,13 @@ public class GenericStartSubCommand extends SubCommand {
             val entries = inPersonGame.getEntries();
 
             val config = configProvider.provide(ConfigType.CONFIG);
-            val teams = config.contains("Teams") ? config.getInt("Teams") : -1;
 
-
-            if (teams != -1) {
+            if (inPersonGame.isTeamsEnabled()) {
 
                 List<String> undefinedEntries = Lists.newArrayList();
                 List<String> undefinedKits = Lists.newArrayList();
 
-                for (int i = 1; i <= teams; i++) {
+                for (int i = 1; i <= config.getInt("Teams"); i++) {
                     if (entries.containsKey(i)) {
                         undefinedEntries.add(String.valueOf(i));
                     }

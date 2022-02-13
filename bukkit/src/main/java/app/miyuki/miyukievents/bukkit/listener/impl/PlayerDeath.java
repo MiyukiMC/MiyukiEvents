@@ -20,7 +20,7 @@ public class PlayerDeath implements Listener {
         if (!(currentGame instanceof InPerson))
             return;
 
-        ((InPerson) currentGame).onPlayerDeath(event);
+        ((InPerson<?>) currentGame).onPlayerDeath(event);
     }
 
 }

@@ -80,6 +80,11 @@ public class Math extends Chat<Player> {
         this.reward.execute(player);
     }
 
+    @Override
+    public boolean isEconomyRequired() {
+        return false;
+    }
+
     private void setupResult() {
         this.operator = RandomUtils.getRandomElement(getConfigProvider().provide(ConfigType.CONFIG).getStringList("SumTypes")).charAt(0);
 

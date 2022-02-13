@@ -26,7 +26,7 @@ import java.util.stream.IntStream;
 public class InPersonSetKitSubCommand extends SubCommand {
 
 
-    private final Game game;
+    private final Game<?> game;
     private final MessageDispatcher messageDispatcher;
     private final GameConfigProvider configProvider;
 
@@ -34,7 +34,7 @@ public class InPersonSetKitSubCommand extends SubCommand {
 
     public InPersonSetKitSubCommand(
             @NotNull MiyukiEvents plugin,
-            @NotNull Game game,
+            @NotNull Game<?> game,
             @NotNull GameConfigProvider configProvider,
             @NotNull MessageDispatcher messageDispatcher
     ) {

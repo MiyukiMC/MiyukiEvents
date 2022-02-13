@@ -114,7 +114,7 @@ public class Deathmatch extends InPerson<List<Player>> {
             if (calls.get() > 0) {
                 val seconds = calls.get() * interval;
 
-                messageDispatcher.globalDispatch( "Start", message -> message
+                messageDispatcher.globalDispatch("Start", message -> message
                         .replace("{size}", String.valueOf(players.size()))
                         .replace("{cost}", String.valueOf(getCost()))
                         .replace("{seconds}", String.valueOf(seconds)));
@@ -130,29 +130,54 @@ public class Deathmatch extends InPerson<List<Player>> {
                     return;
                 }
 
-                val worldEdit = plugin.getWorldEditProvider().provide();
+                if (isWorldEditRequired()) {
 
-                if (config.getBoolean("Schematic.Enabled") && worldEdit != null) {
+
+                    val worldEdit = plugin.getWorldEditProvider().provide().get();
 
                     val data = configProvider.provide(ConfigType.DATA);
 
                     val locationAdapter = plugin.getLocationAdapter();
 
-                    for (String schematic : config.getStringList("Schematic.Schematics")) {
+                    val schematics = config.getStringList("Schematic.Schematics");
 
-                        val schematicSplit = schematic.split(":");
+                    val randomSchematic = config.getBoolean("Schematic.Random");
 
-                        val time = Integer.parseInt(schematicSplit[0]) * 20L;
-                        val name = schematicSplit[1].toUpperCase(Locale.ROOT);
+                    if (randomSchematic) {
+                        schematics.clear();
 
-                        String path = "Schematic." + name;
+                        val section = data.getConfigurationSection("Schematic");
 
-                        if (!data.contains("Schematic." + name + "."))
-                            return;
+                        if (section != null) {
+                            schematics.addAll(section.getKeys(false));
+                        }
 
-                        val fileName = data.getString(path + "FileName");
-                        val pos1 = locationAdapter.adapt(data.getString(path + "Pos1"));
-                        val pos2 = locationAdapter.adapt(data.getString(path + "Pos2"));
+                        Collections.shuffle(schematics);
+                    }
+
+
+                    for (String schematic : schematics) {
+
+                        long time = 0L;
+                        String name;
+
+                        if (schematic.contains(":")) {
+                            name = schematic;
+                        } else {
+                            val split = schematic.split(":");
+                            name = split[1].toUpperCase(Locale.ROOT);
+                            time = Integer.parseInt(split[0]) * 20L;
+                        }
+
+
+                        val section = data.getConfigurationSection("Schematic." + name);
+
+                        if (section == null)
+                            continue;
+
+                        val fileName = data.getString(section.getString("FileName"));
+                        val pos1 = locationAdapter.adapt(section.getString("Pos1"));
+                        val pos2 = locationAdapter.adapt(section.getString("Pos2"));
 
                         val file = new File(config.getFile().getParentFile(), "schematics/" + fileName);
 
@@ -163,6 +188,7 @@ public class Deathmatch extends InPerson<List<Player>> {
                             players.keySet().forEach(this::teleportToDesignatedEntrance);
                             worldEdit.pasteSchematic(file, pos1, pos2);
                         });
+
 
                     }
                 }
@@ -197,6 +223,11 @@ public class Deathmatch extends InPerson<List<Player>> {
     }
 
     @Override
+    public boolean isEconomyRequired() {
+        return false;
+    }
+
+    @Override
     public void join(Player player) {
         players.put(player, players.size());
         messageDispatcher.dispatch(player, "Join");
@@ -207,7 +238,7 @@ public class Deathmatch extends InPerson<List<Player>> {
     public void leave(Player player) {
         players.remove(player);
 
-        if (isSetted()) {
+        if (isKitRequired()) {
             PlayerUtils.clearInventory(player);
         }
 
@@ -228,7 +259,6 @@ public class Deathmatch extends InPerson<List<Player>> {
 
     @Override
     public void onPlayerDeath(PlayerDeathEvent event) {
-
 
 
     }
@@ -257,12 +287,25 @@ public class Deathmatch extends InPerson<List<Player>> {
     public void onBlockPlace(BlockPlaceEvent event) {
 
     }
-    private boolean isTeamSupported() {
-        return teams == -1;
+
+    @Override
+    public boolean isKitRequired() {
+        return configProvider.provide(ConfigType.CONFIG).getBoolean("KitSetted");
     }
 
-    private boolean isSetted() {
-        return configProvider.provide(ConfigType.CONFIG).getBoolean("KitSetted");
+    @Override
+    public boolean isClanRequired() {
+        return false;
+    }
+
+    @Override
+    public boolean isWorldEditRequired() {
+        return configProvider.provide(ConfigType.CONFIG).getBoolean("Schematic.Enabled");
+    }
+
+    @Override
+    public boolean isTeamsEnabled() {
+        return teams == -1;
     }
 
     private void checkWin() {
@@ -275,7 +318,7 @@ public class Deathmatch extends InPerson<List<Player>> {
         val type = config.getString("GameType.Type").toUpperCase(Locale.ROOT);
         val score = config.getInt("GameType.Score");
 
-        if (isTeamSupported()) {
+        if (isTeamsEnabled()) {
 
             if (type.equals("SCORE")) {
 
@@ -369,10 +412,7 @@ public class Deathmatch extends InPerson<List<Player>> {
     }
 
     private void teleportToDesignatedEntrance(Player player) {
-
-        val entry = isTeamSupported() ? entries.get(players.get(player)) : entries.get(0);
-
-        player.teleport(entry);
+        player.teleport(isTeamsEnabled() ? entries.get(players.get(player)) : entries.get(0));
 
     }
 

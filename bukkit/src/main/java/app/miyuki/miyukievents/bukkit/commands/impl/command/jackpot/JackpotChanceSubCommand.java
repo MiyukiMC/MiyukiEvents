@@ -5,7 +5,7 @@ import app.miyuki.miyukievents.bukkit.commands.SubCommand;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
-import app.miyuki.miyukievents.bukkit.game.impl.chat.Jackpot;
+import app.miyuki.miyukievents.bukkit.game.impl.command.Jackpot;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import lombok.val;
@@ -18,13 +18,13 @@ import java.util.List;
 
 public class JackpotChanceSubCommand extends SubCommand {
 
-    private final Game game;
+    private final Game<?> game;
     private final MessageDispatcher messageDispatcher;
     private final GameConfigProvider configProvider;
 
     public JackpotChanceSubCommand(
             @NotNull MiyukiEvents plugin,
-            @NotNull Game game,
+            @NotNull Game<?> game,
             @NotNull GameConfigProvider configProvider,
             @NotNull MessageDispatcher messageDispatcher
     ) {

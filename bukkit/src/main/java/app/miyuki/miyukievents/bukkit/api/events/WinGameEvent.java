@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 @AllArgsConstructor
 public class WinGameEvent extends Event {
 
-    private final Game game;
+    private final Game<?> game;
 
     @Getter
     private WinnerType winnerType;

@@ -20,10 +20,10 @@ import java.util.List;
 
 public class GenericChatCommand extends Command {
 
-    private final Game game;
+    private final Game<?> game;
     private final MessageDispatcher messageDispatcher;
 
-    public GenericChatCommand(@NotNull MiyukiEvents plugin, @NotNull Game game, @NotNull String name, @NotNull List<String> aliases) {
+    public GenericChatCommand(@NotNull MiyukiEvents plugin, @NotNull Game<?> game, @NotNull String name, @NotNull List<String> aliases) {
         super(plugin, name, aliases, true);
 
         this.game = game;
@@ -31,7 +31,7 @@ public class GenericChatCommand extends Command {
         GameConfigProvider configProvider = game.getConfigProvider();
 
         registerSubCommand(
-                new GenericStartSubCommand(plugin, game, configProvider),
+                new GenericStartSubCommand(plugin, game, messageDispatcher, configProvider),
                 new GenericStopSubCommand(plugin, game, configProvider, messageDispatcher),
                 new GenericHelpSubCommand(plugin, configProvider, messageDispatcher),
                 new GenericReloadSubCommand(plugin, game, configProvider)
@@ -46,7 +46,7 @@ public class GenericChatCommand extends Command {
                 messageDispatcher.dispatch(sender, "CommandUsedIncorrectly");
                 return false;
             }
-            ((Chat) game).onChat((Player) sender, args);
+            ((Chat<?>) game).onChat((Player) sender, args);
             return true;
         }
 

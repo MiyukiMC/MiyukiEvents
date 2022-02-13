@@ -1,4 +1,4 @@
-package app.miyuki.miyukievents.bukkit.game.impl.chat;
+package app.miyuki.miyukievents.bukkit.game.impl.command;
 
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Command;
@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Jackpot extends Command<Player> {
 
-    private final Economy economy = plugin.getVaultProvider().provide();
+    private final Economy economy = plugin.getVaultProvider().provide().get();
 
     @Getter
     private final Map<String, Double> players = Maps.newHashMap();
@@ -109,9 +109,7 @@ public class Jackpot extends Command<Player> {
                     val winner = Bukkit.getPlayer(RandomUtils.getWeightedRandom(players));
                     onWin(winner);
                 } else {
-                    Bukkit.getOnlinePlayers().forEach(player -> {
-                        messageDispatcher.dispatch(player, "NoWinner");
-                    });
+                    messageDispatcher.globalDispatch("NoWinner");
                     stop();
                 }
 
@@ -131,20 +129,25 @@ public class Jackpot extends Command<Player> {
 
         giveReward(player);
 
-        val total = players.entrySet().stream().mapToDouble(it -> it.getValue()).sum();
+        val total = players.values().stream().mapToDouble(value -> value).sum();
 
-        Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Win", message -> message
+        messageDispatcher.globalDispatch("Win", message -> message
                 .replace("{chance}", String.valueOf(RandomUtils.getChance(players, player.getName())))
                 .replace("{total}", String.valueOf(total))
-                .replace("{winner}", player.getName())));
+                .replace("{winner}", player.getName()));
     }
 
     @Override
     protected void giveReward(Player player) {
-        val total = players.entrySet().stream().mapToDouble(it -> it.getValue()).sum();
+        val total = players.values().stream().mapToDouble(value -> value).sum();
 
         economy.depositPlayer(player, total);
         this.reward.execute(player);
+    }
+
+    @Override
+    public boolean isEconomyRequired() {
+        return true;
     }
 
 }

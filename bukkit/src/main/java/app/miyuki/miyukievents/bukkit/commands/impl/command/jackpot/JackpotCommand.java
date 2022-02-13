@@ -20,9 +20,9 @@ import java.util.List;
 
 public class JackpotCommand extends Command {
 
-    private final Game game;
+    private final Game<?> game;
 
-    public JackpotCommand(@NotNull MiyukiEvents plugin, @NotNull Game game, @NotNull String name, @NotNull List<String> aliases) {
+    public JackpotCommand(@NotNull MiyukiEvents plugin, @NotNull Game<?> game, @NotNull String name, @NotNull List<String> aliases) {
         super(plugin, name, aliases, true);
 
         this.game = game;
@@ -30,7 +30,7 @@ public class JackpotCommand extends Command {
         GameConfigProvider configProvider = game.getConfigProvider();
 
         registerSubCommand(
-                new GenericStartSubCommand(plugin, game, configProvider),
+                new GenericStartSubCommand(plugin, game, messageDispatcher, configProvider),
                 new GenericStopSubCommand(plugin, game, configProvider, messageDispatcher),
                 new GenericHelpSubCommand(plugin, configProvider, messageDispatcher),
                 new GenericReloadSubCommand(plugin, game, configProvider),
@@ -44,7 +44,7 @@ public class JackpotCommand extends Command {
             val player = (Player) sender;
 
             if (args.length > 0) {
-                ((app.miyuki.miyukievents.bukkit.game.Command) game).onCommand(player, args);
+                ((app.miyuki.miyukievents.bukkit.game.Command<?>) game).onCommand(player, args);
             } else {
                 Bukkit.dispatchCommand(player, getName() + " help");
             }

@@ -33,7 +33,7 @@ public class RandomUtils {
     }
 
     public int generateRandomNumber(int min, int max) {
-        int randomNumber = 0;
+        int randomNumber;
 
         randomNumber = RANDOM.nextInt(max);
 
@@ -77,7 +77,7 @@ public class RandomUtils {
     }
 
     public double getChance(Map<String, Double> weights, String playerName) {
-        val chance = (weights.get(playerName) / weights.entrySet().stream().mapToDouble(it -> it.getValue()).sum()) * 100;
+        val chance = (weights.get(playerName) / weights.values().stream().mapToDouble(value -> value).sum()) * 100;
 
         return Math.round(chance * 100) / 100.0;
     }

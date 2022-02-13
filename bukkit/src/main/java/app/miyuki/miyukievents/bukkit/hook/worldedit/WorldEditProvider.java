@@ -4,7 +4,8 @@ import app.miyuki.miyukievents.bukkit.hook.ProviderService;
 import lombok.SneakyThrows;
 import lombok.val;
 import org.bukkit.Bukkit;
-import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class WorldEditProvider implements ProviderService<WorldEditAPI> {
 
@@ -31,8 +32,9 @@ public class WorldEditProvider implements ProviderService<WorldEditAPI> {
     }
 
     @Override
-    public @Nullable WorldEditAPI provide() {
-        return worldEditAPI;
+    public Optional<WorldEditAPI> provide() {
+        return Optional.ofNullable(worldEditAPI);
     }
+
 
 }

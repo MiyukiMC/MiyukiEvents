@@ -20,7 +20,7 @@ public class BlockPlace implements Listener {
         if (!(currentGame instanceof InPerson))
             return;
 
-        ((InPerson) currentGame).onBlockPlace(event);
+        ((InPerson<?>) currentGame).onBlockPlace(event);
     }
 
 }

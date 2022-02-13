@@ -55,6 +55,12 @@ public abstract class InPerson<W> extends Game<W> {
 
     public abstract void onBlockPlace(BlockPlaceEvent event);
 
+    public abstract boolean isKitRequired();
 
+    public abstract boolean isClanRequired();
+
+    public abstract boolean isWorldEditRequired();
+
+    public abstract boolean isTeamsEnabled();
 
 }

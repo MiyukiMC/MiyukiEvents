@@ -4,7 +4,8 @@ import app.miyuki.miyukievents.bukkit.hook.ProviderService;
 import lombok.val;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class VaultProvider implements ProviderService<Economy> {
 
@@ -22,8 +23,8 @@ public class VaultProvider implements ProviderService<Economy> {
     }
 
     @Override
-    public @Nullable Economy provide() {
-        return economy;
+    public Optional<Economy> provide() {
+        return Optional.ofNullable(economy);
     }
 
 }

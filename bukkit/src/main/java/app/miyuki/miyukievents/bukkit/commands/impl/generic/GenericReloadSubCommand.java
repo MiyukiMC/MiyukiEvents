@@ -17,11 +17,11 @@ public class GenericReloadSubCommand extends SubCommand {
 
 
     private final GameConfigProvider configProvider;
-    private final Game game;
+    private final Game<?> game;
 
     public GenericReloadSubCommand(
             @NotNull MiyukiEvents plugin,
-            @NotNull Game game,
+            @NotNull Game<?> game,
             @NotNull GameConfigProvider configProvider
     ) {
         super(plugin, true);

@@ -14,7 +14,7 @@ public class GameQueue extends BukkitRunnable {
 
     private final GameManager gameManager;
 
-    private final Queue<Game> queue = new LinkedList<>();
+    private final Queue<Game<?>> queue = new LinkedList<>();
 
     public GameQueue(@NotNull MiyukiEvents plugin, @NotNull GameManager gameManager) {
         this.gameManager = gameManager;
@@ -38,15 +38,15 @@ public class GameQueue extends BukkitRunnable {
         game.start();
     }
 
-    public boolean register(@NotNull Game game) {
+    public boolean register(@NotNull Game<?> game) {
         return queue.offer(game);
     }
 
-    public boolean unregister(@NotNull Game game) {
+    public boolean unregister(@NotNull Game<?> game) {
         return queue.remove(game);
     }
 
-    public boolean isRegistered(@NotNull Game game) {
+    public boolean isRegistered(@NotNull Game<?> game) {
         return queue.contains(game);
     }
 

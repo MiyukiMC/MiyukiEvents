@@ -20,7 +20,7 @@ public class BlockBreak implements Listener {
         if (!(currentGame instanceof InPerson))
             return;
 
-        ((InPerson) currentGame).onBlockBreak(event);
+        ((InPerson<?>) currentGame).onBlockBreak(event);
     }
 
 }

@@ -26,13 +26,13 @@ public class InPersonSetLocationSubCommand extends SubCommand {
     private final GameConfigProvider configProvider;
     private final MessageDispatcher messageDispatcher;
     private final LocationType locationType;
-    private final Game game;
+    private final Game<?> game;
 
     private final int teams;
 
     public InPersonSetLocationSubCommand(
             @NotNull MiyukiEvents plugin,
-            @NotNull Game game,
+            @NotNull Game<?> game,
             @NotNull GameConfigProvider configProvider,
             @NotNull MessageDispatcher messageDispatcher,
             @NotNull InPersonSetLocationSubCommand.LocationType locationType
@@ -78,7 +78,7 @@ public class InPersonSetLocationSubCommand extends SubCommand {
 
         val playerLocation = ((Player) sender).getLocation();
 
-        val inPersonGame = (InPerson) game;
+        val inPersonGame = (InPerson<?>) game;
 
         val data = configProvider.provide(ConfigType.DATA);
 

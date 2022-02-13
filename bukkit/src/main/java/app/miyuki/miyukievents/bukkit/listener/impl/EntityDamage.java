@@ -20,7 +20,7 @@ public class EntityDamage implements Listener {
         if (!(currentGame instanceof InPerson))
             return;
 
-        ((InPerson) currentGame).onEntityDamage(event);
+        ((InPerson<?>) currentGame).onEntityDamage(event);
     }
 
 }

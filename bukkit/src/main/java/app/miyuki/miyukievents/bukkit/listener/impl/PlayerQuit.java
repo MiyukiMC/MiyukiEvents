@@ -20,7 +20,7 @@ public class PlayerQuit implements Listener {
         if (!(currentGame instanceof InPerson))
             return;
 
-        ((InPerson) currentGame).onPlayerQuit(event);
+        ((InPerson<?>) currentGame).onPlayerQuit(event);
     }
 
 }

@@ -45,7 +45,8 @@ public class Pool extends Command<Player> {
             return;
         }
 
-        plugin.getVaultProvider().provide().withdrawPlayer(player, getCost());
+
+        plugin.getVaultProvider().provide().ifPresent(economy -> economy.withdrawPlayer(player, getCost()));
         players.add(player);
         messageDispatcher.dispatch(player, "YouEntered");
     }
@@ -65,18 +66,16 @@ public class Pool extends Command<Player> {
             if (calls.get() > 0) {
                 val seconds = calls.get() * interval;
 
-                Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "Start", message -> message
+                messageDispatcher.globalDispatch("Start", message -> message
                         .replace("{size}", String.valueOf(players.size()))
                         .replace("{totalValue}", String.valueOf(players.size() * getCost()))
                         .replace("{cost}", String.valueOf(getCost()))
-                        .replace("{seconds}", String.valueOf(seconds))));
+                        .replace("{seconds}", String.valueOf(seconds)));
             } else {
 
                 if (players.size() < 2) {
-                    Bukkit.getOnlinePlayers().forEach(player -> {
-                        messageDispatcher.dispatch(player, "NoWinner");
-                    });
-                    players.forEach(player -> plugin.getVaultProvider().provide().depositPlayer(player, getCost()));
+                    messageDispatcher.globalDispatch("NoWinner");
+                    players.forEach(player -> plugin.getVaultProvider().provide().ifPresent(economy -> economy.depositPlayer(player, getCost())));
                     stop();
                 } else {
                     val section = config.getConfigurationSection("RandomTitles");
@@ -128,22 +127,25 @@ public class Pool extends Command<Player> {
         stop();
         val total = players.size() * getCost();
 
-        Bukkit.getOnlinePlayers().forEach(otherPlayer -> {
-            messageDispatcher.dispatch(otherPlayer, "Win", message -> message
-                    .replace("{winner}", player.getName())
-                    .replace("{money}", String.valueOf(total)));
-        });
+        messageDispatcher.globalDispatch("Win", message -> message
+                .replace("{winner}", player.getName())
+                .replace("{money}", String.valueOf(total)));
 
         messageDispatcher.dispatch(player, "YouWin", message -> message
-                .replace("{money}", String.valueOf(getCost())));
+                .replace("{money}", String.valueOf(total)));
 
-        plugin.getVaultProvider().provide().depositPlayer(player, total);
+        plugin.getVaultProvider().provide().ifPresent(economy -> economy.depositPlayer(player, total));
         giveReward(player);
     }
 
     @Override
     protected void giveReward(Player player) {
         this.reward.execute(player);
+    }
+
+    @Override
+    public boolean isEconomyRequired() {
+        return true;
     }
 
 }

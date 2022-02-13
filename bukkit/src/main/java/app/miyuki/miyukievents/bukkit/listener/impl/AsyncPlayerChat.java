@@ -24,7 +24,7 @@ public class AsyncPlayerChat implements Listener {
 
         Bukkit.getScheduler().runTaskLater(
                 plugin,
-                () -> ((Chat) currentGame).onChat(event.getPlayer(), event.getMessage().split(" ")),
+                () -> ((Chat<?>) currentGame).onChat(event.getPlayer(), event.getMessage().split(" ")),
                 3L
         );
     }

@@ -1,10 +1,9 @@
 package app.miyuki.miyukievents.bukkit.game.manager;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
-import app.miyuki.miyukievents.bukkit.config.Config;
-import app.miyuki.miyukievents.bukkit.game.*;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.util.chat.ChatUtils;
+import app.miyuki.miyukievents.bukkit.game.*;
+import app.miyuki.miyukievents.bukkit.util.Logger;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -12,18 +11,17 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class GameManager {
 
     public final @NonNull MiyukiEvents plugin;
-    private final @NonNull Config config;
     private final @NonNull String language;
 
     private static final ImmutableList<String> DEFAULT_GAMES = ImmutableList.of(
@@ -36,11 +34,11 @@ public class GameManager {
     );
 
     @Getter
-    private final Map<String, Game> games = Maps.newHashMap();
+    private final Map<String, Game<?>> games = Maps.newHashMap();
 
     @Nullable
-    public Game getCurrentGame() {
-        for (Game game : plugin.getGameManager().getGames().values()) {
+    public Game<?> getCurrentGame() {
+        for (Game<?> game : plugin.getGameManager().getGames().values()) {
 
             if (game.getGameState() != GameState.QUEUE && game.getGameState() != GameState.STOPPED) {
                 return game;
@@ -66,6 +64,10 @@ public class GameManager {
             );
         }
 
+        val economy = plugin.getVaultProvider().provide();
+        val clan = plugin.getClanProvider().provide();
+        val worldEdit = plugin.getWorldEditProvider().provide();
+
         for (String gameName : games) {
 
             val path = "events/" + gameName + "/";
@@ -85,10 +87,8 @@ public class GameManager {
                     .filter(it -> it.name().equalsIgnoreCase(typeName))
                     .findFirst();
 
-            val console = Bukkit.getConsoleSender();
-
             if (!type.isPresent()) {
-                console.sendMessage(ChatUtils.colorize("&r[&9&lMiyuki&d&lEvents&r] &cThe type &f" + typeName + " is invalid."));
+                Logger.log(Level.SEVERE, "The type &f" + typeName + " is invalid.");
                 continue;
             }
 
@@ -98,17 +98,32 @@ public class GameManager {
                 continue;
             }
 
+            if (game.isEconomyRequired() && !economy.isPresent()) {
+                Logger.log(Level.SEVERE, "The " + game.getName() + " event could not be registred because the Vault was not found.");
+                continue;
+            }
+
+            if (game instanceof InPerson) {
+
+                val inPersonGame = (InPerson<?>) game;
+
+                if (inPersonGame.isClanRequired() && !clan.isPresent()) {
+                    Logger.log(Level.SEVERE, "The " + game.getName() + " event could not be registred because no clan plugin found.");
+                    continue;
+                }
+
+                if (inPersonGame.isWorldEditRequired() && !worldEdit.isPresent()) {
+                    Logger.log(Level.SEVERE, "The " + game.getName() + " event could not be registred because the WorldEdit was not found.");
+                    continue;
+                }
+
+            }
+
             plugin.getCommandRegistry().register(game, type.get().getCommandClass());
 
             this.games.put(gameName.toLowerCase(Locale.ROOT), game);
         }
     }
 
-    public void reload() {
 
-    }
-
-    public void unload() {
-
-    }
 }

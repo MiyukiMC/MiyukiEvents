@@ -16,16 +16,12 @@ import app.miyuki.miyukievents.bukkit.language.LanguageEvaluator;
 import app.miyuki.miyukievents.bukkit.language.LanguageProvider;
 import app.miyuki.miyukievents.bukkit.listener.ListenerRegistry;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
-import app.miyuki.miyukievents.bukkit.util.chat.ChatUtils;
+import app.miyuki.miyukievents.bukkit.util.Logger;
 import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.logging.Level;
-
 public final class MiyukiEvents extends JavaPlugin {
-
-    private static final String PREFIX = ChatUtils.colorize("[MiyukiEvents] ");
 
     private String language;
 
@@ -95,30 +91,30 @@ public final class MiyukiEvents extends JavaPlugin {
 
     private void loadCommands() {
         this.commandRegistry = new CommandRegistry(this);
-        getLogger().log(Level.FINE, PREFIX + "Commands loaded successfully");
+        Logger.log("Commands loaded successfully");
     }
 
     private void loadListeners() {
         ListenerRegistry.of(this).register();
-        getLogger().log(Level.FINE, PREFIX + "Listeners loaded successfully");
+        Logger.log("Listeners loaded successfully");
     }
 
     private void loadProviders() {
         this.vaultProvider = new VaultProvider();
         if (vaultProvider.hook())
-            getLogger().info("Vault Provider loaded successfully");
+            Logger.log("Vault Provider loaded successfully");
 
         this.clanProvider = new ClanProvider(this);
         if (clanProvider.hook())
-            getLogger().info("Clan Provider loaded successfully");
+            Logger.log("Clan Provider loaded successfully");
 
         this.cashProvider = new CashProvider(this);
         if (cashProvider.hook())
-            getLogger().info("Cash Provider loaded successfully");
+            Logger.log("Cash Provider loaded successfully");
 
         this.worldEditProvider = new WorldEditProvider();
         if (worldEditProvider.hook())
-            getLogger().info("WorldEdit Provider loaded successfully");
+            Logger.log("WorldEdit Provider loaded successfully");
     }
 
     private void loadGlobalConfig() {
@@ -127,22 +123,22 @@ public final class MiyukiEvents extends JavaPlugin {
 
     private void loadMessages() {
         this.globalMessageDispatcher = new MessageDispatcher(new Config("messages.yml", language + "/messages.yml"));
-        getLogger().log(Level.FINE, PREFIX + "Messages loaded successfully");
+        Logger.log("Messages loaded successfully");
     }
 
     private void loadDatabase() {
         //
-        getLogger().log(Level.FINE, "Database loaded successfully");
+        Logger.log("Database loaded successfully");
     }
 
     private void loadGameManager() {
-        this.gameManager = new GameManager(this, globalConfig, language);
+        this.gameManager = new GameManager(this, language);
         this.gameManager.load();
     }
 
     private void loadGameQueue() {
         this.queue = new GameQueue(this, gameManager);
-        getLogger().log(Level.FINE, "Game Queue loaded successfully");
+        Logger.log("Queue loaded successfully");
     }
 
     private void loadAdapters() {
@@ -154,7 +150,7 @@ public final class MiyukiEvents extends JavaPlugin {
     private void loadMetrics() {
         if (globalConfig.getBoolean("Metrics")) {
             new Metrics(this, 14218);
-            getLogger().log(Level.FINE, "Metrics loaded successfully");
+            Logger.log("Metrics loaded successfully");
         }
     }
 

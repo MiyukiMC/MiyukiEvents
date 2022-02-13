@@ -33,21 +33,11 @@ public class Reward {
         val plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
 
         if (NumberEvaluator.isValid(cash)) {
-            val cashAPI = plugin.getCashProvider().provide();
-
-            if (cashAPI == null)
-                return;
-
-            cashAPI.deposit(playerName, cash);
+            plugin.getCashProvider().provide().ifPresent(cashAPI -> cashAPI.deposit(playerName, cash));
         }
 
         if (NumberEvaluator.isValid(money)) {
-            val economy = plugin.getVaultProvider().provide();
-
-            if (economy == null)
-                return;
-
-            economy.depositPlayer(player, money);
+            plugin.getVaultProvider().provide().ifPresent(economy -> economy.depositPlayer(player, money));
         }
     }
 

@@ -13,7 +13,7 @@ public class StartedGameEvent extends Event {
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
     @Getter
-    private Game game;
+    private Game<?> game;
 
     @NotNull
     @Override

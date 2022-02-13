@@ -91,6 +91,11 @@ public class Lottery extends Chat<Player> {
         this.reward.execute(player);
     }
 
+    @Override
+    public boolean isEconomyRequired() {
+        return false;
+    }
+
     private void setupResult() {
         val config = configProvider.provide(ConfigType.CONFIG);
         this.minNumber = config.getInt("MinNumber");

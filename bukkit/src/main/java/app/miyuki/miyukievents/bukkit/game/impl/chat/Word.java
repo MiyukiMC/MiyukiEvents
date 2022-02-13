@@ -81,6 +81,11 @@ public class Word extends Chat<Player> {
         this.reward.execute(player);
     }
 
+    @Override
+    public boolean isEconomyRequired() {
+        return false;
+    }
+
     private void setupResult() {
         val randomSection = configProvider.provide(ConfigType.CONFIG).getConfigurationSection("Words.Random");
 

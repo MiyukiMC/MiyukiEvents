@@ -3,8 +3,8 @@ package app.miyuki.miyukievents.bukkit.commands.impl.generic;
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.commands.SubCommand;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.Game;
+import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
 import lombok.val;
@@ -20,11 +20,11 @@ public class GenericStopSubCommand extends SubCommand {
 
     private final GameConfigProvider configProvider;
     private final MessageDispatcher messageDispatcher;
-    private final Game game;
+    private final Game<?> game;
 
     public GenericStopSubCommand(
             @NotNull MiyukiEvents plugin,
-            @NotNull Game game,
+            @NotNull Game<?> game,
             @NotNull GameConfigProvider configProvider,
             @NotNull MessageDispatcher messageDispatcher
     ) {

@@ -1,11 +1,11 @@
 package app.miyuki.miyukievents.bukkit.hook;
 
-import org.jetbrains.annotations.Nullable;
+import java.util.Optional;
 
 public interface ProviderService<T> {
 
     boolean hook();
 
-    @Nullable T provide();
+    Optional<T> provide();
 
 }

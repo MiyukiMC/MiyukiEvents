@@ -5,19 +5,19 @@ import app.miyuki.miyukievents.bukkit.game.manager.GameSchedulerManager;
 import com.cryptomorin.xseries.messages.Titles;
 import javafx.util.Pair;
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.bukkit.Bukkit;
 
 import java.util.List;
 
-@RequiredArgsConstructor(staticName = "of")
 @Builder(builderMethodName = "Builder")
 public class TitleAnimation {
 
     private final GameSchedulerManager schedulerManager;
 
+    @Builder.Default
     public long period = 20L;
+
     public List<Pair<String, String>> animation;
     public Runnable callback;
 

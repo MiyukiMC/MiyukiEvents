@@ -7,7 +7,8 @@ import app.miyuki.miyukievents.bukkit.hook.clan.impl.YClans;
 import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
-import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 
 public class ClanProvider implements ProviderService<ClanAPI> {
@@ -37,8 +38,9 @@ public class ClanProvider implements ProviderService<ClanAPI> {
     }
 
     @Override
-    public @Nullable ClanAPI provide() {
-        return clanAPI;
+    public Optional<ClanAPI> provide() {
+        return Optional.ofNullable(clanAPI);
     }
+
 
 }

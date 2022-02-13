@@ -20,7 +20,7 @@ public class PlayerInteract implements Listener {
         if (!(currentGame instanceof InPerson))
             return;
 
-        ((InPerson) currentGame).onPlayerInteract(event);
+        ((InPerson<?>) currentGame).onPlayerInteract(event);
     }
 
 }

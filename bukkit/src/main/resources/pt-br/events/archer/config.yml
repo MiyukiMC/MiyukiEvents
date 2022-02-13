@@ -55,7 +55,10 @@ Soup:
 Schematic:
   # Ativar/Desativar o sistema de schematic.
   Enabled: false
-  # Configure as suas schematic aqui. Nela você irá configurar os tempos em que as schematics serão colocadas.
+  # Caso o random esteja ativo, quando a partida iniciar ele irá pegar um dos schematics setados e colocar.
+  # Os schematics da lista 'Schematics' serão ignorados.
+  Random: false
+  # Configure as suas schematic aqui caso o 'Random' esteja em 'false'. Nela você irá configurar os tempos em que as schematics serão colocadas.
   # SEMPRE deixe uma schematic padrão, onde o segundo deverá ser 0.
   # Essa será a schematic default da arena.
   # Formato: segundos:nome da schematic

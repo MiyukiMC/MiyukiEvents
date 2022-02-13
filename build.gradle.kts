@@ -41,8 +41,8 @@ tasks {
     }
     shadowJar {
         archiveFileName.set("MiyukiEvents-$version.jar")
-        relocate("io.github.bananapuncher714.nbteditor", "app.miyuki.libs.miyukievents.nbteditor")
-        relocate("org.intellij.lang.annotations", "app.miyuki.libs.miyukievents.intellij.lang.annotations")
+        relocate("io.github.bananapuncher714.nbteditor", "app.miyuki.miyukievents.libs.nbteditor")
+        relocate("org.intellij.lang.annotations", "app.miyuki.miyukievents.intellij.libs.lang.annotations")
         relocate("org.jetbrains.annotations", "app.miyuki.miyukievents.libs.jetbrains.annotations")
         relocate("org.bstats", "app.miyuki.miyukievents.libs.bstats")
         relocate("com.cryptomorin.xseries", "app.miyuki.miyukievents.libs.xseries")
