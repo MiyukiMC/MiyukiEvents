@@ -13,7 +13,6 @@ public class YClans implements ClanAPI {
 
     private final yClansAPI clanAPI = yClansAPI.yclansapi;
 
-
     @Override
     public boolean hasClan(String playerName) {
         return clanAPI.getPlayer(playerName).getClan() != null;

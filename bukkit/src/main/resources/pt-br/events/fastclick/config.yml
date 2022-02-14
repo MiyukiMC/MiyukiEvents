@@ -1,5 +1,10 @@
+Type: 'fastclick'
+Name: 'fastclick'
+
 Permission: 'miyukievents.fastclick'
+
 Cost: 0
+
 Calls: 5
 CallInterval: 15
 
@@ -14,23 +19,30 @@ Tag:
   Name: 'miyukievents_fastclick'
   Tag: '&5[FastClick]'
 
-Messages:
-  CallEvent:
-    - ''
-    - ''
-    - ''
-  EventWin:
-    - ''
-    - ''
-    - ''
-  NoWinner:
-    - ''
-    - ''
-    - ''
-  EventCancelled:
-    - ''
-    - ''
-    - ''
-  WrongPlace: ''
-  ClickablePlace: ''
-  NotClickablePlace: ''
+# Comando
+Command:
+  # Permissão para usar ele
+  Permission: 'miyukievents.fastclick'
+  # Aliases do comando
+  Names: ['fastclick']
+
+SubCommands:
+  # Iniciar o evento
+  Start:
+    Permission: 'miyukievents.fastclick.start'
+    Names: ['start', 'iniciar']
+  # Parar o evento
+  Stop:
+    Permission: 'miyukievents.fastclick.stop'
+    Names: ['stop', 'parar']
+  # Recarregar a config.yml do evento
+  Reload:
+    Permission: 'miyukievents.fastclick.reload'
+    Names: ['reload', 'recarregar']
+  Help:
+    # Este comando não necessita de nenhuma permissão, ao contrário do HelpAdmin.
+    # É obrigatório que este comando tenha nomes, caso contrário será um nome padrão.
+    Names:  ['help']
+  HelpAdmin:
+    # Este comando não necessita de nenhum nome.
+    Permission: 'miyukievents.fastclick.helpadmin'

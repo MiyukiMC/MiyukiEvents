@@ -3,7 +3,7 @@ package app.miyuki.miyukievents.bukkit.game.manager;
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.*;
-import app.miyuki.miyukievents.bukkit.util.Logger;
+import app.miyuki.miyukievents.bukkit.util.logger.Logger;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -30,7 +30,8 @@ public class GameManager {
             "lottery",
             "pool",
             "fastquiz",
-            "jackpot"
+            "jackpot",
+            "fastclick"
     );
 
     @Getter

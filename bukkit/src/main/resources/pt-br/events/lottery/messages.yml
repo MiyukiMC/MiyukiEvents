@@ -37,3 +37,4 @@ HelpAdmin:
   - '/lottery stop'
 # Mensagem quando o comando é utilizado incorretamente
 CommandUsedIncorrectly: 'Utilize /lottery <numero>!'
+WrongNumber: 'Você errou. Tente novamente!'

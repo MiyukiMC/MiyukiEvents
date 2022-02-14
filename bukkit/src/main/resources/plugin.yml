@@ -4,4 +4,16 @@ website: https://github.com/MiyukiMC/
 authors: [ SOekd, xMattNice_ ]
 api-version: 1.13
 main: app.miyuki.miyukievents.bukkit.MiyukiEvents
-softdepend: [ Vault, PlayerPoints, yPoints, Multiverse-Core, NextCash, FastAsyncWorldEdit, WorldEdit, nChat, LegendChat, SimpleClans, yClans, UltimateChat ]
+softdepend:
+  - Vault
+  - PlayerPoints
+  - yPoints
+  - Multiverse-Core
+  - NextCash
+  - FastAsyncWorldEdit
+  - WorldEdit
+  - nChat
+  - LegendChat
+  - SimpleClans
+  - yClans
+  - UltimateChat

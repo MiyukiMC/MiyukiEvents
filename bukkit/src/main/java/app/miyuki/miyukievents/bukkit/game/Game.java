@@ -59,6 +59,9 @@ public abstract class Game<W> {
     }
 
     protected boolean checkCost(Player player) {
+        if (!plugin.getVaultProvider().provide().isPresent())
+            return true;
+
         return plugin.getVaultProvider().provide().map(value -> value.getBalance(player) >= getCost()).orElse(true);
     }
 

@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Jackpot extends Command<Player> {
 
-    private final Economy economy = plugin.getVaultProvider().provide().get();
+    private final Economy economy = plugin.getVaultProvider().provide().orElse(null);
 
     @Getter
     private final Map<String, Double> players = Maps.newHashMap();

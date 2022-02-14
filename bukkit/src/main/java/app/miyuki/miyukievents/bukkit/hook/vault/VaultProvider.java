@@ -1,9 +1,11 @@
 package app.miyuki.miyukievents.bukkit.hook.vault;
 
+import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.hook.ProviderService;
 import lombok.val;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Optional;
 
@@ -13,13 +15,20 @@ public class VaultProvider implements ProviderService<Economy> {
 
     @Override
     public boolean hook() {
-        val registeredServiceProvider = Bukkit.getServicesManager().getRegistration(Economy.class);
+        try {
+            if (Bukkit.getPluginManager().getPlugin("Vault") == null)
+                return false;
 
-        if (registeredServiceProvider == null)
+            val registeredServiceProvider = Bukkit.getServicesManager().getRegistration(Economy.class);
+
+            if (registeredServiceProvider == null)
+                return false;
+
+            economy = registeredServiceProvider.getProvider();
+            return true;
+        } catch (Exception exception) {
             return false;
-
-        economy = registeredServiceProvider.getProvider();
-        return true;
+        }
     }
 
     @Override

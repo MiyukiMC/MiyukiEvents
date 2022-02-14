@@ -1,4 +1,5 @@
 NoPermission: '&cVocê não tem permissão para executar este comando.'
+NoMoney: '&cVocê não tem dinheiro suficiente para participar desse evento.'
 OnlyPlayers: '&cSomente jogadores podem executar este comando.'
 GameNotFound: '&cO jogo específicado não foi encontrado.'
 GameAddedToQueue: '&aO evento foi adicionado a fila e irá começar em breve.'

@@ -16,7 +16,7 @@ import app.miyuki.miyukievents.bukkit.language.LanguageEvaluator;
 import app.miyuki.miyukievents.bukkit.language.LanguageProvider;
 import app.miyuki.miyukievents.bukkit.listener.ListenerRegistry;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
-import app.miyuki.miyukievents.bukkit.util.Logger;
+import app.miyuki.miyukievents.bukkit.util.logger.Logger;
 import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;

@@ -1,0 +1,30 @@
+Start:
+  - ''
+  - 'O evento fastclick comecou'
+  - '{}'
+  - ''
+  - 'Clique no &a[X]&r e ganhe o evento'
+  - 'Tempo restante: {seconds} segundos'
+Win:
+  - ''
+  - 'O evento fastclick acabou'
+  - 'Ganhador: {winner}'
+  - ''
+NoWinner:
+  - ''
+  - 'O evento fastclick acabou sem ganhadores.'
+  - ''
+Cancelled:
+  - ''
+  - 'O evento fastclick foi cancelado por um administrador'
+  - ''
+Help:
+  - 'Nenhum'
+HelpAdmin:
+  - '/fastclick start'
+  - '/fastclick stop'
+  - '/fastclick reload'
+
+WrongPlace: 'Você clicou no lugar errado. Tente novamente'
+ClickablePlace: '&a[X]'
+NotClickablePlace: '&f[X]'
