@@ -4,10 +4,9 @@ import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.commands.SubCommand;
 import app.miyuki.miyukievents.bukkit.commands.evaluator.TeamArgsEvaluator;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
-import app.miyuki.miyukievents.bukkit.game.impl.inperson.Deathmatch;
+import app.miyuki.miyukievents.bukkit.game.InPerson;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
 import app.miyuki.miyukievents.bukkit.util.player.PlayerUtils;
 import com.google.common.collect.ImmutableList;
@@ -25,7 +24,7 @@ import java.util.stream.IntStream;
 
 public class InPersonSetKitSubCommand extends SubCommand {
 
-    private final Game<?> game;
+    private final InPerson<?> game;
     private final MessageDispatcher messageDispatcher;
     private final GameConfigProvider configProvider;
 
@@ -33,7 +32,7 @@ public class InPersonSetKitSubCommand extends SubCommand {
 
     public InPersonSetKitSubCommand(
             @NotNull MiyukiEvents plugin,
-            @NotNull Game<?> game,
+            @NotNull InPerson<?> game,
             @NotNull GameConfigProvider configProvider,
             @NotNull MessageDispatcher messageDispatcher
     ) {
@@ -43,7 +42,6 @@ public class InPersonSetKitSubCommand extends SubCommand {
         this.configProvider = configProvider;
 
         val config = configProvider.provide(ConfigType.CONFIG);
-
         teams = config.contains("Teams") ? config.getInt("Teams") : -1;
     }
 
@@ -61,11 +59,11 @@ public class InPersonSetKitSubCommand extends SubCommand {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
 
-        if (teams != -1 && !TeamArgsEvaluator.of(messageDispatcher).evaluate(sender, teams, args, "IncorrectSetKitCommand")) {
+        if (game.isTeamsEnabled() && !TeamArgsEvaluator.of(messageDispatcher).evaluate(sender, teams, args, "IncorrectSetKitCommand")) {
             return false;
         }
 
-        val teamNumber = teams != -1 ? Integer.parseInt(args[0]) : -1;
+        val teamNumber = game.isTeamsEnabled() ? Integer.parseInt(args[0]) : -1;
 
         if (game.getGameState() != GameState.STOPPED) {
             plugin.getGlobalMessageDispatcher().dispatch(sender, "NeedStopGame");
@@ -81,11 +79,11 @@ public class InPersonSetKitSubCommand extends SubCommand {
 
         val data = configProvider.provide(ConfigType.DATA);
 
-        data.set("Kit" + (teamNumber != -1 ? "." + teamNumber : ""), serializedInventory);
+        data.set("Kit" + (game.isTeamsEnabled() ? "." + teamNumber : ""), serializedInventory);
 
         data.saveConfig();
 
-        val kits = ((Deathmatch) game).getKits();
+        val kits = game.getKits();
 
         kits.put(teamNumber != -1 ? teamNumber : 0, items);
 

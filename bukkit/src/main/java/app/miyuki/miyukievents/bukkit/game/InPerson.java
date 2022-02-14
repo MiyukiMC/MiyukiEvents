@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,9 +21,11 @@ import java.util.HashMap;
 @Setter
 public abstract class InPerson<W> extends Game<W> {
 
-    @NotNull
     @Getter
     protected final HashMap<Integer, @Nullable Location> entries = new HashMap<>();
+
+    @Getter
+    protected final HashMap<Integer, @NotNull ItemStack[]> kits = new HashMap<>();
 
     @Nullable
     protected Location lobby = null;

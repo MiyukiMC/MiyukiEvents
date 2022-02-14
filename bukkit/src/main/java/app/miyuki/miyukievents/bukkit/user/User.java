@@ -1,45 +1,36 @@
 package app.miyuki.miyukievents.bukkit.user;
 
 import app.miyuki.miyukievents.bukkit.database.Cacheable;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.UUID;
 
 @Getter
+@Data
 public class User implements Cacheable<String> {
 
+    private final UUID uuid;
+    private final List<UserGameHistory> gameHistories;
     private final String playerName;
 
     @Setter
     private UserState userState;
 
-    @Setter
-    private String clanTag;
-
-    private final List<String> tags = Lists.newArrayList();
-
-    private final Map<String, Integer> wins = Maps.newHashMap();
-
-    public User(String playerName) {
+    private User(String playerName, UUID uuid, UserState userState, List<UserGameHistory> gameHistories) {
         this.playerName = playerName;
-        this.clanTag = null;
+        this.uuid = uuid;
+        this.userState = userState;
+        this.gameHistories = gameHistories;
     }
+
 
     @Override
     public String getKey() {
-        return playerName.toLowerCase(Locale.ROOT);
+        return uuid.toString();
     }
 
-    public enum UserState {
-
-        IN_GAME,
-        LOBBY
-
-    }
 
 }

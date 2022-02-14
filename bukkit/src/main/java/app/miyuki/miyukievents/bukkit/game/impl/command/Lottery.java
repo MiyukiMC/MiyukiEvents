@@ -1,13 +1,12 @@
 package app.miyuki.miyukievents.bukkit.game.impl.command;
 
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.Chat;
 import app.miyuki.miyukievents.bukkit.game.Command;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import lombok.val;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,10 +25,7 @@ public class Lottery extends Command<Player> {
 
     @Override
     public void onCommand(Player player, String[] args) {
-        if (gameState != GameState.STARTED)
-            return;
-
-        if (args.length < 1)
+        if (gameState != GameState.STARTED && !StringUtils.isNumeric(args[1]))
             return;
 
         if (!player.hasPermission(getPermission())) {

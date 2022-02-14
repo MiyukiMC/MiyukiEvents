@@ -1,11 +1,9 @@
 package app.miyuki.miyukievents.bukkit.hook.vault;
 
-import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.hook.ProviderService;
 import lombok.val;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Optional;
 

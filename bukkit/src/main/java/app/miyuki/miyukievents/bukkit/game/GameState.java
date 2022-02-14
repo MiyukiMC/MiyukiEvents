@@ -5,7 +5,7 @@ public enum GameState {
     QUEUE,
     STARTED,
     STARTING,
-    STOPPIMG,
+    STOPPING,
     STOPPED
 
 }

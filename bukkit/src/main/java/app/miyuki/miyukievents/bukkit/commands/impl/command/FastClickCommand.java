@@ -1,4 +1,4 @@
-package app.miyuki.miyukievents.bukkit.commands.impl.command.lottery;
+package app.miyuki.miyukievents.bukkit.commands.impl.command;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.commands.Command;
@@ -7,24 +7,20 @@ import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericReloadSubComm
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericStartSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericStopSubCommand;
 import app.miyuki.miyukievents.bukkit.game.Game;
-import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
-import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
 import lombok.val;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LotteryCommand extends Command {
+public class FastClickCommand extends Command {
 
-    private Game<?> game;
+    private final Game<?> game;
 
-    public LotteryCommand(@NotNull MiyukiEvents plugin, @NotNull  Game<?> game, @NotNull String name, @NotNull List<String> aliases) {
+    public FastClickCommand(@NotNull MiyukiEvents plugin, @NotNull Game<?> game, @NotNull String name, @NotNull List<String> aliases) {
         super(plugin, name, aliases, true);
 
         this.game = game;
@@ -42,13 +38,10 @@ public class LotteryCommand extends Command {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
-        if (sender instanceof Player && game.getGameState() == GameState.STARTED) {
+        if (sender instanceof Player && game.getGameState() == GameState.STARTED && args.length > 0) {
             val player = (Player) sender;
-
-            if (args.length > 0 && StringUtils.isNumeric(args[0])) {
-                ((app.miyuki.miyukievents.bukkit.game.Command<?>) game).onCommand(player, args);
-                return false;
-            }
+            ((app.miyuki.miyukievents.bukkit.game.Command<?>) game).onCommand(player, args);
+            return false;
 
         }
 
@@ -56,4 +49,5 @@ public class LotteryCommand extends Command {
 
         return false;
     }
+
 }

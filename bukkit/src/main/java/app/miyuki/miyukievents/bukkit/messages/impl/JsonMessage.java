@@ -36,6 +36,7 @@ public class JsonMessage implements Message {
         for (BaseComponent baseComponent : GsonProvider.getPrettyPrinting().fromJson(message, BaseComponent[].class)) {
             textComponent.addExtra(baseComponent);
         }
+
         ((Player) sender).spigot().sendMessage(textComponent);
     }
 

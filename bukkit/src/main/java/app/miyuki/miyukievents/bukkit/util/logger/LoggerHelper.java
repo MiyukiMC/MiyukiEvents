@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.logging.Level;
 
 @UtilityClass
-public class Logger {
+public class LoggerHelper {
 
     private final java.util.logging.Logger logger = JavaPlugin.getPlugin(MiyukiEvents.class).getLogger();
 

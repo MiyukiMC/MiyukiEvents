@@ -4,7 +4,6 @@ import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.commands.SubCommand;
 import app.miyuki.miyukievents.bukkit.commands.evaluator.TeamArgsEvaluator;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.InPerson;
@@ -26,13 +25,13 @@ public class InPersonSetLocationSubCommand extends SubCommand {
     private final GameConfigProvider configProvider;
     private final MessageDispatcher messageDispatcher;
     private final LocationType locationType;
-    private final Game<?> game;
+    private final InPerson<?> game;
 
     private final int teams;
 
     public InPersonSetLocationSubCommand(
             @NotNull MiyukiEvents plugin,
-            @NotNull Game<?> game,
+            @NotNull InPerson<?> game,
             @NotNull GameConfigProvider configProvider,
             @NotNull MessageDispatcher messageDispatcher,
             @NotNull InPersonSetLocationSubCommand.LocationType locationType
@@ -63,7 +62,7 @@ public class InPersonSetLocationSubCommand extends SubCommand {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
 
-        if (teams == -1 && locationType == LocationType.ENTRY && !TeamArgsEvaluator.of(messageDispatcher).evaluate(sender, teams, args, "IncorrectSetEntryCommand")) {
+        if (game.isTeamsEnabled() && locationType == LocationType.ENTRY && !TeamArgsEvaluator.of(messageDispatcher).evaluate(sender, teams, args, "IncorrectSetEntryCommand")) {
             return false;
         }
 
@@ -74,7 +73,7 @@ public class InPersonSetLocationSubCommand extends SubCommand {
             return false;
         }
 
-        val teamNumber = locationType == LocationType.ENTRY ? Integer.parseInt(args[0]) : -1;
+        val teamNumber = locationType == LocationType.ENTRY ? Integer.parseInt(args[0]) : 0;
 
         val playerLocation = ((Player) sender).getLocation();
 
@@ -82,13 +81,13 @@ public class InPersonSetLocationSubCommand extends SubCommand {
 
         val data = configProvider.provide(ConfigType.DATA);
 
-        data.set(locationType.locationName + (teamNumber != -1 ? "." + teamNumber : ""), plugin.getLocationAdapter().restore(playerLocation));
+        data.set(locationType.locationName + (game.isTeamsEnabled() ? "." + teamNumber : ""), plugin.getLocationAdapter().restore(playerLocation));
         data.saveConfig();
 
         switch (locationType) {
             case ENTRY:
                 val entries = inPersonGame.getEntries();
-                entries.put(Math.max(0, teamNumber), playerLocation);
+                entries.put(teamNumber, playerLocation);
                 break;
             case EXIT:
                 inPersonGame.setExit(playerLocation);

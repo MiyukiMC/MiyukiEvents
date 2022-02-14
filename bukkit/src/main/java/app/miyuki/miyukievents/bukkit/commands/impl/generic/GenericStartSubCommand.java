@@ -80,6 +80,7 @@ public class GenericStartSubCommand extends SubCommand {
             }
 
             val entries = inPersonGame.getEntries();
+            val kits = inPersonGame.getKits();
 
             val config = configProvider.provide(ConfigType.CONFIG);
 
@@ -89,24 +90,31 @@ public class GenericStartSubCommand extends SubCommand {
                 List<String> undefinedKits = Lists.newArrayList();
 
                 for (int i = 1; i <= config.getInt("Teams"); i++) {
-                    if (entries.containsKey(i)) {
+                    if (!entries.containsKey(i)) {
                         undefinedEntries.add(String.valueOf(i));
+                    }
+                    if (inPersonGame.isKitRequired() && !kits.containsKey(i)) {
+                        undefinedKits.add(String.valueOf(i));
                     }
                 }
 
-                if (undefinedEntries.isEmpty()) {
+                if (!undefinedEntries.isEmpty()) {
                     messageDispatcher.dispatch(sender, "EntryIsNotSet",
                             message -> message.replace("{entry}", String.join(", ", undefinedEntries)));
                     return false;
                 }
 
+                if (!undefinedKits.isEmpty()) {
+                    messageDispatcher.dispatch(sender, "KitIsNotSet",
+                            message -> message.replace("{kit}", String.join(", ", undefinedKits)));
+                    return false;
+                }
+
+
             } else if (entries.isEmpty()) {
                 messageDispatcher.dispatch(sender, "EntryIsNotSet");
                 return false;
             }
-
-
-
 
         }
 

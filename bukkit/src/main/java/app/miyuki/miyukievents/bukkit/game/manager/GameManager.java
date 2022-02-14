@@ -3,7 +3,7 @@ package app.miyuki.miyukievents.bukkit.game.manager;
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.*;
-import app.miyuki.miyukievents.bukkit.util.logger.Logger;
+import app.miyuki.miyukievents.bukkit.util.logger.LoggerHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -89,7 +89,7 @@ public class GameManager {
                     .findFirst();
 
             if (!type.isPresent()) {
-                Logger.log(Level.SEVERE, "The type &f" + typeName + " is invalid.");
+                LoggerHelper.log(Level.SEVERE, "The type &f" + typeName + " is invalid.");
                 continue;
             }
 
@@ -100,7 +100,7 @@ public class GameManager {
             }
 
             if (game.isEconomyRequired() && !economy.isPresent()) {
-                Logger.log(Level.SEVERE, "The " + game.getName() + " event could not be registred because the Vault was not found.");
+                LoggerHelper.log(Level.SEVERE, "The " + game.getName() + " event could not be registred because the Vault was not found.");
                 continue;
             }
 
@@ -109,12 +109,12 @@ public class GameManager {
                 val inPersonGame = (InPerson<?>) game;
 
                 if (inPersonGame.isClanRequired() && !clan.isPresent()) {
-                    Logger.log(Level.SEVERE, "The " + game.getName() + " event could not be registred because no clan plugin found.");
+                    LoggerHelper.log(Level.SEVERE, "The " + game.getName() + " event could not be registred because no clan plugin found.");
                     continue;
                 }
 
                 if (inPersonGame.isWorldEditRequired() && !worldEdit.isPresent()) {
-                    Logger.log(Level.SEVERE, "The " + game.getName() + " event could not be registred because the WorldEdit was not found.");
+                    LoggerHelper.log(Level.SEVERE, "The " + game.getName() + " event could not be registred because the WorldEdit was not found.");
                     continue;
                 }
 

@@ -16,7 +16,7 @@ import app.miyuki.miyukievents.bukkit.language.LanguageEvaluator;
 import app.miyuki.miyukievents.bukkit.language.LanguageProvider;
 import app.miyuki.miyukievents.bukkit.listener.ListenerRegistry;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
-import app.miyuki.miyukievents.bukkit.util.logger.Logger;
+import app.miyuki.miyukievents.bukkit.util.logger.LoggerHelper;
 import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -91,30 +91,30 @@ public final class MiyukiEvents extends JavaPlugin {
 
     private void loadCommands() {
         this.commandRegistry = new CommandRegistry(this);
-        Logger.log("Commands loaded successfully");
+        LoggerHelper.log("Commands loaded successfully");
     }
 
     private void loadListeners() {
         ListenerRegistry.of(this).register();
-        Logger.log("Listeners loaded successfully");
+        LoggerHelper.log("Listeners loaded successfully");
     }
 
     private void loadProviders() {
         this.vaultProvider = new VaultProvider();
         if (vaultProvider.hook())
-            Logger.log("Vault Provider loaded successfully");
+            LoggerHelper.log("Vault Provider loaded successfully");
 
         this.clanProvider = new ClanProvider(this);
         if (clanProvider.hook())
-            Logger.log("Clan Provider loaded successfully");
+            LoggerHelper.log("Clan Provider loaded successfully");
 
         this.cashProvider = new CashProvider(this);
         if (cashProvider.hook())
-            Logger.log("Cash Provider loaded successfully");
+            LoggerHelper.log("Cash Provider loaded successfully");
 
         this.worldEditProvider = new WorldEditProvider();
         if (worldEditProvider.hook())
-            Logger.log("WorldEdit Provider loaded successfully");
+            LoggerHelper.log("WorldEdit Provider loaded successfully");
     }
 
     private void loadGlobalConfig() {
@@ -123,12 +123,12 @@ public final class MiyukiEvents extends JavaPlugin {
 
     private void loadMessages() {
         this.globalMessageDispatcher = new MessageDispatcher(new Config("messages.yml", language + "/messages.yml"));
-        Logger.log("Messages loaded successfully");
+        LoggerHelper.log("Messages loaded successfully");
     }
 
     private void loadDatabase() {
         //
-        Logger.log("Database loaded successfully");
+        LoggerHelper.log("Database loaded successfully");
     }
 
     private void loadGameManager() {
@@ -138,7 +138,7 @@ public final class MiyukiEvents extends JavaPlugin {
 
     private void loadGameQueue() {
         this.queue = new GameQueue(this, gameManager);
-        Logger.log("Queue loaded successfully");
+        LoggerHelper.log("Queue loaded successfully");
     }
 
     private void loadAdapters() {
@@ -150,7 +150,7 @@ public final class MiyukiEvents extends JavaPlugin {
     private void loadMetrics() {
         if (globalConfig.getBoolean("Metrics")) {
             new Metrics(this, 14218);
-            Logger.log("Metrics loaded successfully");
+            LoggerHelper.log("Metrics loaded successfully");
         }
     }
 

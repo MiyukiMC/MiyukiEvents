@@ -29,12 +29,6 @@ public class Deathmatch extends InPerson<List<Player>> {
 
     private final HashMap<Player, Integer> players = new HashMap<>();
 
-    @Getter
-    private final HashMap<Integer, @Nullable ItemStack[]> kits = new HashMap<>();
-
-    @Getter
-    private final HashMap<Integer, @Nullable Location> entries = new HashMap<>();
-
     private final HashMap<Integer, Integer> score = new HashMap<>();
 
     @Getter
@@ -132,7 +126,6 @@ public class Deathmatch extends InPerson<List<Player>> {
 
                 if (isWorldEditRequired()) {
 
-
                     val worldEdit = plugin.getWorldEditProvider().provide().get();
 
                     val data = configProvider.provide(ConfigType.DATA);
@@ -189,6 +182,8 @@ public class Deathmatch extends InPerson<List<Player>> {
                             worldEdit.pasteSchematic(file, pos1, pos2);
                         });
 
+                        if (randomSchematic)
+                            break;
 
                     }
                 }
@@ -203,7 +198,7 @@ public class Deathmatch extends InPerson<List<Player>> {
 
     @Override
     public void stop() {
-        setGameState(GameState.STOPPIMG);
+        setGameState(GameState.STOPPING);
 
         schedulerManager.cancel();
         players.keySet().forEach(this::leave);

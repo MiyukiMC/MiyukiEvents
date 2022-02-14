@@ -5,11 +5,15 @@ SetLobbySuccessfully: '&aO lobby foi setado com sucesso.'
 SetCabinSuccessfully: '&aO camarote foi setado com sucesso.'
 SetExitSuccessfully: '&aA saída foi setado com sucesso.'
 SetEntrySuccessfully: '&aA entrada do time {team} foi setado com sucesso.'
+EnterCabinSuccessfully: '&aVocê entrou no camarote com sucesso.'
+
 LobbyIsNotSet: '&cO lobby do evento não foi definido.'
 CabinIsNotSet: '&cO camarote do evento não foi definido.'
+CabinIsClosed: '&cEste evento não está acontecendo no momento e seu camarote está fechado.'
 ExitIsNotSet: '&cA saida do evento não foi definida.'
 EntryIsNotSet: '&cAs seguintes entradas precisam ser setadas: &7{entry}'
-KitIsNotSet: '&cOs seguintes kits precisam ser setados: &7{kits}'
+KitIsNotSet: '&cOs seguintes kits precisam ser setados: &7{kit}'
+
 
 IncorrectSetKitCommand: '&cComando incorreto! Use /archer setkit (1,2,3...)'
 IncorrectSetEntryCommand: '&cComando incorreto! Use /archer setentry (1,2,3...)'
