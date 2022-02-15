@@ -1,31 +1,23 @@
 package app.miyuki.miyukievents.bukkit.user;
 
-import app.miyuki.miyukievents.bukkit.database.Cacheable;
+import app.miyuki.miyukievents.bukkit.storage.Cacheable;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-@Getter
+@AllArgsConstructor
 @Data
 public class User implements Cacheable<String> {
 
     private final UUID uuid;
-    private final List<UserGameHistory> gameHistories;
     private final String playerName;
-
-    @Setter
+    private BigDecimal totalMoney;
+    private BigDecimal totalCash;
     private UserState userState;
-
-    private User(String playerName, UUID uuid, UserState userState, List<UserGameHistory> gameHistories) {
-        this.playerName = playerName;
-        this.uuid = uuid;
-        this.userState = userState;
-        this.gameHistories = gameHistories;
-    }
-
+    private final List<UserGameHistory> gameHistories;
 
     @Override
     public String getKey() {

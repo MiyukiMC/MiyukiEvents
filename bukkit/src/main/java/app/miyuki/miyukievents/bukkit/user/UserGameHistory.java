@@ -2,17 +2,12 @@ package app.miyuki.miyukievents.bukkit.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
-@AllArgsConstructor
-@Getter
-@Setter
 @Data
+@AllArgsConstructor
 public class UserGameHistory {
 
     private final String name;
-
     private int wins;
     private int defeats;
     private int kills;
@@ -35,5 +30,6 @@ public class UserGameHistory {
         double winRate = (double) wins / (double) defeats;
         return Math.round(winRate * 10000.0) / 100.0;
     }
+
 
 }

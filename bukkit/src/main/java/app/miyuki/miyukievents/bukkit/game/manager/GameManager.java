@@ -40,11 +40,9 @@ public class GameManager {
     @Nullable
     public Game<?> getCurrentGame() {
         for (Game<?> game : plugin.getGameManager().getGames().values()) {
-
             if (game.getGameState() != GameState.QUEUE && game.getGameState() != GameState.STOPPED) {
                 return game;
             }
-
         }
         return null;
     }

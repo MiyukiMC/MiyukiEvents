@@ -1,4 +1,4 @@
-package app.miyuki.miyukievents.bukkit.database.datasource;
+package app.miyuki.miyukievents.bukkit.storage.datasource;
 
 import java.sql.Connection;
 

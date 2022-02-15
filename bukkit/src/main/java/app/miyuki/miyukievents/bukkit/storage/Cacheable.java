@@ -1,4 +1,4 @@
-package app.miyuki.miyukievents.bukkit.database;
+package app.miyuki.miyukievents.bukkit.storage;
 
 public interface Cacheable<K> {
 

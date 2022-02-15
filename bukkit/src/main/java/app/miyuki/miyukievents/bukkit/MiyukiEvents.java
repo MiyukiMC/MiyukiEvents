@@ -16,8 +16,10 @@ import app.miyuki.miyukievents.bukkit.language.LanguageEvaluator;
 import app.miyuki.miyukievents.bukkit.language.LanguageProvider;
 import app.miyuki.miyukievents.bukkit.listener.ListenerRegistry;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
+import app.miyuki.miyukievents.bukkit.storage.Storage;
 import app.miyuki.miyukievents.bukkit.util.logger.LoggerHelper;
 import lombok.Getter;
+import lombok.val;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -61,6 +63,9 @@ public final class MiyukiEvents extends JavaPlugin {
     @Getter
     private WorldEditProvider worldEditProvider;
 
+    @Getter
+    private Storage storage;
+
     @Override
     public void onEnable() {
         this.language = new LanguageEvaluator().evaluate(new LanguageProvider().provide());
@@ -86,6 +91,12 @@ public final class MiyukiEvents extends JavaPlugin {
 
     @Override
     public void onDisable() {
+
+        val currentGame = gameManager.getCurrentGame();
+        if (currentGame != null)
+            currentGame.stop();
+
+        storage.getDataSource().close();
 
     }
 
@@ -127,7 +138,10 @@ public final class MiyukiEvents extends JavaPlugin {
     }
 
     private void loadDatabase() {
-        //
+        storage = new Storage(this);
+
+        storage.getUsers().create();
+
         LoggerHelper.log("Database loaded successfully");
     }
 
