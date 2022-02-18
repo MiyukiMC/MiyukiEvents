@@ -1,4 +1,4 @@
-package app.miyuki.miyukievents.bukkit.impl;
+package app.miyuki.miyukievents.bukkit.hook.worldedit.impl;
 
 import app.miyuki.miyukievents.bukkit.hook.worldedit.WorldEditAPI;
 import com.sk89q.worldedit.MaxChangedBlocksException;

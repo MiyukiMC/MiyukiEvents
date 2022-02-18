@@ -7,14 +7,14 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserGameHistory {
 
-    private final String name;
+    private final String gameName;
     private int wins;
     private int defeats;
     private int kills;
     private int deaths;
 
     public int getParticipation() {
-        return wins + deaths;
+        return wins + defeats;
     }
 
     public double getKDR() {

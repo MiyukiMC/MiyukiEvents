@@ -17,6 +17,7 @@ import app.miyuki.miyukievents.bukkit.language.LanguageProvider;
 import app.miyuki.miyukievents.bukkit.listener.ListenerRegistry;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
 import app.miyuki.miyukievents.bukkit.storage.Storage;
+import app.miyuki.miyukievents.bukkit.storage.StorageFactory;
 import app.miyuki.miyukievents.bukkit.util.logger.LoggerHelper;
 import lombok.Getter;
 import lombok.val;
@@ -76,8 +77,6 @@ public final class MiyukiEvents extends JavaPlugin {
         loadAdapters();
         loadProviders();
 
-        loadDatabase();
-
         loadCommands();
         loadListeners();
 
@@ -86,6 +85,7 @@ public final class MiyukiEvents extends JavaPlugin {
         loadGameManager();
         loadGameQueue();
 
+        loadDatabase();
         loadMetrics();
     }
 
@@ -96,7 +96,8 @@ public final class MiyukiEvents extends JavaPlugin {
         if (currentGame != null)
             currentGame.stop();
 
-        storage.getDataSource().close();
+        if (storage != null)
+            storage.shutdown();
 
     }
 
@@ -138,10 +139,14 @@ public final class MiyukiEvents extends JavaPlugin {
     }
 
     private void loadDatabase() {
-        storage = new Storage(this);
+        val storageFactory = new StorageFactory(this);
 
-        storage.getUsers().create();
+        storage = storageFactory.create();
 
+        if (storage == null)
+            return;
+
+        storage.createTables();
         LoggerHelper.log("Database loaded successfully");
     }
 

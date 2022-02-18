@@ -25,6 +25,10 @@ allprojects {
         annotationProcessor("org.projectlombok:lombok:1.18.22")
 
         implementation("org.jetbrains:annotations:22.0.0")
+        implementation("com.zaxxer:HikariCP:4.0.3")
+        implementation("org.slf4j:slf4j-simple:1.7.36")
+
+
     }
 
 }
@@ -42,9 +46,11 @@ tasks {
     shadowJar {
         archiveFileName.set("MiyukiEvents-$version.jar")
         relocate("io.github.bananapuncher714.nbteditor", "app.miyuki.miyukievents.libs.nbteditor")
-        relocate("org.intellij.lang.annotations", "app.miyuki.miyukievents.intellij.libs.lang.annotations")
+        relocate("org.intellij.lang.annotations", "app.miyuki.miyukievents.libs.intellij.lang.annotations")
         relocate("org.jetbrains.annotations", "app.miyuki.miyukievents.libs.jetbrains.annotations")
         relocate("org.bstats", "app.miyuki.miyukievents.libs.bstats")
         relocate("com.cryptomorin.xseries", "app.miyuki.miyukievents.libs.xseries")
+        relocate("com.zaxxer.hikari", "app.miyuki.miyukievents.libs.hikari")
+        relocate("org.slf4j", "app.miyuki.miyukievents.libs.slf4j")
     }
 }

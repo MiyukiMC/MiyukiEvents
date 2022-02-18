@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public class WorldEditProvider implements ProviderService<WorldEditAPI> {
 
-    private static final String WORLD_EDIT_6 = "app.miyuki.miyukievents.bukkit.impl.WorldEdit6";
-    private static final String WORLD_EDIT_7 = "app.miyuki.miyukievents.bukkit.impl.WorldEdit7";
+    private static final String WORLD_EDIT_6 = "app.miyuki.miyukievents.bukkit.hook.worldedit.impl.WorldEdit6";
+    private static final String WORLD_EDIT_7 = "app.miyuki.miyukievents.bukkit.hook.worldedit.impl.WorldEdit7";
 
     private WorldEditAPI worldEditAPI = null;
 
