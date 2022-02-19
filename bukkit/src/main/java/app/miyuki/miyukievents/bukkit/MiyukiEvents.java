@@ -10,7 +10,7 @@ import app.miyuki.miyukievents.bukkit.game.queue.GameQueue;
 import app.miyuki.miyukievents.bukkit.hook.cash.CashProvider;
 import app.miyuki.miyukievents.bukkit.hook.chat.ChatHook;
 import app.miyuki.miyukievents.bukkit.hook.clan.ClanProvider;
-import app.miyuki.miyukievents.bukkit.hook.vault.VaultProvider;
+import app.miyuki.miyukievents.bukkit.hook.economy.EconomyProvider;
 import app.miyuki.miyukievents.bukkit.hook.worldedit.WorldEditProvider;
 import app.miyuki.miyukievents.bukkit.language.LanguageEvaluator;
 import app.miyuki.miyukievents.bukkit.language.LanguageProvider;
@@ -59,7 +59,7 @@ public final class MiyukiEvents extends JavaPlugin {
     private CashProvider cashProvider;
 
     @Getter
-    private VaultProvider vaultProvider;
+    private EconomyProvider vaultProvider;
 
     @Getter
     private WorldEditProvider worldEditProvider;
@@ -112,7 +112,7 @@ public final class MiyukiEvents extends JavaPlugin {
     }
 
     private void loadProviders() {
-        this.vaultProvider = new VaultProvider();
+        this.vaultProvider = new EconomyProvider(this);
         if (vaultProvider.hook())
             LoggerHelper.log("Vault Provider loaded successfully");
 

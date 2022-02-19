@@ -4,6 +4,7 @@ import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.storage.Cacheable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.val;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.math.BigDecimal;
@@ -16,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 public class User implements Cacheable<String> {
 
     private final UUID uuid;
-    private final String playerName;
+    private String playerName;
     private BigDecimal totalMoney;
     private BigDecimal totalCash;
     private UserState userState;
@@ -28,7 +29,12 @@ public class User implements Cacheable<String> {
     }
 
     public CompletableFuture<Void> save() {
-        return JavaPlugin.getPlugin(MiyukiEvents.class).getStorage().updateUser(this);
+
+        val plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
+
+
+
+        return plugin.getStorage().updateUser(this);
     }
 
 }
