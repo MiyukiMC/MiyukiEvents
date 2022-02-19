@@ -4,6 +4,7 @@ import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Command;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
+import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import lombok.val;
 import org.apache.commons.lang.StringUtils;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Lottery extends Command<Player> {
+public class Lottery extends Command<User> {
 
     private Integer minNumber;
     private Integer maxNumber;
@@ -43,7 +44,7 @@ public class Lottery extends Command<Player> {
             return;
         }
 
-        onWin(player);
+        onWin(plugin.getUserRepository().findById(player.getUniqueId()));
     }
 
     @Override
@@ -86,18 +87,18 @@ public class Lottery extends Command<Player> {
     }
 
     @Override
-    public void onWin(Player player) {
+    public void onWin(User user) {
         stop();
-        giveReward(player);
+        giveReward(user);
 
         messageDispatcher.globalDispatch("Win", message -> message
                 .replace("{result}", String.valueOf(result))
-                .replace("{winner}", player.getName()));
+                .replace("{winner}", user.getPlayerName()));
     }
 
     @Override
-    protected void giveReward(Player player) {
-        this.reward.execute(player);
+    protected void giveReward(User user) {
+        this.reward.execute(user);
     }
 
     @Override

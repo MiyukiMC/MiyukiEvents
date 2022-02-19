@@ -4,6 +4,7 @@ import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Command;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
+import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import lombok.val;
 import org.bukkit.entity.Player;
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class FastClick extends Command<Player> {
+public class FastClick extends Command<User> {
 
     private String id;
 
@@ -42,7 +43,7 @@ public class FastClick extends Command<Player> {
             return;
         }
 
-        onWin(player);
+        onWin(plugin.getUserRepository().findById(player.getUniqueId()));
     }
 
     @Override
@@ -82,17 +83,17 @@ public class FastClick extends Command<Player> {
     }
 
     @Override
-    public void onWin(Player player) {
+    public void onWin(User user) {
         stop();
-        giveReward(player);
+        giveReward(user);
 
-        messageDispatcher.dispatch(player, "Win", message -> message
-                .replace("{winner}", player.getName()));
+        messageDispatcher.globalDispatch("Win", message -> message
+                .replace("{winner}", user.getPlayerName()));
     }
 
     @Override
-    protected void giveReward(Player player) {
-        this.reward.execute(player);
+    protected void giveReward(User user) {
+        this.reward.execute(user);
     }
 
     @Override

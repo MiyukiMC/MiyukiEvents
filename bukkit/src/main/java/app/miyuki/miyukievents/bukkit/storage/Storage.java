@@ -162,7 +162,7 @@ public class Storage {
                 statementUser.setString(1, id);
                 statementHistory.setString(1, id);
 
-                 @Cleanup val resultHistory = statementHistory.executeQuery();
+                @Cleanup val resultHistory = statementHistory.executeQuery();
 
                 List<UserGameHistory> userGameHistories = new ArrayList<>();
 

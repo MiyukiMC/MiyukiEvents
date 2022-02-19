@@ -4,6 +4,8 @@ import lombok.experimental.UtilityClass;
 import lombok.val;
 
 import javax.annotation.Nullable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Map;
@@ -60,14 +62,14 @@ public class RandomUtils {
     }
 
     @Nullable
-    public String getWeightedRandom(Map<String, Double> weights) {
-        String result = null;
-        double bestValue = Double.MAX_VALUE;
+    public <E> E getWeightedRandom(Map<E, BigDecimal> weights) {
+        E result = null;
+        BigDecimal bestValue = BigDecimal.valueOf(Double.MAX_VALUE);
 
-        for (String element : weights.keySet()) {
-            double value = -Math.log(RANDOM.nextDouble()) / weights.get(element);
+        for (E element : weights.keySet()) {
+            BigDecimal value = BigDecimal.valueOf(-Math.log(RANDOM.nextDouble())).divide(weights.get(element), RoundingMode.HALF_UP);
 
-            if (value < bestValue) {
+            if (value.compareTo(bestValue) < 0) {
                 bestValue = value;
                 result = element;
             }
@@ -76,10 +78,12 @@ public class RandomUtils {
         return result;
     }
 
-    public double getChance(Map<String, Double> weights, String playerName) {
-        val chance = (weights.get(playerName) / weights.values().stream().mapToDouble(value -> value).sum()) * 100;
+    public <E> BigDecimal getChance(Map<E, BigDecimal> weights, E e) {
 
-        return Math.round(chance * 100) / 100.0;
+        val sum = weights.values().stream().reduce(BigDecimal.valueOf(0), BigDecimal::add);
+        val chance = weights.get(e).divide(sum, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100));
+
+        return chance.setScale(2, RoundingMode.HALF_UP);
     }
 
 }

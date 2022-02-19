@@ -29,10 +29,9 @@ public class User implements Cacheable<String> {
     }
 
     public CompletableFuture<Void> save() {
-
         val plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
 
-
+        plugin.getUserRepository().save(this);
 
         return plugin.getStorage().updateUser(this);
     }

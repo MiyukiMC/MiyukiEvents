@@ -59,7 +59,7 @@ public class JackpotChanceSubCommand extends SubCommand {
                 messageDispatcher.dispatch(player, "YouAreNotInTheJackpot");
             else
                 messageDispatcher.dispatch(player, "YourChance", message -> message
-                        .replace("{chance}", String.valueOf(RandomUtils.getChance(jackpotGame.getPlayers(), player.getName()))));
+                        .replace("{chance}", String.valueOf(RandomUtils.getChance(jackpotGame.getPlayers(), plugin.getUserRepository().findById(player.getUniqueId())))));
         }
 
         return false;

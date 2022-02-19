@@ -4,6 +4,7 @@ import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.InPerson;
+import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.util.player.PlayerUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,8 +25,9 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
-public class Deathmatch extends InPerson<List<Player>> {
+public class Deathmatch extends InPerson<List<User>> {
 
     private final HashMap<Player, Integer> players = new HashMap<>();
 
@@ -208,13 +210,13 @@ public class Deathmatch extends InPerson<List<Player>> {
     }
 
     @Override
-    public void onWin(List<Player> players) {
+    public void onWin(List<User> users) {
 
     }
 
     @Override
-    protected void giveReward(List<Player> players) {
-        this.reward.execute(players);
+    protected void giveReward(List<User> users) {
+        this.reward.execute(users);
     }
 
     @Override
@@ -322,7 +324,7 @@ public class Deathmatch extends InPerson<List<Player>> {
                     val playerScore = this.score.get(entry.getValue());
 
                     if (playerScore == score) {
-                        onWin(Collections.singletonList(entry.getKey()));
+                        onWin(Collections.singletonList(entry.getKey()).stream().map(player -> plugin.getUserRepository().findById(player.getUniqueId())).collect(Collectors.toList()));
                         break;
                     }
                 }
@@ -330,7 +332,7 @@ public class Deathmatch extends InPerson<List<Player>> {
             } else {
 
                 if (players.size() == 1) {
-                    onWin(Collections.singletonList((Player) players.values().toArray()[0]));
+                    onWin(Collections.singletonList((Player) players.values().toArray()[0]).stream().map(player -> plugin.getUserRepository().findById(player.getUniqueId())).collect(Collectors.toList()));
                 }
 
             }
@@ -343,7 +345,7 @@ public class Deathmatch extends InPerson<List<Player>> {
 
                     if (entry.getValue() == score) {
 
-                        onWin(getPlayersByTeam(entry.getKey()));
+                        onWin(getPlayersByTeam(entry.getKey()).stream().map(player -> plugin.getUserRepository().findById(player.getUniqueId())).collect(Collectors.toList()));
                         break;
                     }
 
@@ -361,7 +363,7 @@ public class Deathmatch extends InPerson<List<Player>> {
                     }
 
                     if (lastTeam != entry.getValue()) {
-                        onWin(getPlayersByTeam(entry.getValue()));
+                        onWin(getPlayersByTeam(entry.getValue()).stream().map(player -> plugin.getUserRepository().findById(player.getUniqueId())).collect(Collectors.toList()));
                         break;
                     }
 

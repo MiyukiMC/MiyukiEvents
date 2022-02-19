@@ -4,6 +4,8 @@ import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Command;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
+import app.miyuki.miyukievents.bukkit.hook.economy.EconomyAPI;
+import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.util.number.NumberEvaluator;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import com.google.common.collect.Maps;
@@ -15,17 +17,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Jackpot extends Command<Player> {
-
-    private final Economy economy = plugin.getVaultProvider().provide().orElse(null);
+public class Jackpot extends Command<User> {
 
     @Getter
-    private final Map<String, Double> players = Maps.newHashMap();
+    private final Map<User, BigDecimal> players = Maps.newHashMap();
 
-    private double maxBet;
+    private BigDecimal maxBet;
 
     public Jackpot(@NotNull GameConfigProvider configProvider) {
         super(configProvider);
@@ -49,44 +50,48 @@ public class Jackpot extends Command<Player> {
             return;
         }
 
-        val money = Double.parseDouble(args[0]);
+        val economyAPI = plugin.getVaultProvider().provide().get();
+        val uuid = player.getUniqueId();
+        val money = new BigDecimal(args[0]);
 
-        val playerBet = players.get(player.getName());
+        val playerBet = players.get(plugin.getUserRepository().findById(uuid));
 
-        if (playerBet != null && playerBet == maxBet) {
+        if (playerBet != null && playerBet.compareTo(maxBet) == 0) {
             messageDispatcher.dispatch(player, "YouAlreadyBetTheMost");
             return;
         }
 
-        if (money > maxBet) {
+        if (money.compareTo(playerBet) == 1) {
             messageDispatcher.dispatch(player, "ValueGreaterMax");
             return;
         }
 
-        if (economy.getBalance(player.getName()) < money) {
+        if (!economyAPI.has(uuid, money)) {
             messageDispatcher.dispatch(player, "YouDontHaveMoney");
             return;
         }
 
+        val user = plugin.getUserRepository().findById(player.getUniqueId());
+
         if (playerBet != null) {
-            val oldValue = players.get(player.getName());
-            players.replace(player.getName(), money + oldValue);
+            val oldValue = players.get(user);
+            players.replace(user, money.add(oldValue));
         } else {
-            players.put(player.getName(), money);
+            players.put(user, money);
         }
 
-        economy.withdrawPlayer(player, money);
+        economyAPI.withdraw(uuid, money);
 
         messageDispatcher.dispatch(player, "YouEntered", message -> message
-                .replace("{chance}", String.valueOf(RandomUtils.getChance(players, player.getName())))
-                .replace("{money}", String.format("%.2f", players.get(player.getName()))));
+                .replace("{chance}", String.valueOf(RandomUtils.getChance(players, user)))
+                .replace("{money}", String.format("%.2f", players.get(user))));
     }
 
     @Override
     public void start() {
         players.clear();
         val config = configProvider.provide(ConfigType.CONFIG);
-        this.maxBet = config.getInt("MaxBet");
+        this.maxBet = new BigDecimal(config.getString("MaxBet"));
         setGameState(GameState.STARTED);
 
         AtomicInteger calls = new AtomicInteger(config.getInt("Calls"));
@@ -98,14 +103,14 @@ public class Jackpot extends Command<Player> {
             if (calls.get() > 0) {
                 messageDispatcher.globalDispatch("Start", message -> message
                         .replace("{size}", String.valueOf(players.size()))
-                        .replace("{total}", String.valueOf(players.values().stream().mapToDouble(v -> v).sum()))
+                        .replace("{total}", String.valueOf(players.values().stream().reduce(BigDecimal.valueOf(0), BigDecimal::add)))
                         .replace("{maxBet}", String.valueOf(maxBet))
                         .replace("{seconds}", String.valueOf(seconds)));
 
                 calls.getAndDecrement();
             } else {
                 if (players.size() >= 2) {
-                    val winner = Bukkit.getPlayer(RandomUtils.getWeightedRandom(players));
+                    val winner = RandomUtils.getWeightedRandom(players);
                     onWin(winner);
                 } else {
                     messageDispatcher.globalDispatch("NoWinner");
@@ -121,29 +126,29 @@ public class Jackpot extends Command<Player> {
         setGameState(GameState.STOPPED);
         schedulerManager.cancel();
 
-        players.forEach((player, value) -> economy.depositPlayer(Bukkit.getPlayer(player), value));
+        val economyAPI = plugin.getVaultProvider().provide().get();
+        players.forEach((user, value) -> economyAPI.deposit(user.getUuid(), value));
     }
 
     @Override
-    public void onWin(Player player) {
-        giveReward(player);
-        val total = players.values().stream().mapToDouble(value -> value).sum();
-
+    public void onWin(User user) {
+        giveReward(user);
+        val total = players.values().stream().reduce(BigDecimal.valueOf(0), BigDecimal::add);
         players.clear();
         stop();
 
         messageDispatcher.globalDispatch("Win", message -> message
-                .replace("{chance}", String.valueOf(RandomUtils.getChance(players, player.getName())))
+                .replace("{chance}", String.valueOf(RandomUtils.getChance(players, user)))
                 .replace("{total}", String.valueOf(total))
-                .replace("{winner}", player.getName()));
+                .replace("{winner}", user.getPlayerName()));
     }
 
     @Override
-    protected void giveReward(Player player) {
-        val total = players.values().stream().mapToDouble(value -> value).sum();
+    protected void giveReward(User user) {
+        val total = players.values().stream().reduce(BigDecimal.valueOf(0), BigDecimal::add);
 
-        economy.depositPlayer(player, total);
-        this.reward.execute(player);
+        plugin.getVaultProvider().provide().get().deposit(user.getUuid(), total);
+        this.reward.execute(user);
     }
 
     @Override

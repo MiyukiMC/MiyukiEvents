@@ -4,6 +4,7 @@ import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Chat;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
+import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class FastQuiz extends Chat<Player> {
+public class FastQuiz extends Chat<User> {
 
     private final List<Question> questions = Lists.newArrayList();
 
@@ -43,7 +44,7 @@ public class FastQuiz extends Chat<Player> {
         String message = String.join(" ", args);
 
         if (question.compareAnswer(message))
-            onWin(player);
+            onWin(plugin.getUserRepository().findById(player.getUniqueId()));
     }
 
     @Override
@@ -82,19 +83,19 @@ public class FastQuiz extends Chat<Player> {
     }
 
     @Override
-    public void onWin(Player player) {
+    public void onWin(User user) {
         stop();
 
         Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Win", message -> message
                 .replace("{answer}", question.getAnswer())
-                .replace("{winner}", player.getName())));
+                .replace("{winner}", user.getPlayerName())));
 
-        giveReward(player);
+        giveReward(user);
     }
 
     @Override
-    protected void giveReward(Player player) {
-        this.reward.execute(player);
+    protected void giveReward(User user) {
+        this.reward.execute(user);
     }
 
     @Override

@@ -4,13 +4,14 @@ import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Chat;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
+import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class Math extends Chat<Player> {
+public class Math extends Chat<User> {
 
     private Character operator;
 
@@ -38,7 +39,7 @@ public class Math extends Chat<Player> {
             return;
 
         if (Integer.parseInt(args[0]) == result)
-            onWin(player);
+            onWin(plugin.getUserRepository().findById(player.getUniqueId()));
     }
 
     @Override
@@ -66,18 +67,18 @@ public class Math extends Chat<Player> {
     }
 
     @Override
-    public void onWin(Player player) {
+    public void onWin(User user) {
         stop();
-        giveReward(player);
+        giveReward(user);
 
         messageDispatcher.globalDispatch("Win", message -> message
-                .replace("{winner}", player.getName())
+                .replace("{winner}", user.getPlayerName())
                 .replace("{result}", String.valueOf(result)));
     }
 
     @Override
-    protected void giveReward(Player player) {
-        this.reward.execute(player);
+    protected void giveReward(User user) {
+        this.reward.execute(user);
     }
 
     @Override

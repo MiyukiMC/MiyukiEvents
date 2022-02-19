@@ -18,6 +18,7 @@ import app.miyuki.miyukievents.bukkit.listener.ListenerRegistry;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
 import app.miyuki.miyukievents.bukkit.storage.Storage;
 import app.miyuki.miyukievents.bukkit.storage.StorageFactory;
+import app.miyuki.miyukievents.bukkit.user.UserRepository;
 import app.miyuki.miyukievents.bukkit.util.logger.LoggerHelper;
 import lombok.Getter;
 import lombok.val;
@@ -67,6 +68,9 @@ public final class MiyukiEvents extends JavaPlugin {
     @Getter
     private Storage storage;
 
+    @Getter
+    private UserRepository userRepository;
+
     @Override
     public void onEnable() {
         this.language = new LanguageEvaluator().evaluate(new LanguageProvider().provide());
@@ -87,6 +91,8 @@ public final class MiyukiEvents extends JavaPlugin {
 
         loadDatabase();
         loadMetrics();
+
+        this.userRepository = new UserRepository();
     }
 
     @Override

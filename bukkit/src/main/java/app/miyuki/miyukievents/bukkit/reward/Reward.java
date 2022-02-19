@@ -1,6 +1,7 @@
 package app.miyuki.miyukievents.bukkit.reward;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
+import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.util.number.NumberEvaluator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,18 +11,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @AllArgsConstructor
 @Builder
 public class Reward {
 
-    private double money;
-    private double cash;
+    private BigDecimal money;
+    private BigDecimal cash;
     private List<String> commands;
 
-    public void execute(@NotNull Player player) {
-        val playerName = player.getName();
+    public void execute(@NotNull User user) {
+        val playerName = user.getPlayerName();
+        val uuid = user.getUuid();
 
         for (String command : commands) {
             Bukkit.dispatchCommand(
@@ -32,18 +35,15 @@ public class Reward {
 
         val plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
 
-        if (NumberEvaluator.isValid(cash))
-            plugin.getCashProvider().provide().ifPresent(cashAPI -> cashAPI.deposit(playerName, cash));
+        plugin.getVaultProvider().provide().ifPresent(economy -> economy.deposit(uuid, money));
 
-
-        if (NumberEvaluator.isValid(money))
-            plugin.getVaultProvider().provide().ifPresent(economy -> economy.depositPlayer(Bukkit.getPlayer(playerName), money));
+        plugin.getCashProvider().provide().ifPresent(cashAPI -> cashAPI.deposit(playerName, cash));
 
     }
 
-    public void execute(@NotNull List<Player> players) {
-        for (Player player : players) {
-            this.execute(player);
+    public void execute(@NotNull List<User> users) {
+        for (User user : users) {
+            execute(user);
         }
     }
 

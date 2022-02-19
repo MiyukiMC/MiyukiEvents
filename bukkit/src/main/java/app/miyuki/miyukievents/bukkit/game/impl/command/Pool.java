@@ -4,6 +4,7 @@ import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Command;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
+import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.util.title.TitleAnimation;
 import app.miyuki.miyukievents.bukkit.util.chat.ChatUtils;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
@@ -14,10 +15,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Pool extends Command<Player> {
+public class Pool extends Command<User> {
 
     private final List<Player> players = Lists.newArrayList();
 
@@ -45,7 +47,7 @@ public class Pool extends Command<Player> {
             return;
         }
 
-        plugin.getVaultProvider().provide().ifPresent(economy -> economy.withdrawPlayer(player, getCost()));
+        plugin.getVaultProvider().provide().ifPresent(economyAPI -> economyAPI.withdraw(player.getUniqueId(), getCost()));
         players.add(player);
         messageDispatcher.dispatch(player, "YouEntered");
     }
@@ -67,14 +69,14 @@ public class Pool extends Command<Player> {
 
                 messageDispatcher.globalDispatch("Start", message -> message
                         .replace("{size}", String.valueOf(players.size()))
-                        .replace("{totalValue}", String.valueOf(players.size() * getCost()))
+                        .replace("{totalValue}", String.valueOf(getCost().multiply(BigDecimal.valueOf(players.size()))))
                         .replace("{cost}", String.valueOf(getCost()))
                         .replace("{seconds}", String.valueOf(seconds)));
             } else {
 
                 if (players.size() < 2) {
                     messageDispatcher.globalDispatch("NoWinner");
-                    players.forEach(player -> plugin.getVaultProvider().provide().ifPresent(economy -> economy.depositPlayer(player, getCost())));
+                    players.forEach(player -> plugin.getVaultProvider().provide().ifPresent(economyAPI -> economyAPI.deposit(player.getUniqueId(), getCost())));
                     stop();
                 } else {
                     val section = config.getConfigurationSection("RandomTitles");
@@ -101,12 +103,12 @@ public class Pool extends Command<Player> {
                         TitleAnimation.Builder()
                                 .animation(titles)
                                 .period(config.getInt("Interval"))
-                                .callback(() -> onWin(finalLastPlayer))
+                                .callback(() -> onWin(plugin.getUserRepository().findById(finalLastPlayer.getUniqueId())))
                                 .build()
                                 .start();
 
                     } else {
-                        onWin(RandomUtils.getRandomElement(players));
+                        onWin(plugin.getUserRepository().findById(RandomUtils.getRandomElement(players).getUniqueId()));
                     }
                 }
             }
@@ -120,31 +122,31 @@ public class Pool extends Command<Player> {
         setGameState(GameState.STOPPED);
         schedulerManager.cancel();
 
-        players.forEach(player -> plugin.getVaultProvider().provide().ifPresent(economy -> economy.depositPlayer(player, getCost())));
+        players.forEach(player -> plugin.getVaultProvider().provide().ifPresent(economyAPI -> economyAPI.deposit(player.getUniqueId(), getCost())));
     }
 
     @Override
-    public void onWin(Player player) {
+    public void onWin(User user) {
         players.clear();
         stop();
-        val total = players.size() * getCost();
+        val total = getCost().multiply(BigDecimal.valueOf(players.size()));
 
         messageDispatcher.globalDispatch("Win", message -> message
-                .replace("{winner}", player.getName())
+                .replace("{winner}", user.getPlayerName())
                 .replace("{money}", String.valueOf(total)));
 
-        messageDispatcher.dispatch(player, "YouWin", message -> message
+        messageDispatcher.dispatch(Bukkit.getPlayer(user.getUuid()), "YouWin", message -> message
                 .replace("{money}", String.valueOf(total)));
 
-        giveReward(player);
+        giveReward(user);
     }
 
     @Override
-    protected void giveReward(Player player) {
-        val total = players.size() * getCost();
+    protected void giveReward(User user) {
+        val total = getCost().multiply(BigDecimal.valueOf(players.size()));
 
-        plugin.getVaultProvider().provide().ifPresent(economy -> economy.depositPlayer(player, total));
-        this.reward.execute(player);
+        plugin.getVaultProvider().provide().ifPresent(economyAPI -> economyAPI.deposit(user.getUuid(), total));
+        this.reward.execute(user);
     }
 
     @Override

@@ -4,6 +4,7 @@ import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Chat;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
+import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import lombok.val;
 import org.bukkit.Bukkit;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
-public class Word extends Chat<Player> {
+public class Word extends Chat<User> {
 
     private String word;
 
@@ -42,7 +43,7 @@ public class Word extends Chat<Player> {
         }
 
         if (message.equals(word))
-            onWin(player);
+            onWin(plugin.getUserRepository().findById(player.getUniqueId()));
     }
 
     @Override
@@ -68,17 +69,17 @@ public class Word extends Chat<Player> {
     }
 
     @Override
-    public void onWin(Player player) {
+    public void onWin(User user) {
         stop();
-        giveReward(player);
+        giveReward(user);
 
         Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Win", message ->
-                message.replace("{winner}", player.getName())));
+                message.replace("{winner}", user.getPlayerName())));
     }
 
     @Override
-    public void giveReward(Player player) {
-        this.reward.execute(player);
+    public void giveReward(User user) {
+        this.reward.execute(user);
     }
 
     @Override

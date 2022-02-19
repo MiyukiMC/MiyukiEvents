@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public abstract class Game<W> {
@@ -36,7 +37,7 @@ public abstract class Game<W> {
     protected final String permission;
 
     @Getter
-    protected double cost = 0.0;
+    protected BigDecimal cost = BigDecimal.valueOf(0);
 
     @Getter
     protected final GameSchedulerManager schedulerManager;
@@ -49,10 +50,9 @@ public abstract class Game<W> {
         );
         this.permission = configProvider.provide(ConfigType.CONFIG).getString("Permission");
 
-        val cost = configProvider.provide(ConfigType.CONFIG).getDouble("Cost");
+        val cost = configProvider.provide(ConfigType.CONFIG).getString("Cost");
 
-        if (NumberEvaluator.isValid(cost))
-            this.cost = cost;
+        this.cost = new BigDecimal(cost);
 
         messageDispatcher = new MessageDispatcher(configProvider);
         schedulerManager = new GameSchedulerManager(plugin);
@@ -62,7 +62,7 @@ public abstract class Game<W> {
         if (!plugin.getVaultProvider().provide().isPresent())
             return true;
 
-        return plugin.getVaultProvider().provide().map(value -> value.getBalance(player) >= getCost()).orElse(true);
+        return plugin.getVaultProvider().provide().map(economyAPI -> economyAPI.has(player.getUniqueId(), cost)).orElse(true);
     }
 
     public String getTypeName() {
