@@ -92,7 +92,7 @@ public final class MiyukiEvents extends JavaPlugin {
         loadDatabase();
         loadMetrics();
 
-        this.userRepository = new UserRepository();
+        this.userRepository = new UserRepository(this);
     }
 
     @Override

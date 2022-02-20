@@ -25,6 +25,31 @@ Database:
     elideSetAutoCommits: true
     maintainTimeStats: true
 
+# Este sistema está em BETA, então tome cuidado em usar
+# É necessário o uso de um banco de dados REDIS para utilizá-lo.
+# Devido a transferência de itens ser perigosa, são realizados diversos backups do inventário do jogador.
+# Esses backups podem ser encontrados na pasta BACKUPS
+Bungeecord:
+  Enabled: false
+  # Nome do servidor em que este plugin está no momento.
+  ServerName: 'rankup'
+  # Marque esta opção caso o servidor em que este plugin esteja seja o servidor de minigames.
+  # Ou seja, caso seja o servidor que irá receber os players do outro servidor para jogarem.
+  MinigameServer: false
+  # Servidor para que os jogadores irão.
+  # Caso este plugin não esteja no servidor de minigames, você deve colocar o nome do servidor de minigames.
+  # Caso este plugin esteja no servidor de minigames, você de ve colocar o lobby ou algum outro servidor.
+  # O recomendavel é sempre mandar para o lobby!
+  OutgoingServer: 'minigames'
+
+  # É obrigatório o uso do Redis para que este sistema funcione.
+  Redis:
+    address: '127.0.0.1:6379'
+    password: 'Password'
+
+
+
+
 Metrics: true
 
 NumberFormatter:

@@ -25,5 +25,8 @@ dependencies {
 
     compileOnly("net.sacredlabyrinth.phaed.simpleclans:SimpleClans:2.15.0")
 
-    compileOnly("com.zaxxer:HikariCP:4.0.3")
+    implementation("org.slf4j:slf4j-simple:1.7.36")
+
+    implementation("com.github.ben-manes.caffeine:caffeine:2.9.3")
+    implementation("redis.clients:jedis:4.1.1")
 }

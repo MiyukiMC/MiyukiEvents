@@ -50,4 +50,8 @@ public class GameQueue extends BukkitRunnable {
         return queue.contains(game);
     }
 
+    public boolean isEmpty() {
+        return queue.isEmpty();
+    }
+
 }

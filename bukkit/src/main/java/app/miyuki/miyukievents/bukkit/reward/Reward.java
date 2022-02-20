@@ -2,12 +2,10 @@ package app.miyuki.miyukievents.bukkit.reward;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.user.User;
-import app.miyuki.miyukievents.bukkit.util.number.NumberEvaluator;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.val;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,7 +35,7 @@ public class Reward {
 
         plugin.getVaultProvider().provide().ifPresent(economy -> economy.deposit(uuid, money));
 
-        plugin.getCashProvider().provide().ifPresent(cashAPI -> cashAPI.deposit(playerName, cash));
+        plugin.getCashProvider().provide().ifPresent(cashAPI -> cashAPI.deposit(uuid, cash));
 
     }
 

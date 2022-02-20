@@ -25,12 +25,8 @@ public class AsyncPlayerPreLogin implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
 
-        System.out.println("Test2");
-
         if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED)
             return;
-
-        System.out.println("Test1");
 
         val uuid = event.getUniqueId();
         val playerName = event.getName();
@@ -40,8 +36,9 @@ public class AsyncPlayerPreLogin implements Listener {
         storage.getUser(uuid.toString()).thenAccept(user -> {
             val finalUser = user.orElseGet(() -> userFactory.create(uuid, playerName));
 
-            if (!finalUser.getPlayerName().equals(playerName))
+            if (!finalUser.getPlayerName().equals(playerName)) {
                 finalUser.setPlayerName(playerName);
+            }
 
             val games = plugin.getGameManager().getGames().keySet();
             val userGameHistories = finalUser.getGameHistories();

@@ -4,16 +4,13 @@ import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Command;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
-import app.miyuki.miyukievents.bukkit.hook.economy.EconomyAPI;
 import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.util.number.NumberEvaluator;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.val;
-import net.milkbowl.vault.economy.Economy;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 

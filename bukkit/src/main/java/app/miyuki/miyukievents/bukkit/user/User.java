@@ -1,7 +1,6 @@
 package app.miyuki.miyukievents.bukkit.user;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
-import app.miyuki.miyukievents.bukkit.storage.Cacheable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.val;
@@ -14,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 
 @AllArgsConstructor
 @Data
-public class User implements Cacheable<String> {
+public class User {
 
     private final UUID uuid;
     private String playerName;
@@ -23,16 +22,9 @@ public class User implements Cacheable<String> {
     private UserState userState;
     private final List<UserGameHistory> gameHistories;
 
-    @Override
-    public String getKey() {
-        return uuid.toString();
-    }
-
     public CompletableFuture<Void> save() {
         val plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
-
         plugin.getUserRepository().save(this);
-
         return plugin.getStorage().updateUser(this);
     }
 

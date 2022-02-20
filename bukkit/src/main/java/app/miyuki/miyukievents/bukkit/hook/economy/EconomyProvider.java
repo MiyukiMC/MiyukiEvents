@@ -18,7 +18,7 @@ public class EconomyProvider implements ProviderService<EconomyAPI> {
         val pluginManager = Bukkit.getPluginManager();
         if (pluginManager.getPlugin("Vault") != null) {
             try {
-                Bukkit.getServicesManager().register(Vault.class, new Vault(), plugin, ServicePriority.Highest);
+                Bukkit.getServicesManager().register(EconomyAPI.class, new Vault(), plugin, ServicePriority.Highest);
             } catch (IllegalAccessException ignored) {
             }
         }

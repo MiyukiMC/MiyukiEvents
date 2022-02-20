@@ -26,9 +26,6 @@ allprojects {
 
         implementation("org.jetbrains:annotations:22.0.0")
         implementation("com.zaxxer:HikariCP:4.0.3")
-        implementation("org.slf4j:slf4j-simple:1.7.36")
-
-
     }
 
 }
@@ -52,5 +49,6 @@ tasks {
         relocate("com.cryptomorin.xseries", "app.miyuki.miyukievents.libs.xseries")
         relocate("com.zaxxer.hikari", "app.miyuki.miyukievents.libs.hikari")
         relocate("org.slf4j", "app.miyuki.miyukievents.libs.slf4j")
+        relocate("com.github.benmanes.caffeine", "app.miyuki.miyukievents.libs.caffeine")
     }
 }

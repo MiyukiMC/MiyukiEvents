@@ -5,6 +5,7 @@ import app.miyuki.miyukievents.bukkit.storage.connection.ConnectionFactory;
 import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.user.UserGameHistory;
 import app.miyuki.miyukievents.bukkit.user.UserState;
+import app.miyuki.miyukievents.bukkit.util.async.Async;
 import app.miyuki.miyukievents.bukkit.util.logger.LoggerHelper;
 import com.google.common.collect.ImmutableMap;
 import lombok.Cleanup;
@@ -22,7 +23,6 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ForkJoinPool;
 import java.util.logging.Level;
 
 public class Storage {
@@ -53,14 +53,10 @@ public class Storage {
     private final ConnectionFactory connectionFactory;
     private final StorageType storageType;
 
-    private final ForkJoinPool worker;
-
     public Storage(MiyukiEvents plugin, ConnectionFactory connectionFactory, StorageType storageType) {
         this.plugin = plugin;
         this.connectionFactory = connectionFactory;
         this.storageType = storageType;
-
-        this.worker = new ForkJoinPool(32, ForkJoinPool.defaultForkJoinWorkerThreadFactory, (t, e) -> e.printStackTrace(), false);
     }
 
 
@@ -68,7 +64,7 @@ public class Storage {
     Inspired by lucko: https://github.com/LuckPerms/LuckPerms/blob/master/common/src/main/java/me/lucko/luckperms/common/storage/implementation/sql/SchemaReader.java
      */
     public CompletableFuture<Void> createTables() {
-        return CompletableFuture.runAsync(() -> {
+        return Async.run(() -> {
             try {
                 @Cleanup val connection = connectionFactory.getConnection();
                 @Cleanup val statement = connection.createStatement();
@@ -110,12 +106,12 @@ public class Storage {
             } catch (SQLException | IOException e) {
                 e.printStackTrace();
             }
-        }, worker);
+        });
     }
 
     @SneakyThrows
     public CompletableFuture<Void> updateUser(@NotNull User user) {
-        return CompletableFuture.runAsync(() -> {
+        return Async.run(() -> {
             try {
                 @Cleanup val connection = connectionFactory.getConnection();
                 @Cleanup val userStatement = connection.prepareStatement(USER_INSERT.get(storageType));
@@ -125,7 +121,7 @@ public class Storage {
 
                     historyStatement.clearParameters();
 
-                    historyStatement.setString(1, user.getKey());
+                    historyStatement.setString(1, user.getUuid().toString());
                     historyStatement.setString(2, gameHistory.getGameName());
                     historyStatement.setInt(3, gameHistory.getWins());
                     historyStatement.setInt(4, gameHistory.getDefeats());
@@ -137,7 +133,7 @@ public class Storage {
                 }
                 userStatement.addBatch();
 
-                userStatement.setString(1, user.getKey());
+                userStatement.setString(1, user.getUuid().toString());
                 userStatement.setString(2, user.getPlayerName());
                 userStatement.setString(3, user.getTotalMoney().toPlainString());
                 userStatement.setString(4, user.getTotalCash().toPlainString());
@@ -148,12 +144,12 @@ public class Storage {
             } catch (SQLException exception) {
                 exception.printStackTrace();
             }
-        }, worker);
+        });
     }
 
     @SneakyThrows
     public CompletableFuture<Optional<User>> getUser(@NotNull String id) {
-        return CompletableFuture.supplyAsync(() -> {
+        return Async.run(() -> {
             try {
                 @Cleanup val connection = connectionFactory.getConnection();
                 @Cleanup val statementHistory = connection.prepareStatement(SELECT_HISTORY);
@@ -195,12 +191,12 @@ public class Storage {
             }
 
             return Optional.empty();
-        }, worker);
+        });
 
     }
 
     public CompletableFuture<Void> deleteHistory(@NotNull String... games) {
-        return CompletableFuture.runAsync(() -> {
+        return Async.run(() -> {
             try {
 
                 @Cleanup val connection = connectionFactory.getConnection();
@@ -218,12 +214,11 @@ public class Storage {
             } catch (SQLException exception) {
                 exception.printStackTrace();
             }
-        }, worker);
+        });
     }
 
     public void shutdown() {
         connectionFactory.close();
-        worker.shutdownNow();
     }
 
 }
