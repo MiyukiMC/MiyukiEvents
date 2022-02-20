@@ -119,7 +119,7 @@ public class Storage {
 
                 for (UserGameHistory gameHistory : user.getGameHistories()) {
 
-                    historyStatement.clearParameters();
+                    System.out.println(gameHistory.getGameName());
 
                     historyStatement.setString(1, user.getUuid().toString());
                     historyStatement.setString(2, gameHistory.getGameName());
@@ -139,7 +139,8 @@ public class Storage {
                 userStatement.setString(4, user.getTotalCash().toPlainString());
 
                 userStatement.executeUpdate();
-                historyStatement.executeBatch();
+
+                System.out.println(Arrays.toString(historyStatement.executeBatch()));
 
             } catch (SQLException exception) {
                 exception.printStackTrace();

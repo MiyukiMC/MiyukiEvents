@@ -16,7 +16,6 @@ CREATE TABLE IF NOT EXISTS miyukievents_userhistory
     defeats INTEGER      NOT NULL,
     kills   INTEGER      NOT NULL,
     deaths  INTEGER      NOT NULL,
-    FOREIGN KEY (uuid) REFERENCES miyukievents_user (uuid),
-    PRIMARY KEY (uuid)
+    FOREIGN KEY (uuid) REFERENCES miyukievents_user (uuid)
 );
 CREATE INDEX IF NOT EXISTS miyukievents_userhistory_game ON miyukievents_userhistory (game);

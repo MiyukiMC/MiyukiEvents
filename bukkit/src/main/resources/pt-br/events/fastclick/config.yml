@@ -8,6 +8,10 @@ Cost: 0
 Calls: 5
 CallInterval: 15
 
+Messages:
+  1:
+    - 'Clique <click:run_command:/fastclick {id}>AQUI</click> para ganhar'
+
 Reward:
   Money: 10000
   Cash: 0

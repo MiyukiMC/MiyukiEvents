@@ -1,0 +1,78 @@
+# Tipo do evento
+Type: 'auction'
+# Nome do evento
+Name: 'auction'
+
+# Permissão para participar do evento
+Permission: 'miyukievents.auction'
+# Custo do evento (Esse evento ele não cobra para participar, ele só verifica se ele tem essa quantia)
+# Não coloque valores negativos
+Cost: 0
+
+# Quantas chamadas terão
+Calls: 5
+# Quantos segundos cada chamada vai ter de intervalo
+CallInterval: 15
+
+# Os itens para serem sorteados no leilão
+Auctions:
+  Auction1:
+    # Nome do item do leilão
+    Name: '&b64 Diamantes'
+    # Comandos a serem executados quando o player ganha o leilao
+    # {player} - nome do player que ganhou
+    Commands:
+      - 'give {player} diamond 64'
+    StartBid: 5000
+    # O minimo de diferenca entre as entradas
+    # Exemplo: se esse valor aqui for 1000, e se o valor total do leilao tiver em 5000 e eu tentar entrar com 5500, não vai dar, só com 6k+
+    MinDifferenceBetweenEntries: 1000
+
+
+# O prêmio
+Reward:
+  # Quantia de money (nunca coloque valor negativo)
+  Money: 10000
+  # Quantia de cash
+  Cash: 0
+  # Comandos que vão ser executados
+  # {player} = nome do player
+  Commands: []
+
+
+# Sistema de tag
+Tag:
+  # Ativar essa tag?
+  Enabled: false
+  # O nome da tag
+  Name: 'miyukievents_auction'
+  # Como ela vai ser mostrada?
+  Tag: '&3[Leilao]'
+
+# Comando
+Command:
+  # Permissão para usar ele
+  Permission: 'miyukievents.auction'
+  # Aliases do comando
+  Names: ['auction', 'leilao']
+
+SubCommands:
+  # Iniciar o evento
+  Start:
+    Permission: 'miyukievents.auction.start'
+    Names: ['start', 'iniciar']
+  # Parar o evento
+  Stop:
+    Permission: 'miyukievents.auction.stop'
+    Names: ['stop', 'parar']
+  # Recarregar a config.yml do evento
+  Reload:
+    Permission: 'miyukievents.auction.reload'
+    Names: ['reload', 'recarregar']
+  Help:
+    # Este comando não necessita de nenhuma permissão, ao contrário do HelpAdmin.
+    # É obrigatório que este comando tenha nomes, caso contrário será um nome padrão.
+    Names:  ['help']
+  HelpAdmin:
+    # Este comando não necessita de nenhum nome.
+    Permission: 'miyukievents.auction.helpadmin'

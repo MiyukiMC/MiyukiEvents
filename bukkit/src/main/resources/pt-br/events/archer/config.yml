@@ -77,7 +77,7 @@ Reward:
 Tag:
   Enabled: false
   Name: 'miyukievents_archer'
-  Tag: '&c[Palavra]'
+  Tag: '&c[Arqueiro]'
 
 Permission: 'miyukievents.archer'
 Cost: 0

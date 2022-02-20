@@ -29,4 +29,5 @@ dependencies {
 
     implementation("com.github.ben-manes.caffeine:caffeine:2.9.3")
     implementation("redis.clients:jedis:4.1.1")
+    implementation("net.kyori:adventure-text-minimessage:4.10.0-SNAPSHOT")
 }
