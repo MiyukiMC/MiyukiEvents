@@ -5,6 +5,7 @@ import app.miyuki.miyukievents.bukkit.adapter.impl.LocationAdapter;
 import app.miyuki.miyukievents.bukkit.adapter.impl.RewardAdapter;
 import app.miyuki.miyukievents.bukkit.commands.CommandRegistry;
 import app.miyuki.miyukievents.bukkit.config.Config;
+import app.miyuki.miyukievents.bukkit.dependency.DependencyManager;
 import app.miyuki.miyukievents.bukkit.game.manager.GameManager;
 import app.miyuki.miyukievents.bukkit.game.queue.GameQueue;
 import app.miyuki.miyukievents.bukkit.hook.cash.CashProvider;
@@ -71,12 +72,19 @@ public final class MiyukiEvents extends JavaPlugin {
     @Getter
     private UserRepository userRepository;
 
+    @Getter
+    private DependencyManager dependencyManager;
+
     @Override
     public void onEnable() {
         this.language = new LanguageEvaluator().evaluate(new LanguageProvider().provide());
 
         loadGlobalConfig();
         loadMessages();
+
+        dependencyManager = new DependencyManager(this);
+
+        dependencyManager.loadDependencies(dependencyManager.getDependencyRegistry().getGlobalDependencies());
 
         loadAdapters();
         loadProviders();

@@ -1,6 +1,7 @@
-package app.miyuki.miyukievents.bukkit.storage.connection.impl;
+package app.miyuki.miyukievents.bukkit.storage.connection.impl.hikari;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
+import app.miyuki.miyukievents.bukkit.storage.StorageType;
 import app.miyuki.miyukievents.bukkit.storage.connection.ConnectionFactory;
 import app.miyuki.miyukievents.bukkit.util.logger.LoggerHelper;
 import com.google.common.collect.Maps;
@@ -12,27 +13,23 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
-public class MySQL implements ConnectionFactory {
+public class MySQLAndMariaDB implements ConnectionFactory {
 
     private final HikariDataSource hikariDataSource;
     private final MiyukiEvents plugin;
 
-    public MySQL(MiyukiEvents plugin, ConfigurationSection section) {
+    public MySQLAndMariaDB(MiyukiEvents plugin, StorageType storageType, ConfigurationSection section) {
         this.plugin = plugin;
 
-        String driver;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            driver = "com.mysql.cj.jdbc.Driver";
-        } catch (ClassNotFoundException exception) {
-            driver = "com.mysql.jdbc.Driver";
-        }
+        val host = section.getString("Host") + ":" + section.getInt("Port");
+        val database = section.getString("Database");
 
-        val url = "jdbc:mysql://" + section.getString("Host") + ":" + section.getInt("Port") + "/" + section.getString("Database");
+        val url = "jdbc:" + storageType.name().toLowerCase(Locale.ROOT) + "://" + host + "/" + database;
 
         val hikariConfig = new HikariConfig();
 
@@ -41,7 +38,7 @@ public class MySQL implements ConnectionFactory {
         hikariConfig.setPassword(section.getString("Password"));
         hikariConfig.setPoolName("MiyukiEvents-Pool");
 
-        hikariConfig.setDriverClassName(driver);
+        hikariConfig.setDriverClassName(storageType.getDriver());
 
         Map<String, String> properties = Maps.newHashMap();
 

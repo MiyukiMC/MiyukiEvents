@@ -2,8 +2,8 @@ package app.miyuki.miyukievents.bukkit.storage;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.storage.connection.ConnectionFactory;
-import app.miyuki.miyukievents.bukkit.storage.connection.impl.MySQL;
-import app.miyuki.miyukievents.bukkit.storage.connection.impl.sqlite.SQLite;
+import app.miyuki.miyukievents.bukkit.storage.connection.impl.file.SQLiteAndH2;
+import app.miyuki.miyukievents.bukkit.storage.connection.impl.hikari.MySQLAndMariaDB;
 import app.miyuki.miyukievents.bukkit.util.logger.LoggerHelper;
 import lombok.AllArgsConstructor;
 import lombok.val;
@@ -26,15 +26,20 @@ public class StorageFactory {
 
         val storageType = StorageType.of(typeName);
 
+        val dependencyManager = plugin.getDependencyManager();
+        dependencyManager.loadDependencies(dependencyManager.getDependencyRegistry().getStorageDependencies(storageType));
+
         ConnectionFactory connectionFactory;
         try {
 
             switch (storageType) {
                 case MYSQL:
-                    connectionFactory = new MySQL(plugin, section);
+                case MARIADB:
+                    connectionFactory = new MySQLAndMariaDB(plugin, storageType, section);
                     break;
                 case SQLITE:
-                    connectionFactory = new SQLite(plugin);
+                case H2:
+                    connectionFactory = new SQLiteAndH2(plugin, storageType);
                     break;
                 default:
                     LoggerHelper.log(Level.SEVERE, "An error occurred while attempting to initialize the " + storageType);
@@ -48,7 +53,7 @@ public class StorageFactory {
             return null;
         }
 
-        return new Storage(plugin ,connectionFactory, storageType);
+        return new Storage(plugin, connectionFactory, storageType);
     }
 
 }
