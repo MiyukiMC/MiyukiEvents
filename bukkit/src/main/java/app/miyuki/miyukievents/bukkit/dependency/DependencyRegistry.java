@@ -43,12 +43,14 @@ public class DependencyRegistry {
 
     public Set<Dependency> getGlobalDependencies() {
         return ImmutableSet.of(
-                Dependency.CAFFEINE
+                Dependency.ADVENTURE_API,
+                Dependency.ADVENTURE_MINIMESSAGE,
+                Dependency.ADVENTURE_BUKKIT
         );
     }
 
-    public boolean isRelocationDependency(Dependency dependency) {
-        return RELOCATION_DEPENDENCIES.contains(dependency);
+    public boolean isIsolatedDependency(Dependency dependency) {
+        return RELOCATION_DEPENDENCIES.contains(dependency) || dependency == Dependency.SQLITE_DRIVER;
     }
 
 }

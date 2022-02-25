@@ -26,6 +26,7 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Deathmatch extends InPerson<List<User>> {
 
@@ -324,7 +325,7 @@ public class Deathmatch extends InPerson<List<User>> {
                     val playerScore = this.score.get(entry.getValue());
 
                     if (playerScore == score) {
-                        onWin(Collections.singletonList(entry.getKey()).stream().map(player -> plugin.getUserRepository().findById(player.getUniqueId())).collect(Collectors.toList()));
+                        onWin(Stream.of(entry.getKey()).map(player -> plugin.getUserRepository().findById(player.getUniqueId())).collect(Collectors.toList()));
                         break;
                     }
                 }
@@ -332,7 +333,7 @@ public class Deathmatch extends InPerson<List<User>> {
             } else {
 
                 if (players.size() == 1) {
-                    onWin(Collections.singletonList((Player) players.values().toArray()[0]).stream().map(player -> plugin.getUserRepository().findById(player.getUniqueId())).collect(Collectors.toList()));
+                    onWin(Stream.of((Player) players.values().toArray()[0]).map(player -> plugin.getUserRepository().findById(player.getUniqueId())).collect(Collectors.toList()));
                 }
 
             }

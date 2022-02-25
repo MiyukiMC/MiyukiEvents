@@ -5,11 +5,14 @@ import app.miyuki.miyukievents.bukkit.dependency.classloader.IsolatedClassLoader
 import app.miyuki.miyukievents.bukkit.dependency.injector.Injector;
 import app.miyuki.miyukievents.bukkit.dependency.injector.InjectorFactory;
 import app.miyuki.miyukievents.bukkit.dependency.relocation.RelocationHandler;
+import app.miyuki.miyukievents.bukkit.storage.StorageType;
 import app.miyuki.miyukievents.bukkit.util.async.Async;
 import app.miyuki.miyukievents.bukkit.util.logger.LoggerHelper;
+import com.google.common.collect.ImmutableSet;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.val;
+import lombok.var;
 import org.bukkit.Bukkit;
 
 import java.net.MalformedURLException;
@@ -18,6 +21,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.NoSuchAlgorithmException;
 import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
@@ -29,7 +34,6 @@ public class DependencyManager {
     @Getter
     private final DependencyRegistry dependencyRegistry;
 
-    private IsolatedClassLoader classLoader;
 
     private final Path libraryFolder;
 
@@ -37,14 +41,15 @@ public class DependencyManager {
 
     private final Injector dependencyInjector;
 
-    private final EnumMap<Dependency, Path> loadedDependencies  = new EnumMap<>(Dependency.class);
+    private final EnumMap<Dependency, Path> loadedDependencies = new EnumMap<>(Dependency.class);
+
+    private final Map<ImmutableSet<Dependency>, IsolatedClassLoader> isolatedClassLoaders = new HashMap<>();
 
     @SneakyThrows
     public DependencyManager(MiyukiEvents plugin) {
         this.plugin = plugin;
 
         this.dependencyRegistry = new DependencyRegistry(plugin);
-        classLoader = null;
 
         dependencyInjector = new InjectorFactory(plugin).create();
 
@@ -53,10 +58,21 @@ public class DependencyManager {
         Files.createDirectories(libraryFolder);
 
         this.relocationHandler = new RelocationHandler(this, dependencyRegistry);
-
     }
 
-    public void loadDependencies(Set<Dependency> dependencies) {
+    public void loadStorageDependencies(StorageType storageType) {
+        loadDependencies(dependencyRegistry.getStorageDependencies(storageType));
+    }
+
+    public void loadGlobalDependencies() {
+        loadDependencies(dependencyRegistry.getGlobalDependencies());
+    }
+
+    public void loadRelocationDependencies() {
+        loadDependencies(dependencyRegistry.getRelocationDependencies());
+    }
+
+    private void loadDependencies(Set<Dependency> dependencies) {
 
         val latch = new CountDownLatch(dependencies.size());
 
@@ -82,7 +98,7 @@ public class DependencyManager {
 
     }
 
-    public void loadDependency(Dependency dependency) throws Throwable {
+    private void loadDependency(Dependency dependency) throws Throwable {
 
         val dependencyPath = libraryFolder.resolve(dependency.getFileName() + ".jar");
 
@@ -92,11 +108,16 @@ public class DependencyManager {
             Throwable lastException = null;
 
             for (Repository repository : Repository.values()) {
+
                 try {
                     repository.download(dependency, dependencyPath);
+                    lastException = null;
+                    break;
                 } catch (DependencyDownloadException | NoSuchAlgorithmException exception) {
+                    exception.printStackTrace();
                     lastException = exception;
                 }
+
             }
 
             if (lastException != null) {
@@ -109,12 +130,16 @@ public class DependencyManager {
 
         loadedDependencies.put(dependency, remappedDependencyPath);
 
-        if (!dependencyRegistry.isRelocationDependency(dependency))
+        if (!dependencyRegistry.isIsolatedDependency(dependency))
             dependencyInjector.inject(remappedDependencyPath);
     }
 
 
     synchronized public IsolatedClassLoader getIsolatedClassLoader(Set<Dependency> dependencies) {
+
+        val copyOfDependencies = ImmutableSet.copyOf(dependencies);
+
+        var classLoader = isolatedClassLoaders.get(copyOfDependencies);
 
         if (classLoader != null)
             return classLoader;
@@ -132,12 +157,14 @@ public class DependencyManager {
 
         classLoader = new IsolatedClassLoader(urls);
 
+        isolatedClassLoaders.put(copyOfDependencies, classLoader);
+
         return classLoader;
     }
 
-    public Path remapDependency(Dependency dependency, Path dependencyFilePath) throws Exception {
+    private Path remapDependency(Dependency dependency, Path dependencyFilePath) throws Exception {
 
-        if (dependencyRegistry.isRelocationDependency(dependency))
+        if (dependencyRegistry.isIsolatedDependency(dependency))
             return dependencyFilePath;
 
         val remappedDependencyPath = libraryFolder.resolve(dependency.getFileName() + "-remapped.jar");
@@ -149,7 +176,6 @@ public class DependencyManager {
 
         return remappedDependencyPath;
     }
-
 
 
 }

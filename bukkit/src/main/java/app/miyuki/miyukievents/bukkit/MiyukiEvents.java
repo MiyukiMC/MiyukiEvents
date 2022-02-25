@@ -84,7 +84,7 @@ public final class MiyukiEvents extends JavaPlugin {
 
         dependencyManager = new DependencyManager(this);
 
-        dependencyManager.loadDependencies(dependencyManager.getDependencyRegistry().getGlobalDependencies());
+        dependencyManager.loadGlobalDependencies();
 
         loadAdapters();
         loadProviders();

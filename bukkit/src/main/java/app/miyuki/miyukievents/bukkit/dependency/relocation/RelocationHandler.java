@@ -25,7 +25,7 @@ public class RelocationHandler {
 
         val dependencies = dependencyRegistry.getRelocationDependencies();
 
-        dependencyManager.loadDependencies(dependencies);
+        dependencyManager.loadRelocationDependencies();
 
         val classLoader = dependencyManager.getIsolatedClassLoader(dependencies);
 

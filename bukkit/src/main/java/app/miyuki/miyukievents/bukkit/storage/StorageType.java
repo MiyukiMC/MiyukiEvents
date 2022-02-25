@@ -7,12 +7,13 @@ import lombok.Getter;
 @Getter
 public enum StorageType {
 
-    MYSQL("com.mysql.cj.jdbc.Driver"),
-    MARIADB("org.mariadb.jdbc.Driver"),
-    H2("org.h2.Driver"),
-    SQLITE("org.sqlite.JDBC");
+    MYSQL("com.mysql.cj.jdbc.Driver", "MYSQL.sql"),
+    MARIADB("org.mariadb.jdbc.Driver", "MYSQL.sql"),
+    H2("org.h2.Driver", "H2.sql"),
+    SQLITE("org.sqlite.JDBC", "SQLITE.sql");
 
     private final String driver;
+    private final String schema;
 
     public static StorageType of(String name) {
         try {

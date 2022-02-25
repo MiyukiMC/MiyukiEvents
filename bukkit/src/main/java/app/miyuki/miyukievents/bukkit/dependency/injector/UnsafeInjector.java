@@ -13,14 +13,14 @@ import java.util.Collection;
 
 public class UnsafeInjector extends Injector {
 
-    private static final sun.misc.Unsafe UNSAFE;
+    private static final Unsafe UNSAFE;
 
     static {
-        sun.misc.Unsafe unsafe;
+        Unsafe unsafe;
         try {
             Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
             unsafeField.setAccessible(true);
-            unsafe = (sun.misc.Unsafe) unsafeField.get(null);
+            unsafe = (Unsafe) unsafeField.get(null);
         } catch (Exception ignored) {
             unsafe = null;
         }

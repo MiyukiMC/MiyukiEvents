@@ -10,26 +10,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class SQLiteAndH2 implements ConnectionFactory {
+public class H2 implements ConnectionFactory {
 
     private final NonClosableConnection connection;
 
-    public SQLiteAndH2(MiyukiEvents plugin, StorageType storageType) throws ClassNotFoundException, SQLException {
+    public H2(MiyukiEvents plugin, StorageType storageType) throws ClassNotFoundException, SQLException {
 
         val pluginFolderPath = plugin.getDataFolder().toPath();
 
-        String url;
-
-        switch (storageType) {
-            case H2:
-                url = "jdbc:h2:./" + pluginFolderPath.resolve("database");
-                break;
-            case SQLITE:
-                url = "jdbc:sqlite:" + pluginFolderPath.resolve("database.sqlite.db");
-                break;
-            default:
-                throw new SQLException("Invalid storage type");
-        }
+        String url = "jdbc:h2:./" + pluginFolderPath.resolve("database");
 
         Class.forName(storageType.getDriver());
 
@@ -38,7 +27,7 @@ public class SQLiteAndH2 implements ConnectionFactory {
 
     @Override
     public Connection getConnection() {
-        return  connection;
+        return connection;
     }
 
     @SneakyThrows
@@ -46,5 +35,6 @@ public class SQLiteAndH2 implements ConnectionFactory {
     public void close() {
         connection.shutdown();
     }
+
 
 }

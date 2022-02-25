@@ -21,10 +21,12 @@ dependencies {
 
     implementation("io.github.bananapuncher714:nbteditor:7.18.0")
     implementation("com.github.cryptomorin:XSeries:8.6.1")
+
     implementation("org.bstats:bstats-bukkit:3.0.0")
 
-    compileOnly("net.sacredlabyrinth.phaed.simpleclans:SimpleClans:2.15.0")
+    compileOnly("net.kyori:adventure-platform-bukkit:4.0.1")
 
+    compileOnly("net.sacredlabyrinth.phaed.simpleclans:SimpleClans:2.15.0")
 }
 
 tasks {

@@ -5,7 +5,6 @@ import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.manager.GameSchedulerManager;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
 import app.miyuki.miyukievents.bukkit.reward.Reward;
-import app.miyuki.miyukievents.bukkit.util.number.NumberEvaluator;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;

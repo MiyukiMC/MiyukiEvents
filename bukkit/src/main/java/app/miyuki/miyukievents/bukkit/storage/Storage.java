@@ -27,27 +27,38 @@ import java.util.logging.Level;
 
 public class Storage {
 
+    private static final String DEFAULT_USER_INSERT = "INSERT INTO miyukievents_user " +
+            "(uuid, playername, totalmoney, totalcash) VALUES(?, ?, ?, ?) " +
+            "ON DUPLICATE KEY UPDATE " +
+            "uuid=uuid, playername=playername, totalmoney=totalmoney, totalcash=totalcash";
+
     private static final Map<StorageType, String> USER_INSERT = ImmutableMap.of(
-            StorageType.MYSQL,
-            "INSERT INTO `miyukievents_user` (uuid,playername,totalmoney,totalcash) VALUES(?,?,?,?) " +
-                    "ON DUPLICATE KEY UPDATE " +
-                    "uuid=uuid, playername=playername, totalmoney=totalmoney, totalcash=totalcash",
+            StorageType.H2,
+            "MERGE INTO miyukievents_user (uuid, playername, totalmoney, totalcash) " +
+                    "KEY (uuid, playername, totalmoney, totalcash) " +
+                    "VALUES (?, ?, ?, ?)",
             StorageType.SQLITE,
-            "INSERT OR IGNORE INTO `miyukievents_user` (uuid,playername,totalmoney,totalcash) VALUES(?,?,?,?)"
+            "INSERT OR IGNORE INTO miyukievents_user (uuid, playername,totalmoney, totalcash) VALUES(?, ?, ?, ?)"
     );
+
+    private static final String DEFAULT_USER_HISTORY_INSERT = "INSERT INTO miyukievents_userhistory " +
+            "(uuid, game, wins, defeats, kills, deaths) VALUES (?, ?, ?, ?, ?, ?) " +
+            "ON DUPLICATE KEY UPDATE " +
+            "uuid=uuid, game=game, wins=wins, defeats=defeats, kills=kills, deaths=deaths";
 
     private static final Map<StorageType, String> USER_HISTORY_INSERT = ImmutableMap.of(
-            StorageType.MYSQL,
-            "INSERT INTO `miyukievents_userhistory` (`uuid`,`game`,`wins`,`defeats`,`kills`,`deaths`) VALUES (?,?,?,?,?,?) " +
-                    "ON DUPLICATE KEY UPDATE `uuid`=`uuid`, `game`=`game`, `wins`=`wins`, `defeats`=`defeats`, `kills`=`kills`, `deaths`=`deaths`",
+            StorageType.H2,
+            "MERGE INTO miyukievents_userhistory (uuid, game, wins, defeats, kills, deaths) " +
+                    "KEY (uuid, game, wins, defeats, kills, deaths) " +
+                    "VALUES (?,?,?,?,?,?)",
             StorageType.SQLITE,
-            "INSERT OR IGNORE INTO `miyukievents_userhistory` (`uuid`,`game`,`wins`,`defeats`,`kills`,`deaths`) VALUES (?,?,?,?,?,?)"
+            "INSERT OR IGNORE INTO miyukievents_userhistory (uuid, game, wins, defeats, kills, deaths) VALUES (?, ?, ?, ?, ?, ?)"
     );
 
-    private static final String SELECT_USER = "SELECT * FROM `miyukievents_user` WHERE `uuid` = ? LIMIT 1";
-    private static final String SELECT_HISTORY = "SELECT * FROM `miyukievents_userhistory` WHERE `uuid` = ?";
+    private static final String SELECT_USER = "SELECT * FROM miyukievents_user WHERE uuid = ? LIMIT 1";
+    private static final String SELECT_HISTORY = "SELECT * FROM miyukievents_userhistory WHERE uuid = ?";
 
-    private static final String DELETE_HISTORY = "DELETE FROM `miyukievents_userhistory` WHERE `game` = ?";
+    private static final String DELETE_HISTORY = "DELETE FROM miyukievents_userhistory WHERE game = ?";
 
     private final MiyukiEvents plugin;
     private final ConnectionFactory connectionFactory;
@@ -114,12 +125,11 @@ public class Storage {
         return Async.run(() -> {
             try {
                 @Cleanup val connection = connectionFactory.getConnection();
-                @Cleanup val userStatement = connection.prepareStatement(USER_INSERT.get(storageType));
-                @Cleanup val historyStatement = connection.prepareStatement(USER_HISTORY_INSERT.get(storageType));
+
+                @Cleanup val userStatement = connection.prepareStatement(USER_INSERT.getOrDefault(storageType, DEFAULT_USER_INSERT));
+                @Cleanup val historyStatement = connection.prepareStatement(USER_HISTORY_INSERT.getOrDefault(storageType, DEFAULT_USER_HISTORY_INSERT));
 
                 for (UserGameHistory gameHistory : user.getGameHistories()) {
-
-                    System.out.println(gameHistory.getGameName());
 
                     historyStatement.setString(1, user.getUuid().toString());
                     historyStatement.setString(2, gameHistory.getGameName());
@@ -131,16 +141,16 @@ public class Storage {
                     historyStatement.addBatch();
 
                 }
-                userStatement.addBatch();
 
                 userStatement.setString(1, user.getUuid().toString());
                 userStatement.setString(2, user.getPlayerName());
                 userStatement.setString(3, user.getTotalMoney().toPlainString());
                 userStatement.setString(4, user.getTotalCash().toPlainString());
 
-                userStatement.executeUpdate();
+                userStatement.addBatch();
 
-                System.out.println(Arrays.toString(historyStatement.executeBatch()));
+                userStatement.executeUpdate();
+                historyStatement.executeBatch();
 
             } catch (SQLException exception) {
                 exception.printStackTrace();

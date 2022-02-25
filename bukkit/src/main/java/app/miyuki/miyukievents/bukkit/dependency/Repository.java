@@ -19,7 +19,8 @@ import java.util.Base64;
 @Getter
 public enum Repository {
 
-    MAVEN_CENTRAL("https://repo1.maven.org/maven2/");
+    MAVEN_CENTRAL("https://repo1.maven.org/maven2/"),
+    SONATYPE("https://oss.sonatype.org/content/repositories/snapshots/");
 
     private final String url;
 
@@ -48,7 +49,13 @@ public enum Repository {
 
         val messageDigest = MessageDigest.getInstance("SHA-256");
 
-        System.out.println("Debug [" + dependency.getArtifactId() + "]: " + Base64.getEncoder().encodeToString(messageDigest.digest(bytes)));
+        val checksum = Base64.getEncoder().encodeToString(messageDigest.digest(bytes));
+
+        if (!dependency.validateChecksum(checksum)) {
+            throw new DependencyDownloadException("Dependency " + dependency.name() + " has an invalid hash. " +
+                    "Expected: " + checksum + " " +
+                    "Actual: " + dependency.getChecksum());
+        }
 
         return bytes;
     }
