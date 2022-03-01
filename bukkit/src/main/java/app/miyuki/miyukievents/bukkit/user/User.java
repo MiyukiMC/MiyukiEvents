@@ -4,10 +4,13 @@ import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.val;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -21,6 +24,10 @@ public class User {
     private BigDecimal totalCash;
     private UserState userState;
     private final List<UserGameHistory> gameHistories;
+
+    public Optional<Player> getPlayer() {
+        return Optional.ofNullable(Bukkit.getPlayer(uuid));
+    }
 
     public CompletableFuture<Void> save() {
         val plugin = JavaPlugin.getPlugin(MiyukiEvents.class);

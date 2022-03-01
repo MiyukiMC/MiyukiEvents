@@ -1,7 +1,7 @@
 package app.miyuki.miyukievents.bukkit.hook.chat;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
-import app.miyuki.miyukievents.bukkit.game.Chat;
+import app.miyuki.miyukievents.bukkit.game.chat.Chat;
 import br.net.fabiozumbi12.UltimateChat.Bukkit.API.SendChannelMessageEvent;
 import lombok.AllArgsConstructor;
 import lombok.val;

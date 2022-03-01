@@ -2,13 +2,11 @@ package app.miyuki.miyukievents.bukkit.commands.impl.inperson;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.commands.SubCommand;
-import app.miyuki.miyukievents.bukkit.commands.evaluator.TeamArgsEvaluator;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
-import app.miyuki.miyukievents.bukkit.game.InPerson;
+import app.miyuki.miyukievents.bukkit.game.inperson.InPerson;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
-import com.google.common.collect.ImmutableList;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.bukkit.command.CommandSender;
@@ -17,8 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class InPersonSetLocationSubCommand extends SubCommand {
 
@@ -26,8 +22,6 @@ public class InPersonSetLocationSubCommand extends SubCommand {
     private final MessageDispatcher messageDispatcher;
     private final LocationType locationType;
     private final InPerson<?> game;
-
-    private final int teams;
 
     public InPersonSetLocationSubCommand(
             @NotNull MiyukiEvents plugin,
@@ -41,11 +35,6 @@ public class InPersonSetLocationSubCommand extends SubCommand {
         this.configProvider = configProvider;
         this.messageDispatcher = messageDispatcher;
         this.locationType = locationType;
-
-        val config = configProvider.provide(ConfigType.CONFIG);
-
-        this.teams = config.contains("Teams") ? config.getInt("Teams") : -1;
-
     }
 
     @Override
@@ -55,16 +44,12 @@ public class InPersonSetLocationSubCommand extends SubCommand {
 
     @Override
     public @Nullable String getPermission() {
-        return configProvider.provide(ConfigType.CONFIG).getString("SubCommands.Set " + locationType.locationName + ".Permission");
+        return configProvider.provide(ConfigType.CONFIG).getString("SubCommands.Set" + locationType.locationName + ".Permission");
     }
 
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
-
-        if (game.isTeamsEnabled() && locationType == LocationType.ENTRY && !TeamArgsEvaluator.of(messageDispatcher).evaluate(sender, teams, args, "IncorrectSetEntryCommand")) {
-            return false;
-        }
 
         val globalMessageDispatcher = plugin.getGlobalMessageDispatcher();
 
@@ -73,36 +58,25 @@ public class InPersonSetLocationSubCommand extends SubCommand {
             return false;
         }
 
-        val teamNumber = locationType == LocationType.ENTRY ? Integer.parseInt(args[0]) : 0;
+        val player = (Player) sender;
 
-        val playerLocation = ((Player) sender).getLocation();
-
-        val inPersonGame = (InPerson<?>) game;
-
-        val data = configProvider.provide(ConfigType.DATA);
-
-        data.set(locationType.locationName + (game.isTeamsEnabled() ? "." + teamNumber : ""), plugin.getLocationAdapter().restore(playerLocation));
-        data.saveConfig();
+        val location = player.getLocation();
 
         switch (locationType) {
-            case ENTRY:
-                val entries = inPersonGame.getEntries();
-                entries.put(teamNumber, playerLocation);
-                break;
             case EXIT:
-                inPersonGame.setExit(playerLocation);
+                game.setExit(location);
                 break;
             case CABIN:
-                inPersonGame.setCabin(playerLocation);
+                game.setCabin(location);
                 break;
             case LOBBY:
-                inPersonGame.setLobby(playerLocation);
+                game.setLobby(location);
                 break;
             default:
                 return false;
         }
 
-        messageDispatcher.dispatch(sender, locationType.messagePath, it -> it.replace("{team}", String.valueOf(teamNumber)));
+        messageDispatcher.dispatch(sender, locationType.messagePath);
         return true;
     }
 
@@ -111,25 +85,11 @@ public class InPersonSetLocationSubCommand extends SubCommand {
 
         LOBBY("Lobby", "SetLobbySuccessfully"),
         CABIN("Cabin", "SetCabinSuccessfully"),
-        EXIT("Exit", "SetExitSuccessfully"),
-        ENTRY("Entry", "SetEntrySuccessfully");
+        EXIT("Exit", "SetExitSuccessfully");
 
         private final String locationName;
         private final String messagePath;
 
     }
-
-    @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String[] args) {
-
-        if (teams == -1)
-            return ImmutableList.of();
-
-        return IntStream.rangeClosed(1, teams)
-                .boxed()
-                .map(String::valueOf)
-                .collect(Collectors.toList());
-    }
-
 
 }

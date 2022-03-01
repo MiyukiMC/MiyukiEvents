@@ -34,7 +34,6 @@ public class DependencyManager {
     @Getter
     private final DependencyRegistry dependencyRegistry;
 
-
     private final Path libraryFolder;
 
     private final RelocationHandler relocationHandler;
@@ -114,7 +113,6 @@ public class DependencyManager {
                     lastException = null;
                     break;
                 } catch (DependencyDownloadException | NoSuchAlgorithmException exception) {
-                    exception.printStackTrace();
                     lastException = exception;
                 }
 

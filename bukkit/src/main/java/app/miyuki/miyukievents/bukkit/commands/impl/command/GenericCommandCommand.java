@@ -9,7 +9,7 @@ import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericStartSubComma
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericStopSubCommand;
 import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameState;
-import app.miyuki.miyukievents.bukkit.game.impl.command.Jackpot;
+import app.miyuki.miyukievents.bukkit.game.command.Jackpot;
 import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -30,7 +30,7 @@ public class GenericCommandCommand extends Command {
         val configProvider = game.getConfigProvider();
 
         registerSubCommand(
-                new GenericStartSubCommand(plugin, game, messageDispatcher, configProvider),
+                new GenericStartSubCommand(plugin, game, configProvider),
                 new GenericStopSubCommand(plugin, game, configProvider, messageDispatcher),
                 new GenericHelpSubCommand(plugin, configProvider, messageDispatcher),
                 new GenericReloadSubCommand(plugin, game, configProvider)
@@ -45,7 +45,7 @@ public class GenericCommandCommand extends Command {
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
 
         if (sender instanceof Player && game.getGameState() == GameState.STARTED) {
-            ((app.miyuki.miyukievents.bukkit.game.Command<?>) game).onCommand((Player) sender, args);
+            ((app.miyuki.miyukievents.bukkit.game.command.Command<?>) game).onCommand((Player) sender, args);
             return true;
         }
 

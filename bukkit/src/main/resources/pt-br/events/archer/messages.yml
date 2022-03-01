@@ -1,11 +1,14 @@
 Join: '&aVocê entrou no evento Archer, aguarde que em breve ele irá iniciar.'
 Leave: '&aVocê você saiu do evento archer..'
-SetKitSuccessfully: '&aO kit para o time {team} setada com sucesso.' # DEV: tirar o teams no deathmatch
-SetLobbySuccessfully: '&aO lobby foi setado com sucesso.'
-SetCabinSuccessfully: '&aO camarote foi setado com sucesso.'
-SetExitSuccessfully: '&aA saída foi setado com sucesso.'
-SetEntrySuccessfully: '&aA entrada do time {team} foi setado com sucesso.'
+SetKitSuccessfully: '&aO kit para o time {team} definido com sucesso.'
+SetLobbySuccessfully: '&aO lobby foi definido com sucesso.'
+SetCabinSuccessfully: '&aO camarote foi definido com sucesso.'
+SetExitSuccessfully: '&aA saída foi definida com sucesso.'
+SetEntrySuccessfully: '&aA entrada do time {team} foi definida com sucesso.'
 EnterCabinSuccessfully: '&aVocê entrou no camarote com sucesso.'
+RemoveEntrySuccessfully:
+  - '&cA saída do time {team} foi removida com sucesso.'
+  - '&cO seu kit também foi deletado.'
 
 LobbyIsNotSet: '&cO lobby do evento não foi definido.'
 CabinIsNotSet: '&cO camarote do evento não foi definido.'
@@ -14,10 +17,21 @@ ExitIsNotSet: '&cA saida do evento não foi definida.'
 EntryIsNotSet: '&cAs seguintes entradas precisam ser setadas: &7{entry}'
 KitIsNotSet: '&cOs seguintes kits precisam ser setados: &7{kit}'
 
+NoEntriesToRemove: '&cNão há nenhuma entrada definida para ser excluida.'
+
+NeedSetEntries:
+  - '&cVocê não pode setar nenhum kit atualmente, pois não há nenhuma entrada setada.'
+  - '&cÉ importante que você sete as entradas antes de setar os kits pois elas se referem a quantidade de times no evento.'
 
 IncorrectSetKitCommand: '&cComando incorreto! Use /archer setkit (1,2,3...)'
 IncorrectSetEntryCommand: '&cComando incorreto! Use /archer setentry (1,2,3...)'
-InvalidTeamNumber: '&cO número do time específicado é inválido!'
+SetMissingEntries:
+  - '&cVocê precisa definir as entradas dos times anteriores!'
+  - '&cEntradas faltando: {missingentries}'
+InvalidTeamNumber:
+  - '&cO time específicado é inválido!'
+  - '&cLembre-se que a quantidade times é o mesmo das entradas!'
+  - '&cAtualmente você tem &7{teams} &centradas, então precisa colocar um número entre &71 &ce &7{teams}&c.'
 NumberOutOfTeamRange: '&cNão existe nenhum time no número específicado! Use um numero entre 1 e {maxteam}'
 
 Start:

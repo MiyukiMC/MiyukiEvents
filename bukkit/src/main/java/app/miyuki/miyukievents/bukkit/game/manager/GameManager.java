@@ -2,7 +2,11 @@ package app.miyuki.miyukievents.bukkit.game.manager;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.*;
+import app.miyuki.miyukievents.bukkit.game.Game;
+import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
+import app.miyuki.miyukievents.bukkit.game.GameState;
+import app.miyuki.miyukievents.bukkit.game.GameType;
+import app.miyuki.miyukievents.bukkit.game.inperson.InPerson;
 import app.miyuki.miyukievents.bukkit.util.logger.LoggerHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -31,7 +35,8 @@ public class GameManager {
             "pool",
             "fastquiz",
             "jackpot",
-            "fastclick"
+            "fastclick",
+            "archer"
     );
 
     @Getter

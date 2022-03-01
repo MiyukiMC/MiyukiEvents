@@ -1,7 +1,7 @@
 package app.miyuki.miyukievents.bukkit.listener.impl;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
-import app.miyuki.miyukievents.bukkit.game.Chat;
+import app.miyuki.miyukievents.bukkit.game.chat.Chat;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.bukkit.Bukkit;

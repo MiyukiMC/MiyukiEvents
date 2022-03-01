@@ -1,20 +1,17 @@
-package app.miyuki.miyukievents.bukkit.commands.impl.inperson;
+package app.miyuki.miyukievents.bukkit.commands.impl.inperson.teams;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.commands.SubCommand;
-import app.miyuki.miyukievents.bukkit.commands.evaluator.TeamArgsEvaluator;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
-import app.miyuki.miyukievents.bukkit.game.InPerson;
+import app.miyuki.miyukievents.bukkit.game.inperson.Teams;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
-import app.miyuki.miyukievents.bukkit.util.player.PlayerUtils;
 import com.google.common.collect.ImmutableList;
 import lombok.val;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,17 +19,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class InPersonSetKitSubCommand extends SubCommand {
+public class TeamsInPersonSetKitSubCommand extends SubCommand {
 
-    private final InPerson<?> game;
+    private final Teams<?> game;
     private final MessageDispatcher messageDispatcher;
     private final GameConfigProvider configProvider;
 
-    private final int teams;
 
-    public InPersonSetKitSubCommand(
+    public TeamsInPersonSetKitSubCommand(
             @NotNull MiyukiEvents plugin,
-            @NotNull InPerson<?> game,
+            @NotNull Teams<?> game,
             @NotNull GameConfigProvider configProvider,
             @NotNull MessageDispatcher messageDispatcher
     ) {
@@ -40,9 +36,6 @@ public class InPersonSetKitSubCommand extends SubCommand {
         this.game = game;
         this.messageDispatcher = messageDispatcher;
         this.configProvider = configProvider;
-
-        val config = configProvider.provide(ConfigType.CONFIG);
-        teams = config.contains("Teams") ? config.getInt("Teams") : -1;
     }
 
     @Override
@@ -59,47 +52,49 @@ public class InPersonSetKitSubCommand extends SubCommand {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
 
-        if (game.isTeamsEnabled() && !TeamArgsEvaluator.of(messageDispatcher).evaluate(sender, teams, args, "IncorrectSetKitCommand")) {
+        if (game.getGameState() != GameState.STOPPED) {
+            plugin.getGlobalMessageDispatcher().dispatch(sender, "NeedStopGame");
             return false;
         }
 
-        val teamNumber = game.isTeamsEnabled() ? Integer.parseInt(args[0]) : -1;
+        if (args.length != 1 || !StringUtils.isNumeric(args[0])) {
+            messageDispatcher.dispatch(sender, "IncorrectSetKitCommand");
+            return false;
+        }
 
-        if (game.getGameState() != GameState.STOPPED) {
-            plugin.getGlobalMessageDispatcher().dispatch(sender, "NeedStopGame");
+        val entries = game.getEntries();
+
+        if (entries.isEmpty()) {
+            messageDispatcher.dispatch(sender, "NeedSetEntries");
+            return false;
+        }
+
+        val team = Integer.parseInt(args[0]);
+
+        if (team < 0 || team > entries.size()) {
+            messageDispatcher.dispatch(sender, "InvalidTeamNumber", it -> it.replace("{teams}", String.valueOf(team)));
             return false;
         }
 
         val player = (Player) sender;
 
         val inventory = player.getInventory();
-        ItemStack[] items = (ItemStack[]) ArrayUtils.addAll(inventory.getContents(), inventory.getArmorContents());
 
-        val serializedInventory = plugin.getItemSerialAdapter().adapt(items);
+        game.setKit(team, inventory);
 
-        val data = configProvider.provide(ConfigType.DATA);
-
-        data.set("Kit" + (game.isTeamsEnabled() ? "." + teamNumber : ""), serializedInventory);
-
-        data.saveConfig();
-
-        val kits = game.getKits();
-
-        kits.put(teamNumber != -1 ? teamNumber : 0, items);
-
-        PlayerUtils.setInventoryFromString(player, serializedInventory);
-
-        messageDispatcher.dispatch(sender, "SetKitSuccessfully", it -> it.replace("{team}", String.valueOf(teamNumber)));
+        messageDispatcher.dispatch(sender, "SetKitSuccessfully", it -> it.replace("{team}", String.valueOf(team)));
         return true;
     }
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String[] args) {
 
-        if (teams == -1)
+        val entries = game.getEntries();
+
+        if (entries.isEmpty())
             return ImmutableList.of();
 
-        return IntStream.rangeClosed(1, teams)
+        return IntStream.rangeClosed(1, entries.size())
                 .boxed()
                 .map(String::valueOf)
                 .collect(Collectors.toList());

@@ -3,24 +3,23 @@
 #
 # AVISO: Esta config.yml é uma configuração modelo para o tipo de jogo 'teamdeathmath'.
 #        Para ver quais os outros modelos disponiveis consulte a nossa wiki: https://github.com/MiyukiMC/MiyukiEvents/wiki
-
+#
+# AVISO(2): O número de times estão relacionados a quantidade de entradas setadas, ou seja, se você setar 3 entradas
+#           terão 3 times no evento.
+#
+#
 Name: 'archer'
 
 # Este é um dos tipos disponívels. Nele o time
 # Para saber quais os tipos que existem, acesse nossa wiki: https://github.com/MiyukiMC/MiyukiEvents/wiki
 Type: 'teamdeathmatch'
 
-# Numeros de times que terão no evento.
-# IMPORTATE: Você deve configurar um kit para cada time utilizando /archer setkit (1,2,3...).
-#            Isso vale também para as entradas!
-#            NUNCA coloque um número menor que 2.
-Teams: 3
-
-# Ative ou desative o kit setado. Caso true, será necessário setar os kits utilizando o comando /archer setkit.
+# Ative ou desative o kit setado. Caso true, será necessário setar os kits utilizando o comando /archer setkit (numero do time).
+# LEMBRANDO: A quantidade de times é baseada na quantidade de entradas setadas e você precisa setar a mesma quantidade de kits
+#            para a quantidade de entradas.
 KitSetted: true
 
-# Quantidade mínima que será necessário para o evento iniciar.
-# IMPORTATE: Você deve colocar SEMPRE um número MAIOR ou IGUAL que o número colocado no 'Teams'
+# Quantidade de membros minimos por time necessária.
 MinimumPlayers: 3
 
 # Configure aqui os tipos de jogos possiveis.
@@ -98,12 +97,18 @@ SubCommands:
   Stop:
     Permission: 'miyukievents.archer.stop'
     Names: ['stop', 'parar']
+  Cabin:
+    Permission: 'miyukievents.archer.cabin'
+    Names: ['cabin', 'camarote']
   SetKit:
     Permission: 'miyukievents.archer.setkit'
     Names: ['setkit', 'setarkit']
   SetEntry:
     Permission: 'miyukievents.archer.setentry'
     Names: ['setentry', 'setentrada', "setarentrada"]
+  RemoveEntry:
+    Permission: 'miyukievents.archer.removeentry'
+    Names: ['removeentry', 'removersaida']
   SetLobby:
     Permission: 'miyukievents.archer.setlobby'
     Names: ['setlobby', 'setarlobby']

@@ -1,13 +1,12 @@
-package app.miyuki.miyukievents.bukkit.game.impl.command;
+package app.miyuki.miyukievents.bukkit.game.command;
 
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.Command;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.user.User;
-import app.miyuki.miyukievents.bukkit.util.title.TitleAnimation;
 import app.miyuki.miyukievents.bukkit.util.chat.ChatUtils;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
+import app.miyuki.miyukievents.bukkit.util.title.TitleAnimation;
 import com.google.common.collect.Lists;
 import javafx.util.Pair;
 import lombok.val;

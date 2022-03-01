@@ -1,5 +1,7 @@
-package app.miyuki.miyukievents.bukkit.game;
+package app.miyuki.miyukievents.bukkit.game.command;
 
+import app.miyuki.miyukievents.bukkit.game.Game;
+import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 

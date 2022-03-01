@@ -29,7 +29,7 @@ public class FastClickCommand extends Command {
         val configProvider = game.getConfigProvider();
 
         registerSubCommand(
-                new GenericStartSubCommand(plugin, game, messageDispatcher, configProvider),
+                new GenericStartSubCommand(plugin, game, configProvider),
                 new GenericStopSubCommand(plugin, game, configProvider, messageDispatcher),
                 new GenericHelpSubCommand(plugin, configProvider, messageDispatcher),
                 new GenericReloadSubCommand(plugin, game, configProvider)
@@ -40,7 +40,7 @@ public class FastClickCommand extends Command {
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
         if (sender instanceof Player && game.getGameState() == GameState.STARTED && args.length > 0) {
             val player = (Player) sender;
-            ((app.miyuki.miyukievents.bukkit.game.Command<?>) game).onCommand(player, args);
+            ((app.miyuki.miyukievents.bukkit.game.command.Command<?>) game).onCommand(player, args);
             return false;
 
         }

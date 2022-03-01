@@ -36,7 +36,7 @@ public abstract class Game<W> {
     protected final String permission;
 
     @Getter
-    protected BigDecimal cost = BigDecimal.valueOf(0);
+    protected BigDecimal cost;
 
     @Getter
     protected final GameSchedulerManager schedulerManager;
