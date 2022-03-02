@@ -6,12 +6,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+
 public class MiyukiEventsAPI {
 
     private final MiyukiEvents plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
 
     @Nullable
     public User getUser(@NotNull String playerName) {
+        return null;
+    }
+
+    @Nullable
+    public User getUser(@NotNull UUID uuid) {
         return null;
     }
 

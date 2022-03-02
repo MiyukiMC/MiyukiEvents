@@ -8,10 +8,7 @@ import app.miyuki.miyukievents.bukkit.commands.impl.inperson.teamdeathmatch.Team
 import app.miyuki.miyukievents.bukkit.game.chat.FastQuiz;
 import app.miyuki.miyukievents.bukkit.game.chat.Math;
 import app.miyuki.miyukievents.bukkit.game.chat.Word;
-import app.miyuki.miyukievents.bukkit.game.command.FastClick;
-import app.miyuki.miyukievents.bukkit.game.command.Jackpot;
-import app.miyuki.miyukievents.bukkit.game.command.Lottery;
-import app.miyuki.miyukievents.bukkit.game.command.Pool;
+import app.miyuki.miyukievents.bukkit.game.command.*;
 import app.miyuki.miyukievents.bukkit.game.inperson.impl.TeamDeathmatch;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,7 +28,8 @@ public enum GameType {
     FASTQUIZ(FastQuiz.class, GenericChatCommand.class),
     JACKPOT(Jackpot.class, GenericCommandCommand.class),
     FASTCLICK(FastClick.class, FastClickCommand.class),
-    TEAMDEATHMATCH(TeamDeathmatch.class, TeamDeathmatchCommand.class);
+    TEAMDEATHMATCH(TeamDeathmatch.class, TeamDeathmatchCommand.class),
+    AUCTION(Auction.class, GenericCommandCommand.class);
 
     private final Class<? extends Game<?>> gameClass;
     private final Class<? extends Command> commandClass;

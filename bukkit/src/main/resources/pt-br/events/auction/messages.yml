@@ -1,0 +1,30 @@
+Help:
+  - '/leilao <valor>'
+HelpAdmin:
+  - '/leilao start'
+Start:
+  - 'O leilão comecou'
+  - 'Item a ser sorteado: {itemname}'
+  - 'Valor atual: {actualbid}'
+  - 'Diferenca minima entre apostas: {mindifference}'
+  - 'Diferenca maxima entre apostas: {maxdifference}'
+  - ''
+  - 'Ultima aposta: {username} - {usernamebid}'
+  - 'Para entrar, digite /leilao <valor>'
+  - ''
+  - 'Segundos restantes: {seconds}'
+NoWinner:
+  - 'O evento leilão acabou sem ganhadores'
+Win:
+  - 'O evento leilão acabou!!'
+  - 'O ganhador foi {name}'
+Cancelled:
+  - 'O evento leilão foi cancelado.'
+
+TheLastBidIsYours: 'O ultimo lance é seu. Espere alguém dar lance para você poder dar novamente.'
+YouDontHaveMoney: 'Você não tem esse dinheiro para entrar no leilão.'
+EnterAValidValue: 'Insira um valor válido para participar do leilão.'
+MinMaxBetweenError: 'Você tem que inserir um valor entre {min} - {max} entre as entradas.'
+PlayerEnteredInTheAuction: '[{player}] entrou no leilão com {money}.'
+
+

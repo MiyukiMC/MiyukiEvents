@@ -17,21 +17,21 @@ public class RandomUtils {
     private final char[] ALPHANUMERIC_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 
     public String generateRandomString(int length) {
-        final StringBuilder STRING_BUILDER = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
 
         for (int i = 0; i <= length; i++)
-            STRING_BUILDER.append(ALPHANUMERIC_CHARS[RANDOM.nextInt(ALPHANUMERIC_CHARS.length)]);
+            stringBuilder.append(ALPHANUMERIC_CHARS[RANDOM.nextInt(ALPHANUMERIC_CHARS.length)]);
 
-        return STRING_BUILDER.toString();
+        return stringBuilder.toString();
     }
 
     public String generateRandomString(char[] chars, int length) {
-        final StringBuilder STRING_BUILDER = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
 
         for (int i = 0; i <= length; i++)
-            STRING_BUILDER.append(chars[RANDOM.nextInt(chars.length)]);
+            stringBuilder.append(chars[RANDOM.nextInt(chars.length)]);
 
-        return STRING_BUILDER.toString();
+        return stringBuilder.toString();
     }
 
     public int generateRandomNumber(int min, int max) {

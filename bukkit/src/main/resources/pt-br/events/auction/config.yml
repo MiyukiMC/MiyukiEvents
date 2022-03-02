@@ -27,12 +27,15 @@ Auctions:
     # O minimo de diferenca entre as entradas
     # Exemplo: se esse valor aqui for 1000, e se o valor total do leilao tiver em 5000 e eu tentar entrar com 5500, não vai dar, só com 6k+
     MinDifferenceBetweenEntries: 1000
+    # O maximo de diference entre as entradas
+    # Exemplo: se esse valor for 1000, e se o valor total do leilao tiver em 5000 e eu tentar entrar com 7000, não vai dar, no máximo 6k.
+    MaxDifferenceBetweenEntries: 2500
 
 
 # O prêmio
 Reward:
   # Quantia de money (nunca coloque valor negativo)
-  Money: 10000
+  Money: 0
   # Quantia de cash
   Cash: 0
   # Comandos que vão ser executados

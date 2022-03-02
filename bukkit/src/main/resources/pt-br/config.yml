@@ -53,7 +53,7 @@ Bungeecord:
 Metrics: true
 
 NumberFormatter:
-  Format: '{number} {suffix}'
+  Format: '{number}{suffix}'
   GroupSeparator: '.'
   DecimalSeparator: ','
   # Em qual sufixo irá começar a formatação.

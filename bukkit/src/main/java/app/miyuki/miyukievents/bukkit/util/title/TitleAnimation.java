@@ -1,6 +1,5 @@
 package app.miyuki.miyukievents.bukkit.util.title;
 
-
 import app.miyuki.miyukievents.bukkit.game.manager.GameSchedulerManager;
 import com.cryptomorin.xseries.messages.Titles;
 import javafx.util.Pair;

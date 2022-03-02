@@ -12,7 +12,10 @@ import java.util.concurrent.ForkJoinPool;
 public class Async {
 
     @Getter
-    private final ForkJoinPool worker = new ForkJoinPool(32, ForkJoinPool.defaultForkJoinWorkerThreadFactory, (t, e) -> e.printStackTrace(), false);
+    private final ForkJoinPool worker = new ForkJoinPool(
+            32,
+            ForkJoinPool.defaultForkJoinWorkerThreadFactory, (t, e) -> e.printStackTrace(), false
+    );
 
     public <T> CompletableFuture<T> run(Callable<T> supplier) {
         return CompletableFuture.supplyAsync(() -> {
