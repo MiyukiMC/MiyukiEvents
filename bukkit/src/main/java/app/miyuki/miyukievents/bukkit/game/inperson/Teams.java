@@ -87,7 +87,13 @@ public abstract class Teams<W> extends InPerson<W> {
     }
 
     public void setKit(int team, @NotNull PlayerInventory inventory) {
-        val kit = (ItemStack[]) ArrayUtils.addAll(inventory.getContents(), inventory.getArmorContents());
+        val itemSerialAdapter = plugin.getItemSerialAdapter();
+
+        val serializedInventory = itemSerialAdapter
+                .adapt((ItemStack[]) ArrayUtils.addAll(inventory.getContents(), inventory.getArmorContents()));
+
+        val kit = itemSerialAdapter.restore(serializedInventory);
+
         kits.put(team, kit);
         saveKit(team, kit);
     }

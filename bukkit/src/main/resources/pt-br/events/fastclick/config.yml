@@ -5,12 +5,14 @@ Permission: 'miyukievents.fastclick'
 
 Cost: 0
 
-Calls: 5
-CallInterval: 15
+# Em segundos
+ExpireTime: 200
 
 Messages:
-  1:
-    - 'Clique <click:run_command:/fastclick {id}>AQUI</click> para ganhar'
+  1: 'Clique <click:run_command:/fastclick {id}>AQUI</click> para ganhar'
+  2:
+    - 'Clique no telefone para ganhar:'
+    - 'BANANA <click:run_command:/fastclick {id}>TELEFONE</click> CACHORRO'
 
 Reward:
   Money: 10000

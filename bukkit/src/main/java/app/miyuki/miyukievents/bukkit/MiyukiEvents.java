@@ -3,6 +3,7 @@ package app.miyuki.miyukievents.bukkit;
 import app.miyuki.miyukievents.bukkit.adapter.impl.ItemSerialAdapter;
 import app.miyuki.miyukievents.bukkit.adapter.impl.LocationAdapter;
 import app.miyuki.miyukievents.bukkit.adapter.impl.RewardAdapter;
+import app.miyuki.miyukievents.bukkit.adapter.impl.TextColorAdapter;
 import app.miyuki.miyukievents.bukkit.commands.CommandRegistry;
 import app.miyuki.miyukievents.bukkit.config.Config;
 import app.miyuki.miyukievents.bukkit.dependency.DependencyManager;
@@ -21,70 +22,68 @@ import app.miyuki.miyukievents.bukkit.storage.Storage;
 import app.miyuki.miyukievents.bukkit.storage.StorageFactory;
 import app.miyuki.miyukievents.bukkit.user.UserRepository;
 import app.miyuki.miyukievents.bukkit.util.logger.LoggerHelper;
+import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import lombok.Getter;
 import lombok.val;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
+@Getter
 public final class MiyukiEvents extends JavaPlugin {
 
     private String language;
 
-    @Getter
+    private BukkitAudiences adventure;
+
     private GameManager gameManager;
 
-    @Getter
     private Config globalConfig;
 
-    @Getter
     private MessageDispatcher globalMessageDispatcher;
 
-    @Getter
     private RewardAdapter rewardAdapter;
 
-    @Getter
     private LocationAdapter locationAdapter;
 
-    @Getter
     private ItemSerialAdapter itemSerialAdapter;
 
-    @Getter
+    private TextColorAdapter textColorAdapter;
+
     private GameQueue queue;
 
-    @Getter
     private CommandRegistry commandRegistry;
 
-    @Getter
     private ClanProvider clanProvider;
 
-    @Getter
     private CashProvider cashProvider;
 
-    @Getter
     private EconomyProvider vaultProvider;
 
-    @Getter
     private WorldEditProvider worldEditProvider;
 
-    @Getter
     private Storage storage;
 
-    @Getter
     private UserRepository userRepository;
 
-    @Getter
     private DependencyManager dependencyManager;
+
 
     @Override
     public void onEnable() {
         this.language = new LanguageEvaluator().evaluate(new LanguageProvider().provide());
 
         loadGlobalConfig();
-        loadMessages();
 
         dependencyManager = new DependencyManager(this);
-
         dependencyManager.loadGlobalDependencies();
+
+        adventure = BukkitAudiences.create(this);
+
+        loadMessages();
+
+        MinecraftVersion.disableBStats();
+        MinecraftVersion.disableUpdateCheck();
 
         loadAdapters();
         loadProviders();
@@ -101,6 +100,7 @@ public final class MiyukiEvents extends JavaPlugin {
         loadMetrics();
 
         this.userRepository = new UserRepository(this);
+
     }
 
     @Override
@@ -109,6 +109,8 @@ public final class MiyukiEvents extends JavaPlugin {
         val currentGame = gameManager.getCurrentGame();
         if (currentGame != null)
             currentGame.stop();
+
+        adventure.close();
 
         if (storage != null)
             storage.shutdown();
@@ -148,19 +150,20 @@ public final class MiyukiEvents extends JavaPlugin {
     }
 
     private void loadMessages() {
-        this.globalMessageDispatcher = new MessageDispatcher(new Config("messages.yml", language + "/messages.yml"));
+        this.globalMessageDispatcher = new MessageDispatcher(this, new Config("messages.yml", language + "/messages.yml"));
         LoggerHelper.log("Messages loaded successfully");
     }
 
     private void loadDatabase() {
-        val storageFactory = new StorageFactory(this);
 
+        val storageFactory = new StorageFactory(this);
         storage = storageFactory.create();
 
         if (storage == null)
             return;
 
         storage.createTables();
+
         LoggerHelper.log("Database loaded successfully");
     }
 
@@ -178,6 +181,7 @@ public final class MiyukiEvents extends JavaPlugin {
         this.rewardAdapter = new RewardAdapter();
         this.locationAdapter = new LocationAdapter();
         this.itemSerialAdapter = new ItemSerialAdapter();
+        this.textColorAdapter = new TextColorAdapter();
     }
 
     private void loadMetrics() {

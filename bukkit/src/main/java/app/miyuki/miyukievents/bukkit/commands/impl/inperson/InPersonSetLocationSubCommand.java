@@ -6,6 +6,7 @@ import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.inperson.InPerson;
+import app.miyuki.miyukievents.bukkit.game.inperson.Solo;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
 import lombok.AllArgsConstructor;
 import lombok.val;
@@ -72,6 +73,8 @@ public class InPersonSetLocationSubCommand extends SubCommand {
             case LOBBY:
                 game.setLobby(location);
                 break;
+            case ENTRY:
+                ((Solo<?>) game).setEntry(location);
             default:
                 return false;
         }
@@ -85,7 +88,8 @@ public class InPersonSetLocationSubCommand extends SubCommand {
 
         LOBBY("Lobby", "SetLobbySuccessfully"),
         CABIN("Cabin", "SetCabinSuccessfully"),
-        EXIT("Exit", "SetExitSuccessfully");
+        EXIT("Exit", "SetExitSuccessfully"),
+        ENTRY("Entry", "SetEntrySuccessfully");
 
         private final String locationName;
         private final String messagePath;

@@ -6,7 +6,6 @@ import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import lombok.val;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -50,13 +49,13 @@ public class Word extends Chat<User> {
         setupResult();
         setGameState(GameState.STARTED);
 
-        Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Start", message -> message
-                .replace("{word}", word)));
+        messageDispatcher.globalDispatch("Start", message -> message
+                .replace("{word}", word));
 
         val expireTime = configProvider.provide(ConfigType.CONFIG).getInt("ExpireTime");
 
         schedulerManager.runAsync(expireTime * 20L, () -> {
-            Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "NoWinner"));
+            messageDispatcher.globalDispatch("NoWinner");
             stop();
         });
     }
@@ -72,8 +71,7 @@ public class Word extends Chat<User> {
         stop();
         giveReward(user);
 
-        Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Win", message ->
-                message.replace("{winner}", user.getPlayerName())));
+        messageDispatcher.globalDispatch("Win", message -> message.replace("{winner}", user.getPlayerName()));
     }
 
     @Override

@@ -9,7 +9,6 @@ import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericStartSubComma
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericStopSubCommand;
 import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameState;
-import app.miyuki.miyukievents.bukkit.game.command.Auction;
 import app.miyuki.miyukievents.bukkit.game.command.Jackpot;
 import lombok.val;
 import org.bukkit.Bukkit;

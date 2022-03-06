@@ -36,9 +36,13 @@ public abstract class Solo<W> extends InPerson<W> {
     }
 
     public void setKit(@NotNull PlayerInventory inventory) {
-        this.kit = (ItemStack[]) ArrayUtils.addAll(inventory.getContents(), inventory.getArmorContents());
 
-        val serializedInventory = plugin.getItemSerialAdapter().adapt(this.kit);
+        val itemSerialAdapter = plugin.getItemSerialAdapter();
+
+        val serializedInventory = itemSerialAdapter
+                .adapt((ItemStack[]) ArrayUtils.addAll(inventory.getContents(), inventory.getArmorContents()));
+
+        this.kit = itemSerialAdapter.restore(serializedInventory);
 
         val data = configProvider.provide(ConfigType.DATA);
         data.set("Kit", serializedInventory);

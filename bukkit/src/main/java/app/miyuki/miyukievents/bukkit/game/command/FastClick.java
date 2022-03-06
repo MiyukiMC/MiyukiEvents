@@ -5,11 +5,11 @@ import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
+import com.google.common.collect.Lists;
 import lombok.val;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class FastClick extends Command<User> {
 
@@ -24,8 +24,9 @@ public class FastClick extends Command<User> {
         if (gameState != GameState.STARTED)
             return;
 
-        if (args.length < 1)
+        if (!args[0].equals(id)) {
             return;
+        }
 
         if (!player.hasPermission(getPermission())) {
             plugin.getGlobalMessageDispatcher().dispatch(player, "NoPermission");
@@ -37,10 +38,6 @@ public class FastClick extends Command<User> {
             return;
         }
 
-        if (!args[0].equals(id)) {
-            messageDispatcher.dispatch(player, "WrongPlace");
-            return;
-        }
 
         onWin(plugin.getUserRepository().findById(player.getUniqueId()));
     }
@@ -48,30 +45,38 @@ public class FastClick extends Command<User> {
     @Override
     public void start() {
         setGameState(GameState.STARTED);
-        this.id = RandomUtils.generateRandomString(10);
-        System.out.println(id);
+        this.id = RandomUtils.generateRandomString(15);
 
-        val config = configProvider.provide(ConfigType.CONFIG).getConfig();
+        val config = configProvider.provide(ConfigType.CONFIG);
 
-        AtomicInteger calls = new AtomicInteger(config.getInt("Calls"));
-        val interval = config.getInt("CallInterval");
+        val messagesPaths = Lists.newArrayList(config.getConfigurationSection("Messages").getKeys(false));
 
-        schedulerManager.runAsync(0L, interval * 20L, () -> {
+        val messagePath = RandomUtils.getRandomElement(messagesPaths);
 
-            if (calls.get() > 0) {
-                val seconds = calls.get() * interval;
+        String message;
+        val messagesSection = config.getConfigurationSection("Messages");
 
-                messageDispatcher.globalDispatch("Start", message -> message
-                        .replace("{seconds}", String.valueOf(seconds)));
+        if (messagesSection.isList(messagePath)) {
 
-                calls.getAndDecrement();
+            message = String.join("<newline>", messagesSection.getStringList(messagePath));
 
-            } else {
+        } else {
 
-                messageDispatcher.globalDispatch("NoWinner");
-                stop();
+            message = messagesSection.getString(messagePath);
 
-            }
+        }
+
+        val miniMessage = MiniMessage.miniMessage();
+
+        message = message.replace("{id}", this.id);
+
+        plugin.getAdventure().all().sendMessage(miniMessage.deserialize(plugin.getTextColorAdapter().adapt(message)).asComponent());
+
+        val expireTime = configProvider.provide(ConfigType.CONFIG).getInt("ExpireTime");
+
+        schedulerManager.runAsync(expireTime * 20L, () -> {
+            messageDispatcher.globalDispatch("NoWinner");
+            stop();
         });
     }
 

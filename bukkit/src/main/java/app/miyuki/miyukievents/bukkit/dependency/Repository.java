@@ -20,6 +20,7 @@ import java.util.Base64;
 public enum Repository {
 
     MAVEN_CENTRAL("https://repo1.maven.org/maven2/"),
+    CODE_MC("https://repo.codemc.org/repository/maven-public/"),
     SONATYPE("https://oss.sonatype.org/content/repositories/snapshots/");
 
     private final String url;
@@ -38,7 +39,6 @@ public enum Repository {
             }
 
             return bytes;
-
         } catch (Exception exception) {
             throw new DependencyDownloadException(exception);
         }
@@ -60,10 +60,10 @@ public enum Repository {
         return bytes;
     }
 
-    public void download(Dependency dependency, Path file) throws DependencyDownloadException, NoSuchAlgorithmException {
+    public void download(Dependency dependency, Path file) throws DependencyDownloadException {
         try {
             Files.write(file, download(dependency));
-        } catch (IOException exception) {
+        } catch (IOException | NoSuchAlgorithmException exception) {
             throw new DependencyDownloadException(exception);
         }
     }

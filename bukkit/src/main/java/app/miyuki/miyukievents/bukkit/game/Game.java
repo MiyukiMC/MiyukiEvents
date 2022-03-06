@@ -53,7 +53,7 @@ public abstract class Game<W> {
 
         this.cost = new BigDecimal(cost);
 
-        messageDispatcher = new MessageDispatcher(configProvider);
+        messageDispatcher = new MessageDispatcher(plugin, configProvider);
         schedulerManager = new GameSchedulerManager(plugin);
     }
 

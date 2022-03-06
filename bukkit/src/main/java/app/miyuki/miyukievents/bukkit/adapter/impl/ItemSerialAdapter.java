@@ -2,7 +2,7 @@ package app.miyuki.miyukievents.bukkit.adapter.impl;
 
 import app.miyuki.miyukievents.bukkit.adapter.Adapter;
 import app.miyuki.miyukievents.bukkit.adapter.Restorable;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import lombok.val;
@@ -25,7 +25,7 @@ public class ItemSerialAdapter implements Adapter<String, ItemStack[]>, Restorab
         @Cleanup val outputStream = new ByteArrayOutputStream();
         @Cleanup val dataOutput = new BukkitObjectOutputStream(outputStream);
 
-        dataOutput.write(items.length);
+        dataOutput.writeInt(items.length);
 
         for (ItemStack itemStack : items) {
             if (itemStack != null) {
@@ -44,17 +44,29 @@ public class ItemSerialAdapter implements Adapter<String, ItemStack[]>, Restorab
     public ItemStack[] restore(@NotNull String data) {
         @Cleanup val inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
         @Cleanup val dataInput = new BukkitObjectInputStream(inputStream);
+
         val items = new ItemStack[dataInput.readInt()];
 
-        for (int Index = 0; Index < items.length; Index++) {
+        for (int index = 0; index < items.length; index++) {
             val stack = dataInput.readObject();
 
             if (stack != null) {
-                items[Index] = NBTEditor.set(ItemStack.deserialize((Map<String, Object>) stack), "1", "MiyukiEvents_Protect");
+
+                val item = ItemStack.deserialize((Map<String, Object>) stack);
+
+                val nbtItem = new NBTItem(item);
+
+                nbtItem.setString("MiyukiEvents_Protect", "1");
+
+                items[index] = nbtItem.getItem();
+
+                System.out.println("COntem: " + new NBTItem(items[index]).hasKey("MiyukiEvents_Protect"));
+
             } else {
-                items[Index] = null;
+                items[index] = null;
             }
         }
+
 
         dataInput.close();
         return items;

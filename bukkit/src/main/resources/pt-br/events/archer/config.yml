@@ -118,6 +118,9 @@ SubCommands:
   SetExit:
     Permission: 'miyukievents.archer.setexit'
     Names: ['setexit', 'setsaida']
+  Kit:
+    Permission: 'miyukievents.archer.kit'
+    Names: ['kit', 'getkit', 'pegarkit']
   Reload:
     Permission: 'miyukievents.archer.reload'
     Names: ['reload', 'recarregar']

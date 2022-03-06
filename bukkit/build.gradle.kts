@@ -19,12 +19,13 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("me.clip:placeholderapi:2.10.9")
 
-    implementation("io.github.bananapuncher714:nbteditor:7.18.0")
+    compileOnly("de.tr7zw:item-nbt-api:2.9.2")
+
     implementation("com.github.cryptomorin:XSeries:8.6.1")
 
     implementation("org.bstats:bstats-bukkit:3.0.0")
 
-    compileOnly("net.kyori:adventure-platform-bukkit:4.0.1")
+    compileOnly("net.kyori:adventure-platform-bukkit:4.1.0")
 
     compileOnly("net.sacredlabyrinth.phaed.simpleclans:SimpleClans:2.15.0")
 }
@@ -33,6 +34,7 @@ tasks {
     shadowJar {
         relocate("org.bstats", "app.miyuki.miyukievents.libs.bstats")
         relocate("com.cryptomorin.xseries", "app.miyuki.miyukievents.libs.xseries")
-        relocate("io.github.bananapuncher714.nbteditor", "app.miyuki.miyukievents.libs.nbteditor")
+        relocate("de.tr7zw.changeme.nbtapi", "app.miyuki.miyukievents.libs.nbtapi")
+        relocate("de.tr7zw.annotations", "app.miyuki.miyukievents.libs.nbtapi.annotations")
     }
 }

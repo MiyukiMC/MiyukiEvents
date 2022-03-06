@@ -5,9 +5,7 @@ import app.miyuki.miyukievents.bukkit.commands.Command;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericHelpSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.inperson.InPersonCabinSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.inperson.InPersonSetLocationSubCommand;
-import app.miyuki.miyukievents.bukkit.commands.impl.inperson.teams.TeamsInPersonRemoveEntrySubCommand;
-import app.miyuki.miyukievents.bukkit.commands.impl.inperson.teams.TeamsInPersonSetEntrySubCommand;
-import app.miyuki.miyukievents.bukkit.commands.impl.inperson.teams.TeamsInPersonSetKitSubCommand;
+import app.miyuki.miyukievents.bukkit.commands.impl.inperson.teams.*;
 import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.inperson.Teams;
@@ -33,15 +31,19 @@ public class TeamDeathmatchCommand extends Command {
                 new GenericHelpSubCommand(plugin, configProvider, messageDispatcher),
                 new InPersonCabinSubCommand(plugin, this.game, configProvider, messageDispatcher),
                 new TeamsInPersonSetEntrySubCommand(plugin, this.game, configProvider, messageDispatcher),
-                new TeamsInPersonRemoveEntrySubCommand(plugin, this.game, configProvider, messageDispatcher)
+                new TeamsInPersonRemoveEntrySubCommand(plugin, this.game, configProvider, messageDispatcher),
+                new TeamsInPersonStartSubCommand(plugin, this.game, configProvider, messageDispatcher)
         );
 
         for (InPersonSetLocationSubCommand.LocationType locationType : InPersonSetLocationSubCommand.LocationType.values()) {
+            if (locationType == InPersonSetLocationSubCommand.LocationType.ENTRY)
+                continue;
             registerSubCommand(new InPersonSetLocationSubCommand(plugin, this.game, configProvider, messageDispatcher, locationType));
         }
 
         if (this.game.isKitRequired()) {
             registerSubCommand(new TeamsInPersonSetKitSubCommand(plugin, this.game, configProvider, messageDispatcher));
+            registerSubCommand(new TeamsInPersonGetKitSubCommand(plugin, this.game, configProvider, messageDispatcher));
         }
 
     }

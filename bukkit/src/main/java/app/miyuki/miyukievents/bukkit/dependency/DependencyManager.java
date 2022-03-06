@@ -19,7 +19,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.security.NoSuchAlgorithmException;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,7 +79,6 @@ public class DependencyManager {
                 try {
                     loadDependency(dependency);
                 } catch (Throwable exception) {
-                    exception.printStackTrace();
                     LoggerHelper.log(Level.SEVERE, "Unable to load dependency " + dependency.name() + ".");
                 } finally {
                     latch.countDown();
@@ -112,7 +110,7 @@ public class DependencyManager {
                     repository.download(dependency, dependencyPath);
                     lastException = null;
                     break;
-                } catch (DependencyDownloadException | NoSuchAlgorithmException exception) {
+                } catch (DependencyDownloadException exception) {
                     lastException = exception;
                 }
 

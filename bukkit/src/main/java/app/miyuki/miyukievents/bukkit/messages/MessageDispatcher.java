@@ -1,70 +1,59 @@
 package app.miyuki.miyukievents.bukkit.messages;
 
+import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.config.Config;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
-import app.miyuki.miyukievents.bukkit.messages.impl.ChatMessage;
-import app.miyuki.miyukievents.bukkit.messages.impl.JsonMessage;
-import lombok.val;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 public class MessageDispatcher {
 
-    private final Config messages;
+    private final LoadingCache<String, Message> cache;
 
-    public MessageDispatcher(@NotNull GameConfigProvider configProvider) {
-        messages = configProvider.provide(ConfigType.MESSAGES);
+
+    public MessageDispatcher(MiyukiEvents plugin, @NotNull GameConfigProvider configProvider) {
+        this(plugin, configProvider.provide(ConfigType.MESSAGES));
     }
 
-    public MessageDispatcher(@NotNull Config messages) {
-        this.messages = messages;
+    public MessageDispatcher(MiyukiEvents plugin, @NotNull Config messages) {
+
+        cache = CacheBuilder.newBuilder()
+                .expireAfterAccess(2, TimeUnit.MINUTES)
+                .build(new CacheLoader<String, Message>() {
+                    @Override
+                    public Message load(final @NotNull String path) {
+
+                        if (!messages.contains(path)) {
+                            return ChatMessage.of(
+                                    plugin,
+                                    "&r[&9&lMiyuki&d&lEvents&r] &cMessage '&7" + path + "' &cnot found, contact an administrator."
+                            );
+                        }
+
+
+                        if (messages.isList(path)) {
+                            return ChatMessage.of(plugin, String.join("<newline>", messages.getStringList(path)));
+                        }
+
+                        return ChatMessage.of(plugin, messages.getString(path));
+                    }
+
+                });
     }
 
+    @SneakyThrows
     public void dispatch(@NotNull CommandSender sender, @NotNull String path, @Nullable Function<String, String> format) {
-
-
-        if (!messages.contains(path)) {
-            new ChatMessage(new String[]{ "&r[&9&lMiyuki&d&lEvents&r] &cMessage '&7" + path +"' &cnot found, contact an administrator." })
-                    .dispatch(sender, format);
-            return;
-        }
-
-        if (messages.isList(path)) {
-            new ChatMessage(messages.getStringList(path).toArray(new String[0])).dispatch(sender, format);
-            return;
-        }
-
-        val message = messages.getString(path);
-
-        if (message.equalsIgnoreCase("json")) {
-
-            val jsonFile = new File(messages.getFile().getParentFile(), "json/" + path);
-
-            if (!jsonFile.exists()) {
-                new ChatMessage(new String[]{ "&r[&9&lMiyuki&d&lEvents&r] &cJson file was not found." })
-                        .dispatch(sender, format);
-                return;
-            }
-
-            try {
-                val json = new String(Files.readAllBytes(jsonFile.toPath()));
-                new JsonMessage(json).dispatch(sender, format);
-            } catch (IOException ex) {
-                new ChatMessage(new String[]{ "&r[&9&lMiyuki&d&lEvents&r] &cCould not read json file." })
-                        .dispatch(sender, format);
-            }
-            return;
-        }
-
-        new ChatMessage(new String[]{ message }).dispatch(sender, format);
+        cache.get(path).dispatch(sender, format);
     }
 
     public void dispatch(@NotNull CommandSender sender, @NotNull String path) {

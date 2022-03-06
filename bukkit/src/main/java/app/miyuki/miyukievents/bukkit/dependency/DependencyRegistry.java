@@ -43,9 +43,20 @@ public class DependencyRegistry {
 
     public Set<Dependency> getGlobalDependencies() {
         return ImmutableSet.of(
+                Dependency.ADVENTURE_EXAMINATION,
+                Dependency.ADVENTURE_EXAMINATION_STRING,
+                Dependency.ADVENTURE_KEY,
                 Dependency.ADVENTURE_API,
                 Dependency.ADVENTURE_MINIMESSAGE,
-                Dependency.ADVENTURE_BUKKIT
+                Dependency.ADVENTURE_BUKKIT,
+                Dependency.ADVENTURE_PLATAFORM_API,
+                Dependency.ADVENTURE_FACET,
+                Dependency.ADVENTURE_SERIALIZER_BUNGEECORD,
+                Dependency.ADVENTURE_SERIALIZER_GSON,
+                Dependency.ADVENTURE_GSON_LEGACY_IMPL,
+                Dependency.ADVENTURE_SERIALIZER_LEGACY,
+                Dependency.ADVENTURE_NBT,
+                Dependency.ITEM_NBT_API
         );
     }
 

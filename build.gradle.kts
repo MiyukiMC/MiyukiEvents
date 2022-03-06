@@ -27,8 +27,8 @@ allprojects {
 
         implementation("org.jetbrains:annotations:22.0.0")
 
-        compileOnly("net.kyori:adventure-api:4.9.3")
-        compileOnly("net.kyori:adventure-text-minimessage:4.10.0-SNAPSHOT")
+        compileOnly("net.kyori:adventure-api:4.10.0")
+        compileOnly("net.kyori:adventure-text-minimessage:4.10.0")
 
         compileOnly("org.mariadb.jdbc:mariadb-java-client:3.0.3")
         compileOnly("mysql:mysql-connector-java:8.0.28")
@@ -64,7 +64,6 @@ tasks {
         relocate("org.slf4j", "${libsPackage}slf4j")
 
         relocate("com.google.errorprone.annotations", "${libsPackage}errorprone.annotations")
-        relocate("com.google.gson", "${libsPackage}gson")
         relocate("com.mysql.cj", "${libsPackage}mysql")
         relocate("org.apache.commons.pool2", "${libsPackage}pool2")
         relocate("org.h2", "${libsPackage}h2")

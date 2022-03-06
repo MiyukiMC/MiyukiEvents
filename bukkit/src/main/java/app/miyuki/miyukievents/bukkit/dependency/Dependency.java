@@ -31,6 +31,12 @@ public enum Dependency {
             "1.5",
             "0D6eM99gKpEYFNDydgnto3Df0ygZGdRVqy5ahtj0oIs="
     ),
+    ITEM_NBT_API(
+            "de{}tr7zw",
+            "item-nbt-api",
+            "2.9.2",
+            "c7LsiYbsUQSxYEJrbhpj2olMXw99RyAZKsOtrJIMess="
+    ),
     MARIADB_DRIVER(
             "org{}mariadb{}jdbc",
             "mariadb-java-client",
@@ -70,21 +76,80 @@ public enum Dependency {
     ADVENTURE_API(
             "net{}kyori",
             "adventure-api",
-            "4.9.3",
-            "q47VXkjLd6mcoNQLPEiRP+db+losCe0R/YbAMmfhgXU="
+            "4.10.0",
+            "390TP+6R5SjJxIrV37jVraevBiq+zOch6f4WlAf3mJ4="
+    ),
+    ADVENTURE_PLATAFORM_API(
+            "net{}kyori",
+            "adventure-platform-api",
+            "4.1.0",
+            "x0QUJljwbSlLVQqb/HE8Rk5FPO+4CEZ14yfeF1gVaeg="
+    ),
+    ADVENTURE_FACET(
+            "net{}kyori",
+            "adventure-platform-facet",
+            "4.1.0",
+            "gZgYcDNnayEQE55tflLcD9Zgc5CFzuHmaE8DrJX9eHo="
+    ),
+    ADVENTURE_EXAMINATION(
+            "net{}kyori",
+            "examination-api",
+            "1.3.0",
+            "ySN//ssFQo9u/4YhYkascM4LR7BMCOp8o1Ag/eV/hJI="
+    ),
+    ADVENTURE_EXAMINATION_STRING(
+            "net{}kyori",
+            "examination-string",
+            "1.3.0",
+            "fQH8JaS7OvDhZiaFRV9FQfv0YmIW6lhG5FXBSR4Va4w="
+    ),
+    ADVENTURE_KEY(
+            "net{}kyori",
+            "adventure-key",
+            "4.10.0",
+            "nleXqkKbWgpI7zGkRDx02iEE/6sjjdc6GafasX2zLYY="
     ),
     ADVENTURE_BUKKIT(
             "net{}kyori",
             "adventure-platform-bukkit",
-            "4.0.1",
-            "jKEkSl3SZCwl9zxqLdWMwYYkNSmfh7EjiZD2kQYXfM0="
+            "4.1.0",
+            "LSHIyaMBdK95zODuPp1nnAfCu13lNdkRVCETBJPOL50="
     ),
     ADVENTURE_MINIMESSAGE(
             "net{}kyori",
             "adventure-text-minimessage",
-            "4.10.0-SNAPSHOT",
-            "20220223.203410-63",
-            "cvkuZ86OdQqC+G4p+XMs4ohm+EqBMQwWf1sSYDiPTP0="
+            "4.10.0",
+            "qJJbZyZtqmBscTmNBIffSJyAD9tICv9lWv3QmLxZEXQ="
+    ),
+    ADVENTURE_NBT(
+            "net{}kyori",
+            "adventure-nbt",
+            "4.10.0",
+            "X0NfIt1zfQRTdKPQngRVjlZBd5I+CK6fpJ6O8tZiCEg="
+    ),
+    ADVENTURE_SERIALIZER_BUNGEECORD(
+            "net{}kyori",
+            "adventure-text-serializer-bungeecord",
+            "4.1.0",
+            "v7CwvYDAPVgkhmi6QR3IP02mILywNnPHNK8lDx13kKI="
+    ),
+    ADVENTURE_SERIALIZER_GSON(
+            "net{}kyori",
+            "adventure-text-serializer-gson",
+            "4.10.0",
+            "RsjEsrCjv3fHARYRo1pRMzALYDQlZvn7IAWZTzg+FSk="
+    ),
+    ADVENTURE_GSON_LEGACY_IMPL(
+            "net{}kyori",
+            "adventure-text-serializer-gson-legacy-impl",
+            "4.10.0",
+            "tArMVVb83A9tL66phdIo6QBdEMeQvslFarbEHv5hcXU="
+    ),
+    ADVENTURE_SERIALIZER_LEGACY(
+            "net{}kyori",
+            "adventure-text-serializer-legacy",
+            "4.10.0",
+            "BrU7skaoTZ6QxthUckw97bLymtyvD/6ojmqIBSgIye0="
     ),
     SLF4J_SIMPLE(
             "org{}slf4j",
