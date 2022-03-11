@@ -1,6 +1,6 @@
 package app.miyuki.miyukievents.bukkit.game;
 
-import app.miyuki.miyukievents.bukkit.commands.Command;
+import app.miyuki.miyukievents.bukkit.commands.GameCommand;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,6 +13,6 @@ public @interface GameInfo {
 
     String typeName();
 
-    Class<? extends Command> commandClass();
+    Class<? extends GameCommand> commandClass();
 
 }

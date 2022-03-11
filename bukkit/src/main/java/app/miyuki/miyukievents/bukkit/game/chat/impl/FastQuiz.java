@@ -1,7 +1,9 @@
 package app.miyuki.miyukievents.bukkit.game.chat.impl;
 
+import app.miyuki.miyukievents.bukkit.commands.impl.chat.GenericChatCommand;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
+import app.miyuki.miyukievents.bukkit.game.GameInfo;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.chat.Chat;
 import app.miyuki.miyukievents.bukkit.user.User;
@@ -17,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@GameInfo(typeName = "FastQuiz", commandClass = GenericChatCommand.class)
 public class FastQuiz extends Chat<User> {
 
     private final List<Question> questions = Lists.newArrayList();

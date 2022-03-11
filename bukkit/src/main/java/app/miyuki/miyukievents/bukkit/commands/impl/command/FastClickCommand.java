@@ -1,7 +1,7 @@
 package app.miyuki.miyukievents.bukkit.commands.impl.command;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
-import app.miyuki.miyukievents.bukkit.commands.Command;
+import app.miyuki.miyukievents.bukkit.commands.GameCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericHelpSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericReloadSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericStartSubCommand;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class FastClickCommand extends Command {
+public class FastClickCommand extends GameCommand {
 
     private final Game<?> game;
 

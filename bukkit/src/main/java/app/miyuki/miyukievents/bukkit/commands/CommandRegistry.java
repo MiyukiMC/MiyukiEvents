@@ -24,7 +24,7 @@ public class CommandRegistry {
         commandMapField.setAccessible(true);
         val commandMap = (CommandMap) commandMapField.get(Bukkit.getPluginManager());
 
-        if (!(Command.class.isAssignableFrom(commandClass)))
+        if (!(GameCommand.class.isAssignableFrom(commandClass)))
             throw new IllegalArgumentException();
 
         val config = game.getConfigProvider().provide(ConfigType.CONFIG);
@@ -34,7 +34,7 @@ public class CommandRegistry {
         if (commandName.isEmpty())
             return;
 
-        val command = (Command) commandClass
+        val command = (GameCommand) commandClass
                 .getConstructor(MiyukiEvents.class, Game.class, String.class, List.class)
                 .newInstance(plugin, game, commandName.get(0), commandName);
 

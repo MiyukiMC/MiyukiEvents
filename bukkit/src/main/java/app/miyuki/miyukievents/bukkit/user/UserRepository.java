@@ -13,7 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class UserRepository {
 
-
     private final Map<UUID, User> users = new ConcurrentHashMap<>();
     private final MiyukiEvents plugin;
 

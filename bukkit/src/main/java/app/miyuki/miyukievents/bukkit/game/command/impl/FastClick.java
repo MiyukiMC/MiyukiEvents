@@ -1,7 +1,9 @@
 package app.miyuki.miyukievents.bukkit.game.command.impl;
 
+import app.miyuki.miyukievents.bukkit.commands.impl.command.FastClickCommand;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
+import app.miyuki.miyukievents.bukkit.game.GameInfo;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.command.Command;
 import app.miyuki.miyukievents.bukkit.user.User;
@@ -12,6 +14,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+@GameInfo(typeName = "FastClick", commandClass = FastClickCommand.class)
 public class FastClick extends Command<User> {
 
     private String id;

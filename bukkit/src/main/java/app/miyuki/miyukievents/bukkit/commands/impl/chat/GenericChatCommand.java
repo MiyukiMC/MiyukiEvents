@@ -1,7 +1,7 @@
 package app.miyuki.miyukievents.bukkit.commands.impl.chat;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
-import app.miyuki.miyukievents.bukkit.commands.Command;
+import app.miyuki.miyukievents.bukkit.commands.GameCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericHelpSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericReloadSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericStartSubCommand;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class GenericChatCommand extends Command {
+public class GenericChatCommand extends GameCommand {
 
     private final Game<?> game;
     private final MessageDispatcher messageDispatcher;

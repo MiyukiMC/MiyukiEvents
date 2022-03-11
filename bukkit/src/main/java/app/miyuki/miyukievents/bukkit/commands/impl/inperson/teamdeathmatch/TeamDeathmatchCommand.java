@@ -1,7 +1,7 @@
 package app.miyuki.miyukievents.bukkit.commands.impl.inperson.teamdeathmatch;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
-import app.miyuki.miyukievents.bukkit.commands.Command;
+import app.miyuki.miyukievents.bukkit.commands.GameCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericHelpSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.inperson.InPersonCabinSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.inperson.InPersonSetLocationSubCommand;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class TeamDeathmatchCommand extends Command {
+public class TeamDeathmatchCommand extends GameCommand {
 
     private final Teams<?> game;
     private final MessageDispatcher messageDispatcher;

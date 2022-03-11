@@ -1,7 +1,9 @@
 package app.miyuki.miyukievents.bukkit.game.command.impl;
 
+import app.miyuki.miyukievents.bukkit.commands.impl.command.GenericCommandCommand;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
+import app.miyuki.miyukievents.bukkit.game.GameInfo;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.command.Command;
 import app.miyuki.miyukievents.bukkit.user.User;
@@ -13,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+@GameInfo(typeName = "Lottery", commandClass = GenericCommandCommand.class)
 public class Lottery extends Command<User> {
 
     private Integer minNumber;

@@ -1,7 +1,9 @@
 package app.miyuki.miyukievents.bukkit.game.command.impl;
 
+import app.miyuki.miyukievents.bukkit.commands.impl.command.GenericCommandCommand;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
+import app.miyuki.miyukievents.bukkit.game.GameInfo;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.command.Command;
 import app.miyuki.miyukievents.bukkit.user.User;
@@ -18,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@GameInfo(typeName = "Jackpot", commandClass = GenericCommandCommand.class)
 public class Jackpot extends Command<User> {
 
     @Getter

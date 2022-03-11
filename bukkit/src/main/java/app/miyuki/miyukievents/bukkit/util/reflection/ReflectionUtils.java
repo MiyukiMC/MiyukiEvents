@@ -1,4 +1,4 @@
-package app.miyuki.miyukievents.bukkit.util.reflcetion;
+package app.miyuki.miyukievents.bukkit.util.reflection;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import com.google.common.collect.ImmutableSet;

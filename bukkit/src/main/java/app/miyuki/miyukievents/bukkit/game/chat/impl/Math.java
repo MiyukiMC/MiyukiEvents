@@ -1,7 +1,9 @@
 package app.miyuki.miyukievents.bukkit.game.chat.impl;
 
+import app.miyuki.miyukievents.bukkit.commands.impl.chat.GenericChatCommand;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
+import app.miyuki.miyukievents.bukkit.game.GameInfo;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.chat.Chat;
 import app.miyuki.miyukievents.bukkit.user.User;
@@ -11,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+@GameInfo(typeName = "Math", commandClass = GenericChatCommand.class)
 public class Math extends Chat<User> {
 
     private Character operator;

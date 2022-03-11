@@ -1,7 +1,7 @@
 package app.miyuki.miyukievents.bukkit.commands.impl.command;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
-import app.miyuki.miyukievents.bukkit.commands.Command;
+import app.miyuki.miyukievents.bukkit.commands.GameCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.command.jackpot.JackpotChanceSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericHelpSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericReloadSubCommand;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class GenericCommandCommand extends Command {
+public class GenericCommandCommand extends GameCommand {
 
     private final Game<?> game;
 

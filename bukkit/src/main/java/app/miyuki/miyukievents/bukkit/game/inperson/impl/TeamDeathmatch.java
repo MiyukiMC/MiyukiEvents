@@ -1,6 +1,5 @@
 package app.miyuki.miyukievents.bukkit.game.inperson.impl;
 
-
 import app.miyuki.miyukievents.bukkit.commands.impl.inperson.teamdeathmatch.TeamDeathmatchCommand;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;

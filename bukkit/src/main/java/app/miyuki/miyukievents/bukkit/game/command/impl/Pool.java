@@ -1,7 +1,9 @@
 package app.miyuki.miyukievents.bukkit.game.command.impl;
 
+import app.miyuki.miyukievents.bukkit.commands.impl.command.GenericCommandCommand;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
+import app.miyuki.miyukievents.bukkit.game.GameInfo;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.command.Command;
 import app.miyuki.miyukievents.bukkit.user.User;
@@ -19,6 +21,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@GameInfo(typeName = "Pool", commandClass = GenericCommandCommand.class)
 public class Pool extends Command<User> {
 
     private final List<Player> players = Lists.newArrayList();

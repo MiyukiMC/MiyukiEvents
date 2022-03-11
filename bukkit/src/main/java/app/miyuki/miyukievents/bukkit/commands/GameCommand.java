@@ -4,6 +4,7 @@ import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.commands.evaluator.CommandEvaluator;
 import com.google.common.collect.ImmutableList;
 import lombok.val;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
@@ -12,14 +13,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class Command extends org.bukkit.command.Command {
+public abstract class GameCommand extends Command {
 
     protected final @NotNull MiyukiEvents plugin;
 
     protected final List<SubCommand> subcommands = new ArrayList<>();
     private final boolean console;
 
-    public Command(@NotNull MiyukiEvents plugin, @NotNull String name, @NotNull List<String> aliases, boolean console) {
+    public GameCommand(@NotNull MiyukiEvents plugin, @NotNull String name, @NotNull List<String> aliases, boolean console) {
         super(name);
         this.console = console;
         setAliases(aliases);

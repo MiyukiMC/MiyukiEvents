@@ -1,6 +1,6 @@
 package app.miyuki.miyukievents.bukkit.game;
 
-import app.miyuki.miyukievents.bukkit.util.reflcetion.ReflectionUtils;
+import app.miyuki.miyukievents.bukkit.util.reflection.ReflectionUtils;
 import com.google.common.collect.Lists;
 import com.google.common.reflect.ClassPath;
 import lombok.Getter;
