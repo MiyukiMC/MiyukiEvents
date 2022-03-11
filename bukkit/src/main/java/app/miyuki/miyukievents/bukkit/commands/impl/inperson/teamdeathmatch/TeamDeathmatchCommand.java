@@ -10,6 +10,7 @@ import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.inperson.Teams;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,8 +43,14 @@ public class TeamDeathmatchCommand extends Command {
         }
 
         if (this.game.isKitRequired()) {
-            registerSubCommand(new TeamsInPersonSetKitSubCommand(plugin, this.game, configProvider, messageDispatcher));
-            registerSubCommand(new TeamsInPersonGetKitSubCommand(plugin, this.game, configProvider, messageDispatcher));
+            registerSubCommand(
+                    new TeamsInPersonSetKitSubCommand(plugin, this.game, configProvider, messageDispatcher),
+                    new TeamsInPersonGetKitSubCommand(plugin, this.game, configProvider, messageDispatcher)
+            );
+        }
+
+        if (this.game.isWorldEditRequired()) {
+            registerSubCommand();
         }
 
     }
@@ -51,7 +58,9 @@ public class TeamDeathmatchCommand extends Command {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
 
-        sender.sendMessage("debug");
+
+
+        Bukkit.dispatchCommand(sender, getName() + " help");
 
         return false;
     }

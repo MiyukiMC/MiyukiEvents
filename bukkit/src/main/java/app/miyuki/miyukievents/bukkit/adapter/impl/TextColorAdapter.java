@@ -9,13 +9,13 @@ public class TextColorAdapter implements Adapter<String, String> {
 
     @Override
     public @Nullable String adapt(@NotNull String text) {
-        String formattingText = text;
+        String formatting = text;
 
         for (TextColor textColor : TextColor.values()) {
-            formattingText = formattingText.replace(textColor.getFormattingCode(), textColor.getTag());
+            formatting = formatting.replace(textColor.getFormattingCode(), textColor.getTag());
         }
 
-        return formattingText;
+        return formatting;
     }
 
     private enum TextColor {

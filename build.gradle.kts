@@ -25,7 +25,7 @@ allprojects {
         compileOnly("org.projectlombok:lombok:1.18.22")
         annotationProcessor("org.projectlombok:lombok:1.18.22")
 
-        implementation("org.jetbrains:annotations:22.0.0")
+        implementation("org.jetbrains:annotations:23.0.0")
 
         compileOnly("net.kyori:adventure-api:4.10.0")
         compileOnly("net.kyori:adventure-text-minimessage:4.10.0")

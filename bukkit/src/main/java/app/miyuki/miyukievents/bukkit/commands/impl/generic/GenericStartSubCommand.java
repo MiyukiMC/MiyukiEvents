@@ -49,7 +49,7 @@ public class GenericStartSubCommand extends SubCommand {
             return false;
 
         game.setGameState(GameState.QUEUE);
-        plugin.getQueue().register(game);
+        plugin.getGameManager().getQueue().register(game);
 
         globalMessageDispatcher.dispatch(sender, "GameAddedToQueue");
 

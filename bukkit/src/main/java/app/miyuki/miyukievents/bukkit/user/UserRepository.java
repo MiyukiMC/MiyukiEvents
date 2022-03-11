@@ -2,6 +2,7 @@ package app.miyuki.miyukievents.bukkit.user;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.util.async.Async;
+import lombok.val;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -35,10 +36,13 @@ public class UserRepository {
     }
 
     public void cleanUp() {
+
+        val gameManager = plugin.getGameManager();
+
         users.entrySet().removeIf(entries ->
                 Bukkit.getPlayer(entries.getKey()) == null
-                        && plugin.getQueue().isEmpty()
-                        && plugin.getGameManager().getCurrentGame() == null);
+                        && gameManager.getQueue().isEmpty()
+                        && gameManager.getCurrentGame() == null);
     }
 
 

@@ -1,6 +1,7 @@
 package app.miyuki.miyukievents.bukkit.listener;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
+import app.miyuki.miyukievents.bukkit.util.reflcetion.ReflectionUtils;
 import com.google.common.reflect.ClassPath;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -19,7 +20,7 @@ public class ListenerRegistry {
     public void register() {
         ClassPath classPath = ClassPath.from(plugin.getClass().getClassLoader());
 
-        for (ClassPath.ClassInfo classInfo : classPath.getTopLevelClassesRecursive(LISTENERS)) {
+        for (ClassPath.ClassInfo classInfo : ReflectionUtils.getClasses(LISTENERS)) {
             val listener = classInfo.load();
 
             if (!Listener.class.isAssignableFrom(listener))

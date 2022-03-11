@@ -1,14 +1,15 @@
-package app.miyuki.miyukievents.bukkit.game.command;
+package app.miyuki.miyukievents.bukkit.game.command.impl;
 
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
+import app.miyuki.miyukievents.bukkit.game.command.Command;
 import app.miyuki.miyukievents.bukkit.user.User;
-import app.miyuki.miyukievents.bukkit.util.singlemap.Pair;
 import app.miyuki.miyukievents.bukkit.util.chat.ChatUtils;
 import app.miyuki.miyukievents.bukkit.util.number.NumberEvaluator;
 import app.miyuki.miyukievents.bukkit.util.number.NumberFormatter;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
+import app.miyuki.miyukievents.bukkit.util.singlemap.Pair;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

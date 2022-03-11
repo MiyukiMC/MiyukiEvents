@@ -1,8 +1,9 @@
-package app.miyuki.miyukievents.bukkit.game.chat;
+package app.miyuki.miyukievents.bukkit.game.chat.impl;
 
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
+import app.miyuki.miyukievents.bukkit.game.chat.Chat;
 import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import lombok.val;

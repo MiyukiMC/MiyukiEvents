@@ -118,6 +118,9 @@ SubCommands:
   SetExit:
     Permission: 'miyukievents.archer.setexit'
     Names: ['setexit', 'setsaida']
+  SetArea:
+    Permission: 'miyukievents.archer.setarea'
+    Names: ['setarea', 'setararea', "setarena", "setararena"]
   Kit:
     Permission: 'miyukievents.archer.kit'
     Names: ['kit', 'getkit', 'pegarkit']

@@ -8,7 +8,6 @@ import app.miyuki.miyukievents.bukkit.commands.CommandRegistry;
 import app.miyuki.miyukievents.bukkit.config.Config;
 import app.miyuki.miyukievents.bukkit.dependency.DependencyManager;
 import app.miyuki.miyukievents.bukkit.game.manager.GameManager;
-import app.miyuki.miyukievents.bukkit.game.queue.GameQueue;
 import app.miyuki.miyukievents.bukkit.hook.cash.CashProvider;
 import app.miyuki.miyukievents.bukkit.hook.chat.ChatHook;
 import app.miyuki.miyukievents.bukkit.hook.clan.ClanProvider;
@@ -22,7 +21,6 @@ import app.miyuki.miyukievents.bukkit.storage.Storage;
 import app.miyuki.miyukievents.bukkit.storage.StorageFactory;
 import app.miyuki.miyukievents.bukkit.user.UserRepository;
 import app.miyuki.miyukievents.bukkit.util.logger.LoggerHelper;
-import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
 import lombok.Getter;
 import lombok.val;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -49,8 +47,6 @@ public final class MiyukiEvents extends JavaPlugin {
     private ItemSerialAdapter itemSerialAdapter;
 
     private TextColorAdapter textColorAdapter;
-
-    private GameQueue queue;
 
     private CommandRegistry commandRegistry;
 
@@ -82,9 +78,6 @@ public final class MiyukiEvents extends JavaPlugin {
 
         loadMessages();
 
-        MinecraftVersion.disableBStats();
-        MinecraftVersion.disableUpdateCheck();
-
         loadAdapters();
         loadProviders();
 
@@ -94,7 +87,6 @@ public final class MiyukiEvents extends JavaPlugin {
         ChatHook.of(this).hook();
 
         loadGameManager();
-        loadGameQueue();
 
         loadDatabase();
         loadMetrics();
@@ -170,11 +162,6 @@ public final class MiyukiEvents extends JavaPlugin {
     private void loadGameManager() {
         this.gameManager = new GameManager(this, language);
         this.gameManager.load();
-    }
-
-    private void loadGameQueue() {
-        this.queue = new GameQueue(this, gameManager);
-        LoggerHelper.log("Queue loaded successfully");
     }
 
     private void loadAdapters() {

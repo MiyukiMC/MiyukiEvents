@@ -1,5 +1,6 @@
 package app.miyuki.miyukievents.bukkit.hook.worldedit;
 
+import app.miyuki.miyukievents.bukkit.util.singlemap.Pair;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +11,7 @@ import java.io.File;
 public interface WorldEditAPI {
 
     @Nullable
-    Location[] getSelector(@NotNull Player player);
+    Pair<Location, Location> getSelector(@NotNull Player player);
 
     void pasteSchematic(@NotNull File file, @NotNull Location pos1, @NotNull Location pos2);
 

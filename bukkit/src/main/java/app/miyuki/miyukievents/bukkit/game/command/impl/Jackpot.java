@@ -1,8 +1,9 @@
-package app.miyuki.miyukievents.bukkit.game.command;
+package app.miyuki.miyukievents.bukkit.game.command.impl;
 
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
+import app.miyuki.miyukievents.bukkit.game.command.Command;
 import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.util.number.NumberEvaluator;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;

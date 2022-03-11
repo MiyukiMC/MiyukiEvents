@@ -53,7 +53,7 @@ public class GenericStopSubCommand extends SubCommand {
             return false;
         }
 
-        plugin.getQueue().unregister(game);
+        plugin.getGameManager().getQueue().unregister(game);
         game.stop();
 
         Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Cancelled"));

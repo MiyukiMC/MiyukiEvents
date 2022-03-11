@@ -1,8 +1,9 @@
-package app.miyuki.miyukievents.bukkit.game.command;
+package app.miyuki.miyukievents.bukkit.game.command.impl;
 
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
+import app.miyuki.miyukievents.bukkit.game.command.Command;
 import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import com.google.common.collect.Lists;
@@ -21,9 +22,6 @@ public class FastClick extends Command<User> {
 
     @Override
     public void onCommand(Player player, String[] args) {
-        if (gameState != GameState.STARTED)
-            return;
-
         if (!args[0].equals(id)) {
             return;
         }

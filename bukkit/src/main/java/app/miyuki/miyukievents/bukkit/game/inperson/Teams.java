@@ -3,6 +3,8 @@ package app.miyuki.miyukievents.bukkit.game.inperson;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.user.User;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import lombok.Getter;
 import lombok.val;
 import lombok.var;
@@ -19,7 +21,7 @@ import java.util.HashMap;
 
 public abstract class Teams<W> extends InPerson<W> {
 
-    protected final HashMap<User, Integer> users = new HashMap<>();
+    protected final Multimap<Integer, User> teams = ArrayListMultimap.create();
 
     @Getter
     protected final HashMap<Integer, Location> entries = new HashMap<>();
@@ -52,28 +54,27 @@ public abstract class Teams<W> extends InPerson<W> {
     }
 
     protected void organizeTeams() {
-        val teamAmount = entries.size();
-
-        var i = 1;
-
-        val users = new ArrayList<>(this.users.keySet());
+        val users = new ArrayList<>(this.players.values());
         Collections.shuffle(users);
+
+        val teamAmount = entries.size();
+        var team = 1;
 
         for (User user : users) {
 
-            this.users.put(user, i);
+            this.teams.put(team, user);
 
-            i++;
+            team++;
 
-            if (i > teamAmount)
-                i = 1;
+            if (team > teamAmount)
+                team = 1;
 
         }
 
     }
 
-    protected void teleportToDesignedEntry(User user) {
-        user.getPlayer().get().teleport(entries.get(users.get(user)));
+    protected void teleportAllUsersToDesignatedEntrance(User user) {
+        teams.asMap().forEach((team, users) -> user.getPlayer().ifPresent(it -> it.teleport(entries.get(team))));
     }
 
     public void addEntry(int team, @NotNull Location location) {

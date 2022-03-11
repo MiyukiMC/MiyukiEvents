@@ -1,8 +1,10 @@
 package app.miyuki.miyukievents.bukkit.game.inperson.impl;
 
 
+import app.miyuki.miyukievents.bukkit.commands.impl.inperson.teamdeathmatch.TeamDeathmatchCommand;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
+import app.miyuki.miyukievents.bukkit.game.GameInfo;
 import app.miyuki.miyukievents.bukkit.game.inperson.Teams;
 import app.miyuki.miyukievents.bukkit.user.User;
 import org.bukkit.entity.Player;
@@ -17,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
+@GameInfo(typeName = "TeamDeathmatch", commandClass = TeamDeathmatchCommand.class)
 public class TeamDeathmatch extends Teams<Set<User>> {
 
     public TeamDeathmatch(@NotNull GameConfigProvider configProvider) {
@@ -25,6 +28,8 @@ public class TeamDeathmatch extends Teams<Set<User>> {
 
     @Override
     public void start() {
+
+
 
     }
 

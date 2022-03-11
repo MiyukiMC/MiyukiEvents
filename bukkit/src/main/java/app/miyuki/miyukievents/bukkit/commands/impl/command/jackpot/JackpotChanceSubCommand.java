@@ -5,7 +5,7 @@ import app.miyuki.miyukievents.bukkit.commands.SubCommand;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
-import app.miyuki.miyukievents.bukkit.game.command.Jackpot;
+import app.miyuki.miyukievents.bukkit.game.command.impl.Jackpot;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import lombok.val;

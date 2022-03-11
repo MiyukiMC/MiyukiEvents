@@ -31,12 +31,6 @@ public enum Dependency {
             "1.5",
             "0D6eM99gKpEYFNDydgnto3Df0ygZGdRVqy5ahtj0oIs="
     ),
-    ITEM_NBT_API(
-            "de{}tr7zw",
-            "item-nbt-api",
-            "2.9.2",
-            "c7LsiYbsUQSxYEJrbhpj2olMXw99RyAZKsOtrJIMess="
-    ),
     MARIADB_DRIVER(
             "org{}mariadb{}jdbc",
             "mariadb-java-client",

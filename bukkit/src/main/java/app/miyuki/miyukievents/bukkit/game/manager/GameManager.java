@@ -2,19 +2,16 @@ package app.miyuki.miyukievents.bukkit.game.manager;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.Game;
-import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
-import app.miyuki.miyukievents.bukkit.game.GameState;
-import app.miyuki.miyukievents.bukkit.game.GameType;
+import app.miyuki.miyukievents.bukkit.game.*;
 import app.miyuki.miyukievents.bukkit.game.inperson.InPerson;
+import app.miyuki.miyukievents.bukkit.game.queue.GameQueue;
 import app.miyuki.miyukievents.bukkit.util.logger.LoggerHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.val;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -22,11 +19,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
 public class GameManager {
-
-    public final @NonNull MiyukiEvents plugin;
-    private final @NonNull String language;
 
     private static final ImmutableList<String> DEFAULT_GAMES = ImmutableList.of(
             "word",
@@ -40,8 +33,29 @@ public class GameManager {
             "auction"
     );
 
+
+    private final MiyukiEvents plugin;
+    private final String language;
+
+    @Getter
+    private final GameQueue queue;
+
+    @Getter
+    private final GameRegistry gameRegistry;
+
     @Getter
     private final Map<String, Game<?>> games = Maps.newHashMap();
+
+
+    public GameManager(@NotNull MiyukiEvents plugin, @NotNull String language) {
+        this.plugin = plugin;
+        this.language = language;
+
+        queue = new GameQueue(plugin, this);
+        gameRegistry = new GameRegistry();
+
+        gameRegistry.load();
+    }
 
     @Nullable
     public Game<?> getCurrentGame() {
@@ -88,18 +102,20 @@ public class GameManager {
 
             val typeName = config.getString("Type");
 
-            val type = Arrays.stream(GameType.values())
-                    .filter(it -> it.name().equalsIgnoreCase(typeName))
+            val typeClass = gameRegistry.getGames().stream()
+                    .filter(it -> it.getAnnotation(GameInfo.class).typeName().equalsIgnoreCase(typeName))
                     .findFirst();
 
-            if (!type.isPresent()) {
+            if (!typeClass.isPresent()) {
                 LoggerHelper.log(Level.SEVERE, "The type &f" + typeName + " is invalid.");
                 continue;
             }
 
-            val game = type.get().instantiate(configProvider);
-
-            if (game == null) {
+            Game<?> game;
+            try {
+                game = (Game<?>) typeClass.get().getConstructor(GameConfigProvider.class).newInstance(configProvider);
+            } catch (Exception exception) {
+                LoggerHelper.log(Level.SEVERE, "The " + typeName + " event cannot be instantiated.");
                 continue;
             }
 
@@ -124,7 +140,9 @@ public class GameManager {
 
             }
 
-            plugin.getCommandRegistry().register(game, type.get().getCommandClass());
+            val commandClass = typeClass.get().getAnnotation(GameInfo.class).commandClass();
+
+            plugin.getCommandRegistry().register(game, commandClass);
 
             this.games.put(gameName.toLowerCase(Locale.ROOT), game);
         }

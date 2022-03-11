@@ -55,8 +55,7 @@ public class DependencyRegistry {
                 Dependency.ADVENTURE_SERIALIZER_GSON,
                 Dependency.ADVENTURE_GSON_LEGACY_IMPL,
                 Dependency.ADVENTURE_SERIALIZER_LEGACY,
-                Dependency.ADVENTURE_NBT,
-                Dependency.ITEM_NBT_API
+                Dependency.ADVENTURE_NBT
         );
     }
 

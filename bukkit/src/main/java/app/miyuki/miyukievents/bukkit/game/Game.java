@@ -64,10 +64,6 @@ public abstract class Game<W> {
         return plugin.getVaultProvider().provide().map(economyAPI -> economyAPI.has(player.getUniqueId(), cost)).orElse(true);
     }
 
-    public String getTypeName() {
-        return configProvider.provide(ConfigType.CONFIG).getString("Type");
-    }
-
     public String getName() {
         return configProvider.provide(ConfigType.CONFIG).getString("Name");
     }

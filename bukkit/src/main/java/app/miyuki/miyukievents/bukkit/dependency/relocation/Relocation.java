@@ -15,8 +15,6 @@ public class Relocation {
             Relocation.of("com{}mysql{}cj", "mysql"),
             Relocation.of("org{}apache{}commons.pool2", "pool2"),
             Relocation.of("org{}h2", "h2"),
-            Relocation.of("de{}tr7zw{}changeme{}nbtapi", "nbtapi"),
-            Relocation.of("de{}tr7zw{}annotations", "nbtapi.annotations"),
             Relocation.of("org{}json", "json"),
             Relocation.of("org{}mariadb{}jdbc", "mariadb"),
             Relocation.of("redis{}clients{}jedis", "jedis"),

@@ -2,7 +2,7 @@ package app.miyuki.miyukievents.bukkit.adapter.impl;
 
 import app.miyuki.miyukievents.bukkit.adapter.Adapter;
 import app.miyuki.miyukievents.bukkit.adapter.Restorable;
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import lombok.val;
@@ -54,13 +54,7 @@ public class ItemSerialAdapter implements Adapter<String, ItemStack[]>, Restorab
 
                 val item = ItemStack.deserialize((Map<String, Object>) stack);
 
-                val nbtItem = new NBTItem(item);
-
-                nbtItem.setString("MiyukiEvents_Protect", "1");
-
-                items[index] = nbtItem.getItem();
-
-                System.out.println("COntem: " + new NBTItem(items[index]).hasKey("MiyukiEvents_Protect"));
+                items[index] = NBTEditor.set(item, "0", "MiyukiEvents_Protect");
 
             } else {
                 items[index] = null;

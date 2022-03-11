@@ -19,7 +19,7 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("me.clip:placeholderapi:2.10.9")
 
-    compileOnly("de.tr7zw:item-nbt-api:2.9.2")
+    implementation("io.github.bananapuncher714:nbteditor:7.18.1")
 
     implementation("com.github.cryptomorin:XSeries:8.6.1")
 
@@ -34,7 +34,6 @@ tasks {
     shadowJar {
         relocate("org.bstats", "app.miyuki.miyukievents.libs.bstats")
         relocate("com.cryptomorin.xseries", "app.miyuki.miyukievents.libs.xseries")
-        relocate("de.tr7zw.changeme.nbtapi", "app.miyuki.miyukievents.libs.nbtapi")
-        relocate("de.tr7zw.annotations", "app.miyuki.miyukievents.libs.nbtapi.annotations")
+        relocate("io.github.bananapuncher714.nbteditor", "app.miyuki.libs.miyukievents.nbteditor")
     }
 }

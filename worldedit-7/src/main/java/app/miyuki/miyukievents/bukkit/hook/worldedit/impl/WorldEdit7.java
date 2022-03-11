@@ -1,6 +1,7 @@
 package app.miyuki.miyukievents.bukkit.hook.worldedit.impl;
 
 import app.miyuki.miyukievents.bukkit.hook.worldedit.WorldEditAPI;
+import app.miyuki.miyukievents.bukkit.util.singlemap.Pair;
 import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
@@ -30,7 +31,7 @@ public class WorldEdit7 implements WorldEditAPI {
     private final WorldEditPlugin worldEdit = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
 
     @Override
-    public @Nullable Location[] getSelector(@NotNull Player player) {
+    public @Nullable Pair<Location, Location> getSelector(@NotNull Player player) {
         Region region;
         val world = player.getWorld();
         try {
@@ -38,10 +39,10 @@ public class WorldEdit7 implements WorldEditAPI {
         } catch (Exception ignored) {
             return null;
         }
-        return new Location[]{
+        return new Pair<>(
                 BukkitAdapter.adapt(world, region.getMaximumPoint()),
                 BukkitAdapter.adapt(world, region.getMinimumPoint())
-        };
+        );
     }
 
     @Override
