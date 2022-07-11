@@ -15,12 +15,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class InPersonSetAreaSubCommand  extends SubCommand {
+public class InPersonSetAreaSubCommand extends SubCommand {
 
     private final InPerson<?> game;
     private final MessageDispatcher messageDispatcher;
     private final GameConfigProvider configProvider;
-
 
     public InPersonSetAreaSubCommand(
             @NotNull MiyukiEvents plugin,
@@ -44,10 +43,8 @@ public class InPersonSetAreaSubCommand  extends SubCommand {
         return configProvider.provide(ConfigType.CONFIG).getString("SubCommands.SetArea.Permission");
     }
 
-
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
-
         if (game.getGameState() != GameState.STOPPED) {
             plugin.getGlobalMessageDispatcher().dispatch(sender, "NeedStopGame");
             return false;

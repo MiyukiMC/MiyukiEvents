@@ -35,7 +35,7 @@ public class Jackpot extends Command<User> {
     @Override
     public void onCommand(Player player, String[] args) {
 
-        if (gameState != GameState.STARTED) {
+        if (this.gameState != GameState.STARTED) {
             plugin.getGlobalMessageDispatcher().dispatch(player, "GameNotFound");
             return;
         }
@@ -50,7 +50,9 @@ public class Jackpot extends Command<User> {
             return;
         }
 
+        // refactor this
         val economyAPI = plugin.getVaultProvider().provide().get();
+
         val uuid = player.getUniqueId();
         val money = new BigDecimal(args[0]);
 
@@ -73,31 +75,34 @@ public class Jackpot extends Command<User> {
 
         val user = plugin.getUserRepository().findById(player.getUniqueId());
 
+        // use .replace?
         if (playerBet != null) {
             val oldValue = players.get(user);
             players.replace(user, money.add(oldValue));
-        } else {
+        } else
             players.put(user, money);
-        }
 
         economyAPI.withdraw(uuid, money);
 
-        messageDispatcher.dispatch(player, "YouEntered", message -> message
+        this.messageDispatcher.dispatch(player, "YouEntered", message -> message
                 .replace("{chance}", String.valueOf(RandomUtils.getChance(players, user)))
                 .replace("{money}", String.format("%.2f", players.get(user))));
     }
 
     @Override
     public void start() {
-        players.clear();
-        val config = configProvider.provide(ConfigType.CONFIG);
-        this.maxBet = new BigDecimal(config.getString("MaxBet"));
-        setGameState(GameState.STARTED);
+        this.players.clear();
 
-        AtomicInteger calls = new AtomicInteger(config.getInt("Calls"));
+        val config = configProvider.provide(ConfigType.CONFIG);
+
+        this.maxBet = new BigDecimal(config.getString("MaxBet"));
+
+        this.setGameState(GameState.STARTED);
+
+        val calls = new AtomicInteger(config.getInt("Calls"));
         val interval = config.getInt("CallInterval");
 
-        schedulerManager.runAsync(0L, interval * 20L, () -> {
+        this.schedulerManager.runAsync(0L, interval * 20L, () -> {
             val seconds = calls.get() * interval;
 
             if (calls.get() > 0) {
@@ -123,21 +128,27 @@ public class Jackpot extends Command<User> {
 
     @Override
     public void stop() {
-        setGameState(GameState.STOPPED);
-        schedulerManager.cancel();
+        this.setGameState(GameState.STOPPED);
+        this.schedulerManager.cancel();
 
+        // refactor this
         val economyAPI = plugin.getVaultProvider().provide().get();
-        players.forEach((user, value) -> economyAPI.deposit(user.getUuid(), value));
+
+        this.players.forEach((user, value) ->
+                economyAPI.deposit(user.getUuid(), value)
+        );
     }
 
     @Override
     public void onWin(User user) {
-        giveReward(user);
-        val total = players.values().stream().reduce(BigDecimal.valueOf(0), BigDecimal::add);
-        players.clear();
-        stop();
+        this.giveReward(user);
 
-        messageDispatcher.globalDispatch("Win", message -> message
+        val total = players.values().stream().reduce(BigDecimal.valueOf(0), BigDecimal::add);
+
+        this.players.clear();
+        this.stop();
+
+        this.messageDispatcher.globalDispatch("Win", message -> message
                 .replace("{chance}", String.valueOf(RandomUtils.getChance(players, user)))
                 .replace("{total}", String.valueOf(total))
                 .replace("{winner}", user.getPlayerName()));
@@ -147,7 +158,9 @@ public class Jackpot extends Command<User> {
     protected void giveReward(User user) {
         val total = players.values().stream().reduce(BigDecimal.valueOf(0), BigDecimal::add);
 
+        // refactor this
         plugin.getVaultProvider().provide().get().deposit(user.getUuid(), total);
+
         this.reward.execute(user);
     }
 

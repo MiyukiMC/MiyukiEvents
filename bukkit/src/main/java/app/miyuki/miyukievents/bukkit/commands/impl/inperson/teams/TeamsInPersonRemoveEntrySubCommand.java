@@ -42,10 +42,8 @@ public class TeamsInPersonRemoveEntrySubCommand extends SubCommand {
         return configProvider.provide(ConfigType.CONFIG).getString("SubCommands.RemoveEntry.Permission");
     }
 
-
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
-
         if (game.getGameState() != GameState.STOPPED) {
             plugin.getGlobalMessageDispatcher().dispatch(sender, "NeedStopGame");
             return false;

@@ -18,6 +18,7 @@ import lombok.Getter;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,11 +43,11 @@ public class Auction extends Command<User> {
 
     @Override
     public void onCommand(Player player, String[] args) {
-        if (gameState != GameState.STARTED)
+        if (this.gameState != GameState.STARTED)
             return;
 
         if (args.length < 1) {
-            messageDispatcher.dispatch(player, "Help");
+            this.messageDispatcher.dispatch(player, "Help");
             return;
         }
 
@@ -55,24 +56,27 @@ public class Auction extends Command<User> {
             return;
         }
 
-        val economyAPI = plugin.getVaultProvider().provide().get();
+        // change to class field?
+        val economyAPI = this.plugin.getVaultProvider().provide().get(); // null check
         val uuid = player.getUniqueId();
 
-        if (lastBid != null && lastBid.getFirst().getUuid().equals(uuid)) {
+        if (this.lastBid != null && this.lastBid.getFirst().getUuid().equals(uuid)) {
             messageDispatcher.dispatch(player, "TheLastBidIsYours");
             return;
         }
 
-        val money = lastBid == null ? new BigDecimal(args[0]).add(auctionItem.getStartBid()) : new BigDecimal(args[0]).add(lastBid.getSecond());
+        val money = lastBid == null
+                ? new BigDecimal(args[0]).add(auctionItem.getStartBid())
+                : new BigDecimal(args[0]).add(lastBid.getSecond());
 
         if (!economyAPI.has(uuid, money)) {
-            messageDispatcher.dispatch(player, "YouDontHaveMoney");
+            this.messageDispatcher.dispatch(player, "YouDontHaveMoney");
             return;
         }
 
         val subtractedValue = money.subtract(lastBid == null ? auctionItem.getStartBid() : lastBid.getSecond());
 
-        Function<String, String> format = (message -> message
+        final Function<String, String> format = (message -> message
                 .replace("{min}", NumberFormatter.format(auctionItem.getMinDifferenceBetweenEntries()))
                 .replace("{max}", NumberFormatter.format(auctionItem.getMaxDifferenceBetweenEntries())));
 
@@ -88,13 +92,12 @@ public class Auction extends Command<User> {
 
         economyAPI.withdraw(player.getUniqueId(), money);
 
-        if (lastBid != null) {
+        if (this.lastBid != null)
             economyAPI.deposit(lastBid.getFirst().getUuid(), lastBid.getSecond());
-        }
 
-        lastBid = new Pair<>(plugin.getUserRepository().findById(uuid), money);
+        this.lastBid = new Pair<>(plugin.getUserRepository().findById(uuid), money);
 
-        messageDispatcher.globalDispatch("PlayerEnteredInTheAuction", message -> message
+        this.messageDispatcher.globalDispatch("PlayerEnteredInTheAuction", message -> message
                 .replace("{player}", player.getName())
                 .replace("{money}", money.toString()));
 
@@ -102,14 +105,14 @@ public class Auction extends Command<User> {
 
     @Override
     public void start() {
-        setupAuction();
-        setGameState(GameState.STARTED);
+        this.setupAuction();
+        this.setGameState(GameState.STARTED);
         val config = configProvider.provide(ConfigType.CONFIG);
 
-        AtomicInteger calls = new AtomicInteger(config.getInt("Calls"));
+        val calls = new AtomicInteger(config.getInt("Calls"));
         val interval = config.getInt("CallInterval");
 
-        schedulerManager.run(0L, interval * 20L, () -> {
+        this.schedulerManager.run(0L, interval * 20L, () -> {
 
             if (calls.get() > 0) {
                 messageDispatcher.globalDispatch("Start", message -> message
@@ -124,14 +127,14 @@ public class Auction extends Command<User> {
                 calls.getAndDecrement();
 
             } else {
-                schedulerManager.run(() -> {
+                this.schedulerManager.run(() -> {
                     if (lastBid == null) {
-                        messageDispatcher.globalDispatch("NoWinner");
+                        this.messageDispatcher.globalDispatch("NoWinner");
                         stop();
                     } else {
                         val user = lastBid.getFirst();
-                        onWin(user);
-                        messageDispatcher.globalDispatch("Win", message -> message
+                        this.onWin(user);
+                        this.messageDispatcher.globalDispatch("Win", message -> message
                                 .replace("{name}", user.getPlayerName()));
                     }
                 });
@@ -142,10 +145,10 @@ public class Auction extends Command<User> {
 
     @Override
     public void stop() {
-        setGameState(GameState.STOPPED);
-        schedulerManager.cancel();
+        this.setGameState(GameState.STOPPED);
+        this.schedulerManager.cancel();
 
-        if (lastBid != null) {
+        if (this.lastBid != null) {
             val economyAPI = plugin.getVaultProvider().provide().get();
             economyAPI.deposit(lastBid.getFirst().getUuid(), lastBid.getSecond());
         }
@@ -153,14 +156,15 @@ public class Auction extends Command<User> {
 
     @Override
     public void onWin(User user) {
-        lastBid = null;
-        stop();
-        giveReward(user);
+        this.lastBid = null;
+        this.stop();
+        this.giveReward(user);
     }
 
     @Override
     protected void giveReward(User user) {
-        auctionItem.execute(Bukkit.getPlayer(user.getUuid()));
+        // check if player is offline
+        this.auctionItem.execute(Bukkit.getPlayer(user.getUuid()));
         this.reward.execute(user);
     }
 
@@ -170,22 +174,16 @@ public class Auction extends Command<User> {
     }
 
     private void setupAuction() {
-        auctionItems.clear();
-        lastBid = null;
+        this.auctionItems.clear();
+        this.lastBid = null;
 
         val config = configProvider.provide(ConfigType.CONFIG).getConfig();
         val section = config.getConfigurationSection("Auctions");
 
-        for (String key : section.getKeys(false)) {
+        for (val key : section.getKeys(false)) {
             val auctionItemSection = section.getConfigurationSection(key);
 
-            val name = ChatUtils.colorize(auctionItemSection.getString("Name"));
-            val commands = auctionItemSection.getStringList("Commands");
-            val startBid = new BigDecimal(auctionItemSection.getString("StartBid"));
-            val minDifferenceBetweenEntries = new BigDecimal(auctionItemSection.getString("MinDifferenceBetweenEntries"));
-            val maxDifferenceBetweenEntries = new BigDecimal(auctionItemSection.getString("MaxDifferenceBetweenEntries"));
-
-            auctionItems.add(new AuctionItem(name, commands, startBid, minDifferenceBetweenEntries, maxDifferenceBetweenEntries));
+            auctionItems.add(AuctionItem.fromConfig(auctionItemSection));
         }
 
         this.auctionItem = RandomUtils.getRandomElement(auctionItems);
@@ -200,6 +198,16 @@ public class Auction extends Command<User> {
         private BigDecimal startBid;
         private BigDecimal minDifferenceBetweenEntries;
         private BigDecimal maxDifferenceBetweenEntries;
+
+        private static AuctionItem fromConfig(@NotNull ConfigurationSection configurationSection) {
+            return new AuctionItem(
+                    ChatUtils.colorize(configurationSection.getString("Name")),
+                    configurationSection.getStringList("Commands"),
+                    new BigDecimal(configurationSection.getString("StartBid")),
+                    new BigDecimal(configurationSection.getString("MinDifferenceBetweenEntries")),
+                    new BigDecimal(configurationSection.getString("MaxDifferenceBetweenEntries"))
+            );
+        }
 
         private void execute(Player player) {
             commands.forEach(command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("{player}", player.getName())));

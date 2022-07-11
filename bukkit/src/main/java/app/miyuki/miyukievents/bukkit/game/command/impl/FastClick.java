@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 @GameInfo(typeName = "FastClick", commandClass = FastClickCommand.class)
 public class FastClick extends Command<User> {
 
+    // Used to verify json
     private String id;
 
     public FastClick(@NotNull GameConfigProvider configProvider) {
@@ -39,13 +40,12 @@ public class FastClick extends Command<User> {
             return;
         }
 
-
-        onWin(plugin.getUserRepository().findById(player.getUniqueId()));
+        this.onWin(plugin.getUserRepository().findById(player.getUniqueId()));
     }
 
     @Override
     public void start() {
-        setGameState(GameState.STARTED);
+        this.setGameState(GameState.STARTED);
         this.id = RandomUtils.generateRandomString(15);
 
         val config = configProvider.provide(ConfigType.CONFIG);
@@ -54,6 +54,8 @@ public class FastClick extends Command<User> {
 
         val messagePath = RandomUtils.getRandomElement(messagesPaths);
 
+
+        // refactor this
         String message;
         val messagesSection = config.getConfigurationSection("Messages");
 
@@ -72,10 +74,11 @@ public class FastClick extends Command<User> {
         message = message.replace("{id}", this.id);
 
         plugin.getAdventure().all().sendMessage(miniMessage.deserialize(plugin.getTextColorAdapter().adapt(message)).asComponent());
+        //
 
         val expireTime = configProvider.provide(ConfigType.CONFIG).getInt("ExpireTime");
 
-        schedulerManager.runAsync(expireTime * 20L, () -> {
+        this.schedulerManager.runAsync(expireTime * 20L, () -> {
             messageDispatcher.globalDispatch("NoWinner");
             stop();
         });

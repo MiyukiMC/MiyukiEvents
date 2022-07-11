@@ -10,7 +10,6 @@ public abstract class Injector {
     protected final ClassLoader classLoader;
 
     public Injector(URLClassLoader classLoader) {
-
         this.classLoader = classLoader;
     }
 

@@ -47,17 +47,17 @@ public class Math extends Chat<User> {
 
     @Override
     public void start() {
-        setGameState(GameState.STARTED);
-        setupResult();
+        this.setGameState(GameState.STARTED);
+        this.setupResult();
 
         val expireTime = configProvider.provide(ConfigType.CONFIG).getInt("ExpireTime");
 
-        messageDispatcher.globalDispatch("Start", message -> message
+        this.messageDispatcher.globalDispatch("Start", message -> message
                 .replace("{operator}", String.valueOf(operator))
                 .replace("{number1}", String.valueOf(numberOne))
                 .replace("{number2}", String.valueOf(numberTwo)));
 
-        schedulerManager.runAsync(expireTime * 20L, () -> {
+        this.schedulerManager.runAsync(expireTime * 20L, () -> {
             messageDispatcher.globalDispatch("NoWinner");
             stop();
         });
@@ -65,16 +65,16 @@ public class Math extends Chat<User> {
 
     @Override
     public void stop() {
-        setGameState(GameState.STOPPED);
-        schedulerManager.cancel();
+        this.setGameState(GameState.STOPPED);
+        this.schedulerManager.cancel();
     }
 
     @Override
     public void onWin(User user) {
-        stop();
-        giveReward(user);
+        this.stop();
+        this.giveReward(user);
 
-        messageDispatcher.globalDispatch("Win", message -> message
+        this.messageDispatcher.globalDispatch("Win", message -> message
                 .replace("{winner}", user.getPlayerName())
                 .replace("{result}", String.valueOf(result)));
     }
@@ -90,7 +90,9 @@ public class Math extends Chat<User> {
     }
 
     private void setupResult() {
-        this.operator = RandomUtils.getRandomElement(getConfigProvider().provide(ConfigType.CONFIG).getStringList("SumTypes")).charAt(0);
+        this.operator = RandomUtils.getRandomElement(
+                getConfigProvider().provide(ConfigType.CONFIG).getStringList("SumTypes")
+        ).charAt(0);
 
         val config = configProvider.provide(ConfigType.CONFIG);
 

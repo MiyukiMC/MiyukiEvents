@@ -9,6 +9,7 @@ import app.miyuki.miyukievents.bukkit.game.chat.Chat;
 import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import lombok.val;
+import lombok.var;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,7 +38,7 @@ public class Word extends Chat<User> {
         if (!checkCost(player))
             return;
 
-        String message = args[0];
+        var message = args[0];
 
         if (configProvider.provide(ConfigType.CONFIG).getBoolean("Words.IgnoreCase")) {
             message = message.toLowerCase(Locale.ROOT);
@@ -50,32 +51,34 @@ public class Word extends Chat<User> {
 
     @Override
     public void start() {
-        setupResult();
-        setGameState(GameState.STARTED);
+        this.setupResult();
+        this.setGameState(GameState.STARTED);
 
-        messageDispatcher.globalDispatch("Start", message -> message
+        this.messageDispatcher.globalDispatch("Start", message -> message
                 .replace("{word}", word));
 
         val expireTime = configProvider.provide(ConfigType.CONFIG).getInt("ExpireTime");
 
-        schedulerManager.runAsync(expireTime * 20L, () -> {
+        this.schedulerManager.runAsync(expireTime * 20L, () -> {
             messageDispatcher.globalDispatch("NoWinner");
-            stop();
+            this.stop();
         });
     }
 
     @Override
     public void stop() {
-        setGameState(GameState.STOPPED);
-        schedulerManager.cancel();
+        this.setGameState(GameState.STOPPED);
+        this.schedulerManager.cancel();
     }
 
     @Override
     public void onWin(User user) {
-        stop();
-        giveReward(user);
+        this.stop();
+        this.giveReward(user);
 
-        messageDispatcher.globalDispatch("Win", message -> message.replace("{winner}", user.getPlayerName()));
+        this.messageDispatcher.globalDispatch("Win",
+                message -> message.replace("{winner}", user.getPlayerName())
+        );
     }
 
     @Override
@@ -102,9 +105,8 @@ public class Word extends Chat<User> {
                     length
             );
 
-        } else {
+        } else
             this.word = RandomUtils.getRandomElement(configProvider.provide(ConfigType.CONFIG).getStringList("Words.Words"));
-        }
 
     }
 }

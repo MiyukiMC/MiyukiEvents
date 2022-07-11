@@ -27,7 +27,6 @@ public abstract class GameCommand extends Command {
         this.plugin = plugin;
     }
 
-
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
 

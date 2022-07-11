@@ -18,6 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @GameInfo(typeName = "Lottery", commandClass = GenericCommandCommand.class)
 public class Lottery extends Command<User> {
 
+    // Maybe change this to local variable
     private Integer minNumber;
     private Integer maxNumber;
 
@@ -29,7 +30,7 @@ public class Lottery extends Command<User> {
 
     @Override
     public void onCommand(Player player, String[] args) {
-        if (gameState != GameState.STARTED && !StringUtils.isNumeric(args[1]))
+        if (this.gameState != GameState.STARTED && !StringUtils.isNumeric(args[1]))
             return;
 
         if (!player.hasPermission(getPermission())) {
@@ -47,20 +48,20 @@ public class Lottery extends Command<User> {
             return;
         }
 
-        onWin(plugin.getUserRepository().findById(player.getUniqueId()));
+        this.onWin(plugin.getUserRepository().findById(player.getUniqueId()));
     }
 
     @Override
     public void start() {
-        setupResult();
-        setGameState(GameState.STARTED);
+        this.setupResult();
+        this.setGameState(GameState.STARTED);
 
         val config = configProvider.provide(ConfigType.CONFIG);
 
-        AtomicInteger calls = new AtomicInteger(config.getInt("Calls"));
+        val calls = new AtomicInteger(config.getInt("Calls"));
         val interval = config.getInt("CallInterval");
 
-        schedulerManager.runAsync(0L, interval * 20L, () -> {
+        this.schedulerManager.runAsync(0L, interval * 20L, () -> {
 
             if (calls.get() > 0) {
                 val seconds = calls.get() * interval;
@@ -85,16 +86,16 @@ public class Lottery extends Command<User> {
 
     @Override
     public void stop() {
-        setGameState(GameState.STOPPED);
-        schedulerManager.cancel();
+        this.setGameState(GameState.STOPPED);
+        this.schedulerManager.cancel();
     }
 
     @Override
     public void onWin(User user) {
-        stop();
-        giveReward(user);
+        this.stop();
+        this.giveReward(user);
 
-        messageDispatcher.globalDispatch("Win", message -> message
+        this.messageDispatcher.globalDispatch("Win", message -> message
                 .replace("{result}", String.valueOf(result))
                 .replace("{winner}", user.getPlayerName()));
     }
@@ -116,7 +117,7 @@ public class Lottery extends Command<User> {
 
         this.result = RandomUtils.generateRandomNumber(minNumber, maxNumber);
 
-        System.out.println(result);
+        System.out.println(result); // delete this after
     }
 
 }

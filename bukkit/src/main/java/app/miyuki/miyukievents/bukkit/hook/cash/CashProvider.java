@@ -35,7 +35,7 @@ public class CashProvider implements ProviderService<CashAPI> {
         if (registeredServiceProvider == null)
             return false;
 
-        cashAPI = registeredServiceProvider.getProvider();
+        this.cashAPI = registeredServiceProvider.getProvider();
         return true;
     }
 

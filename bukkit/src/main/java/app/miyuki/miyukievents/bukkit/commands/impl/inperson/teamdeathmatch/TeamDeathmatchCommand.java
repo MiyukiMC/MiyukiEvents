@@ -57,12 +57,9 @@ public class TeamDeathmatchCommand extends GameCommand {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
-
-
-
         Bukkit.dispatchCommand(sender, getName() + " help");
 
-        return false;
+        return true;
     }
 
 }

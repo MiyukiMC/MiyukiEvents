@@ -48,10 +48,8 @@ public class InPersonSetLocationSubCommand extends SubCommand {
         return configProvider.provide(ConfigType.CONFIG).getString("SubCommands.Set" + locationType.locationName + ".Permission");
     }
 
-
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
-
         val globalMessageDispatcher = plugin.getGlobalMessageDispatcher();
 
         if (game.getGameState() != GameState.STOPPED) {
@@ -75,6 +73,7 @@ public class InPersonSetLocationSubCommand extends SubCommand {
                 break;
             case ENTRY:
                 ((Solo<?>) game).setEntry(location);
+                break;
             default:
                 return false;
         }
@@ -83,6 +82,7 @@ public class InPersonSetLocationSubCommand extends SubCommand {
         return true;
     }
 
+    // maybe change this enum to other class
     @AllArgsConstructor
     public enum LocationType {
 

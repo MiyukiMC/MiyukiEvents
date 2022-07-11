@@ -44,7 +44,7 @@ public class FastQuiz extends Chat<User> {
         if (!checkCost(player))
             return;
 
-        String message = String.join(" ", args);
+        val message = String.join(" ", args);
 
         if (question.compareAnswer(message))
             onWin(plugin.getUserRepository().findById(player.getUniqueId()));
@@ -52,25 +52,26 @@ public class FastQuiz extends Chat<User> {
 
     @Override
     public void start() {
-        setupQuestions();
-        setGameState(GameState.STARTED);
+        this.setupQuestions();
+        this.setGameState(GameState.STARTED);
 
         val config = configProvider.provide(ConfigType.CONFIG);
 
-        AtomicInteger calls = new AtomicInteger(config.getInt("Calls"));
+        val calls = new AtomicInteger(config.getInt("Calls"));
         val interval = config.getInt("CallInterval");
 
         schedulerManager.runAsync(0L, interval * 20L, () -> {
             val seconds = calls.get() * interval;
 
             if (calls.get() > 0) {
+                // globalDispatch in messageDispatcher
                 Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "Start", message -> message
                         .replace("{seconds}", String.valueOf(seconds))
                         .replace("{question}", question.getQuestion())));
 
                 calls.getAndDecrement();
             } else {
-
+                // globalDispatch in messageDispatcher
                 Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "NoWinner", message -> message
                         .replace("{answer}", question.getAnswer())));
 
@@ -81,19 +82,20 @@ public class FastQuiz extends Chat<User> {
 
     @Override
     public void stop() {
-        setGameState(GameState.STOPPED);
-        schedulerManager.cancel();
+        this.setGameState(GameState.STOPPED);
+        this.schedulerManager.cancel();
     }
 
     @Override
     public void onWin(User user) {
-        stop();
+        this.stop();
 
+        // globalDispatch in messageDispatcher
         Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Win", message -> message
                 .replace("{answer}", question.getAnswer())
                 .replace("{winner}", user.getPlayerName())));
 
-        giveReward(user);
+        this.giveReward(user);
     }
 
     @Override
@@ -107,12 +109,12 @@ public class FastQuiz extends Chat<User> {
     }
 
     private void setupQuestions() {
-        questions.clear();
+        this.questions.clear();
 
         val config = configProvider.provide(ConfigType.CONFIG);
         val section = config.getConfigurationSection("Questions");
 
-        for (String key : section.getKeys(false)) {
+        for (val key : section.getKeys(false)) {
             val questionSection = section.getConfigurationSection(key);
 
             questions.add(new Question(
@@ -127,7 +129,7 @@ public class FastQuiz extends Chat<User> {
 
     @AllArgsConstructor
     @Getter
-    private static class Question {
+    private class Question {
 
         private String question;
         private String answer;

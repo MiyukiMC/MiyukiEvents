@@ -63,7 +63,7 @@ public class TeamsInPersonGetKitSubCommand extends SubCommand {
             return false;
         }
 
-       val player = (Player) sender;
+        val player = (Player) sender;
 
         player.getInventory().setContents(kit);
 
@@ -73,7 +73,10 @@ public class TeamsInPersonGetKitSubCommand extends SubCommand {
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String[] args) {
-        return IntStream.rangeClosed(1, game.getKits().size()).boxed().map(String::valueOf).collect(Collectors.toList());
+        return IntStream.rangeClosed(1, game.getKits().size())
+                .boxed()
+                .map(String::valueOf)
+                .collect(Collectors.toList());
     }
 
 }

@@ -25,7 +25,6 @@ public class TeamsInPersonSetKitSubCommand extends SubCommand {
     private final MessageDispatcher messageDispatcher;
     private final GameConfigProvider configProvider;
 
-
     public TeamsInPersonSetKitSubCommand(
             @NotNull MiyukiEvents plugin,
             @NotNull Teams<?> game,
@@ -48,10 +47,8 @@ public class TeamsInPersonSetKitSubCommand extends SubCommand {
         return configProvider.provide(ConfigType.CONFIG).getString("SubCommands.SetKit.Permission");
     }
 
-
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
-
         if (game.getGameState() != GameState.STOPPED) {
             plugin.getGlobalMessageDispatcher().dispatch(sender, "NeedStopGame");
             return false;
@@ -88,7 +85,6 @@ public class TeamsInPersonSetKitSubCommand extends SubCommand {
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String[] args) {
-
         val entries = game.getEntries();
 
         if (entries.isEmpty())

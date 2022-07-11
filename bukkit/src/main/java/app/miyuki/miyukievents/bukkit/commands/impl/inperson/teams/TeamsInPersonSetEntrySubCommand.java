@@ -46,10 +46,8 @@ public class TeamsInPersonSetEntrySubCommand extends SubCommand {
         return configProvider.provide(ConfigType.CONFIG).getString("SubCommands.SetEntry.Permission");
     }
 
-
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
-
         if (game.getGameState() != GameState.STOPPED) {
             plugin.getGlobalMessageDispatcher().dispatch(sender, "NeedStopGame");
             return false;
@@ -73,7 +71,7 @@ public class TeamsInPersonSetEntrySubCommand extends SubCommand {
             messageDispatcher.dispatch(
                     sender,
                     "SetMissingEntries",
-                    it -> it.replace("{missingentries}", String.join(", ", missingEntries))
+                    it -> it.replace("{missing_entries}", String.join(", ", missingEntries))
             );
             return false;
         }

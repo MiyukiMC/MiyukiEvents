@@ -45,10 +45,8 @@ public class TeamsInPersonStartSubCommand extends SubCommand {
         return configProvider.provide(ConfigType.CONFIG).getString("SubCommands.Start.Permission");
     }
 
-
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
-
         val globalMessageDispatcher = plugin.getGlobalMessageDispatcher();
 
         if (!GenericStartConditionEvaluator.of(globalMessageDispatcher).evaluate(sender, game.getGameState()))
@@ -84,6 +82,7 @@ public class TeamsInPersonStartSubCommand extends SubCommand {
 
         }
 
+        // ?
 //        game.setGameState(GameState.QUEUE);
 //        plugin.getQueue().register(game);
 

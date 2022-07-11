@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @GameInfo(typeName = "Pool", commandClass = GenericCommandCommand.class)
 public class Pool extends Command<User> {
 
+    // maybe change to UUID or String
     private final List<Player> players = Lists.newArrayList();
 
     public Pool(@NotNull GameConfigProvider configProvider) {
@@ -32,7 +33,7 @@ public class Pool extends Command<User> {
 
     @Override
     public void onCommand(Player player, String[] args) {
-        if (gameState != GameState.STARTED)
+        if (this.gameState != GameState.STARTED)
             return;
 
         if (!player.hasPermission(getPermission())) {
@@ -50,22 +51,23 @@ public class Pool extends Command<User> {
             return;
         }
 
-        plugin.getVaultProvider().provide().ifPresent(economyAPI -> economyAPI.withdraw(player.getUniqueId(), getCost()));
-        players.add(player);
-        messageDispatcher.dispatch(player, "YouEntered");
+        this.plugin.getVaultProvider().provide().ifPresent(economyAPI -> economyAPI.withdraw(player.getUniqueId(), getCost()));
+        this.players.add(player);
+
+        this.messageDispatcher.dispatch(player, "YouEntered");
     }
 
     @Override
     public void start() {
-        players.clear();
-        setGameState(GameState.STARTED);
+        this.players.clear();
+        this.setGameState(GameState.STARTED);
 
         val config = configProvider.provide(ConfigType.CONFIG);
 
-        AtomicInteger calls = new AtomicInteger(config.getInt("Calls"));
+        val calls = new AtomicInteger(config.getInt("Calls"));
         val interval = config.getInt("CallInterval");
 
-        schedulerManager.runAsync(0L, interval * 20L, () -> {
+        this.schedulerManager.runAsync(0L, interval * 20L, () -> {
 
             if (calls.get() > 0) {
                 val seconds = calls.get() * interval;
@@ -111,7 +113,7 @@ public class Pool extends Command<User> {
                                 .start();
 
                     } else {
-                        onWin(plugin.getUserRepository().findById(RandomUtils.getRandomElement(players).getUniqueId()));
+                        this.onWin(plugin.getUserRepository().findById(RandomUtils.getRandomElement(players).getUniqueId()));
                     }
                 }
             }
@@ -122,23 +124,28 @@ public class Pool extends Command<User> {
 
     @Override
     public void stop() {
-        setGameState(GameState.STOPPED);
-        schedulerManager.cancel();
+        this.setGameState(GameState.STOPPED);
+        this.schedulerManager.cancel();
 
-        players.forEach(player -> plugin.getVaultProvider().provide().ifPresent(economyAPI -> economyAPI.deposit(player.getUniqueId(), getCost())));
+        this.players.forEach(player ->
+                // change this to local variable.
+                plugin.getVaultProvider().provide().ifPresent(economyAPI -> economyAPI.deposit(player.getUniqueId(), getCost()))
+        );
     }
 
     @Override
     public void onWin(User user) {
-        players.clear();
-        stop();
+        this.players.clear();
+        this.stop();
+
         val total = getCost().multiply(BigDecimal.valueOf(players.size()));
 
-        messageDispatcher.globalDispatch("Win", message -> message
+        this.messageDispatcher.globalDispatch("Win", message -> message
                 .replace("{winner}", user.getPlayerName())
                 .replace("{money}", String.valueOf(total)));
 
-        messageDispatcher.dispatch(Bukkit.getPlayer(user.getUuid()), "YouWin", message -> message
+        // maybe be null
+        this.messageDispatcher.dispatch(Bukkit.getPlayer(user.getUuid()), "YouWin", message -> message
                 .replace("{money}", String.valueOf(total)));
 
         giveReward(user);
@@ -148,7 +155,7 @@ public class Pool extends Command<User> {
     protected void giveReward(User user) {
         val total = getCost().multiply(BigDecimal.valueOf(players.size()));
 
-        plugin.getVaultProvider().provide().ifPresent(economyAPI -> economyAPI.deposit(user.getUuid(), total));
+        this.plugin.getVaultProvider().provide().ifPresent(economyAPI -> economyAPI.deposit(user.getUuid(), total));
         this.reward.execute(user);
     }
 
