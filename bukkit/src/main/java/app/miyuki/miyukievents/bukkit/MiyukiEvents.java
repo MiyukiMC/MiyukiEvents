@@ -95,14 +95,13 @@ public final class MiyukiEvents extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        val currentGame = this.gameManager.getCurrentGame();
-        if (currentGame != null)
-            currentGame.stop();
+        if (this.gameManager != null && this.gameManager.getCurrentGame() != null)
+            this.gameManager.getCurrentGame().stop();
 
         this.adventure.close();
 
-        if (storage != null)
-            storage.shutdown();
+        if (this.storage != null)
+            this.storage.shutdown();
     }
 
     private void loadCommands() {
