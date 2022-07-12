@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class ClanProvider implements ProviderService<ClanAPI> {
 
-    private final Map<String, ? extends ClanAPI> CLAN_APIS = ImmutableMap.of(
+    private static final Map<String, ? extends ClanAPI> CLAN_APIS = ImmutableMap.of(
             "yClans", new YClans(),
             "SimpleClans", new SimpleClans()
     );
