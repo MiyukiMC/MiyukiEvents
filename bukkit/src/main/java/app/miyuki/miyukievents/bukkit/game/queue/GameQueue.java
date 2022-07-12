@@ -35,6 +35,7 @@ public class GameQueue extends BukkitRunnable {
             return;
 
         game.start();
+        gameManager.setLastGame(game);
     }
 
     public boolean register(@NotNull Game<?> game) {

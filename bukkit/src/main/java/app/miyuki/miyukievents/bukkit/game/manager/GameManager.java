@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.val;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,6 +42,10 @@ public class GameManager {
 
     @Getter
     private final GameRegistry gameRegistry;
+
+    @Getter
+    @Setter
+    private Game<?> lastGame = null;
 
     @Getter
     private final Map<String, Game<?>> games = Maps.newHashMap();

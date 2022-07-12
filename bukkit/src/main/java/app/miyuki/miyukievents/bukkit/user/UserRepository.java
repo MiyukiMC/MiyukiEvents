@@ -31,6 +31,15 @@ public class UserRepository {
         return Optional.ofNullable(users.getIfPresent(uniqueId));
     }
 
+    public Optional<User> findByName(@NotNull String playerName) {
+        val filteredUser = users.asMap().values().stream()
+                .filter(user -> user.getPlayerName().equalsIgnoreCase(playerName))
+                .findFirst()
+                .orElse(null);
+
+        return Optional.ofNullable(filteredUser);
+    }
+
     public void save(@NotNull User user) {
         users.put(user.getUuid(), user);
     }
