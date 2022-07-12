@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class GameQueue extends BukkitRunnable {
+public class GameQueue {
 
     private final GameManager gameManager;
 
@@ -18,24 +18,25 @@ public class GameQueue extends BukkitRunnable {
 
     public GameQueue(@NotNull MiyukiEvents plugin, @NotNull GameManager gameManager) {
         this.gameManager = gameManager;
-        this.runTaskTimerAsynchronously(plugin, 20L, 20L);
-    }
 
-    @Override
-    public void run() {
-        if (queue.isEmpty())
-            return;
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (queue.isEmpty())
+                    return;
 
-        if (gameManager.getCurrentGame() != null)
-            return;
+                if (gameManager.getCurrentGame() != null)
+                    return;
 
-        val game = queue.poll();
+                val game = queue.poll();
 
-        if (game == null)
-            return;
+                if (game == null)
+                    return;
 
-        game.start();
-        gameManager.setLastGame(game);
+                game.start();
+                gameManager.setLastGame(game);
+            }
+        }.runTaskTimerAsynchronously(plugin, 20L, 20L);
     }
 
     public boolean register(@NotNull Game<?> game) {
