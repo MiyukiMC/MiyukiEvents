@@ -1,9 +1,6 @@
 package app.miyuki.miyukievents.bukkit;
 
-import app.miyuki.miyukievents.bukkit.adapter.impl.ItemSerialAdapter;
-import app.miyuki.miyukievents.bukkit.adapter.impl.LocationAdapter;
-import app.miyuki.miyukievents.bukkit.adapter.impl.RewardAdapter;
-import app.miyuki.miyukievents.bukkit.adapter.impl.TextColorAdapter;
+import app.miyuki.miyukievents.bukkit.adapter.impl.*;
 import app.miyuki.miyukievents.bukkit.commands.CommandRegistry;
 import app.miyuki.miyukievents.bukkit.config.Config;
 import app.miyuki.miyukievents.bukkit.dependency.DependencyManager;
@@ -19,6 +16,7 @@ import app.miyuki.miyukievents.bukkit.listener.ListenerRegistry;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
 import app.miyuki.miyukievents.bukkit.storage.Storage;
 import app.miyuki.miyukievents.bukkit.storage.StorageFactory;
+import app.miyuki.miyukievents.bukkit.user.UserGameHistory;
 import app.miyuki.miyukievents.bukkit.user.UserRepository;
 import app.miyuki.miyukievents.bukkit.util.logger.LoggerHelper;
 import lombok.Getter;
@@ -47,6 +45,8 @@ public final class MiyukiEvents extends JavaPlugin {
     private ItemSerialAdapter itemSerialAdapter;
 
     private TextColorAdapter textColorAdapter;
+
+    private UserGameHistoryAdapter userGameHistoryAdapter;
 
     private CommandRegistry commandRegistry;
 
@@ -146,12 +146,12 @@ public final class MiyukiEvents extends JavaPlugin {
 
     private void loadDatabase() {
         val storageFactory = new StorageFactory(this);
-        storage = storageFactory.create();
+        this.storage = storageFactory.create();
 
         if (storage == null)
             return;
 
-        storage.createTables();
+        this.storage.createTables();
 
         LoggerHelper.log("Database loaded successfully");
     }
@@ -166,6 +166,7 @@ public final class MiyukiEvents extends JavaPlugin {
         this.locationAdapter = new LocationAdapter();
         this.itemSerialAdapter = new ItemSerialAdapter();
         this.textColorAdapter = new TextColorAdapter();
+        this.userGameHistoryAdapter = new UserGameHistoryAdapter();
     }
 
     private void loadMetrics() {

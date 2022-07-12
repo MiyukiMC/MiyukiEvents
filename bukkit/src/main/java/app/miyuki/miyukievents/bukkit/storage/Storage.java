@@ -1,6 +1,7 @@
 package app.miyuki.miyukievents.bukkit.storage;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
+import app.miyuki.miyukievents.bukkit.adapter.impl.UserGameHistoryAdapter;
 import app.miyuki.miyukievents.bukkit.storage.connection.ConnectionFactory;
 import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.user.UserGameHistory;
@@ -64,10 +65,13 @@ public class Storage {
     private final ConnectionFactory connectionFactory;
     private final StorageType storageType;
 
+    private final UserGameHistoryAdapter userGameHistoryAdapter;
+
     public Storage(MiyukiEvents plugin, ConnectionFactory connectionFactory, StorageType storageType) {
         this.plugin = plugin;
         this.connectionFactory = connectionFactory;
         this.storageType = storageType;
+        this.userGameHistoryAdapter = plugin.getUserGameHistoryAdapter();
     }
 
     /*
@@ -158,31 +162,22 @@ public class Storage {
     }
 
     @SneakyThrows
-    public CompletableFuture<Optional<User>> getUser(@NotNull String id) {
+    public CompletableFuture<Optional<User>> getUser(@NotNull UUID uniqueId) {
         return Async.run(() -> {
             try {
                 @Cleanup val connection = connectionFactory.getConnection();
                 @Cleanup val statementHistory = connection.prepareStatement(SELECT_HISTORY);
                 @Cleanup val statementUser = connection.prepareStatement(SELECT_USER);
 
-                statementUser.setString(1, id);
-                statementHistory.setString(1, id);
+                statementUser.setString(1, uniqueId.toString());
+                statementHistory.setString(1, uniqueId.toString());
 
                 @Cleanup val resultHistory = statementHistory.executeQuery();
 
-                List<UserGameHistory> userGameHistories = new ArrayList<>();
+                final List<UserGameHistory> userGameHistories = new ArrayList<>();
 
-                while (resultHistory.next()) {
-
-                    val name = resultHistory.getString("game");
-                    val wins = resultHistory.getInt("wins");
-                    val defeats = resultHistory.getInt("defeats");
-                    val kills = resultHistory.getInt("kills");
-                    val deaths = resultHistory.getInt("deaths");
-
-                    userGameHistories.add(new UserGameHistory(name, wins, defeats, kills, deaths));
-
-                }
+                while (resultHistory.next())
+                    userGameHistories.add(userGameHistoryAdapter.adapt(resultHistory));
 
                 @Cleanup val resultUser = statementUser.executeQuery();
 
@@ -228,7 +223,7 @@ public class Storage {
     }
 
     public void shutdown() {
-        connectionFactory.close();
+        this.connectionFactory.close();
     }
 
 }

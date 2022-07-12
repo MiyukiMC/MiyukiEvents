@@ -21,7 +21,7 @@ public class SQLite implements ConnectionFactory {
 
         val file = plugin.getDataFolder().toPath().resolve("database.sqlite.db");
 
-        String url = "jdbc:sqlite:" + file;
+        val url = "jdbc:sqlite:" + file;
 
         Constructor<?> connectionConstructor;
 
@@ -32,7 +32,7 @@ public class SQLite implements ConnectionFactory {
 
         Class.forName(storageType.getDriver());
 
-        connection = new NonClosableConnection((Connection) connectionConstructor.newInstance(url, file.toString(), new Properties()));
+        this.connection = new NonClosableConnection((Connection) connectionConstructor.newInstance(url, file.toString(), new Properties()));
     }
 
     @Override

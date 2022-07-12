@@ -19,7 +19,6 @@ public class StorageFactory {
     private MiyukiEvents plugin;
 
     public Storage create() {
-
         val config = plugin.getGlobalConfig();
         val section = config.getConfigurationSection("Database");
         val typeName = section.getString("Type").toUpperCase(Locale.ROOT);
@@ -43,12 +42,14 @@ public class StorageFactory {
                     connectionFactory = new H2(plugin, storageType);
                     break;
                 default:
+                    // custom message..
                     LoggerHelper.log(Level.SEVERE, "An error occurred while attempting to initialize the " + storageType);
                     return null;
             }
 
         } catch (Exception exception) {
             exception.printStackTrace();
+            // custom message...
             LoggerHelper.log(Level.SEVERE, "An error occurred while attempting to initialize the " + storageType);
             Bukkit.getPluginManager().disablePlugin(plugin);
             return null;

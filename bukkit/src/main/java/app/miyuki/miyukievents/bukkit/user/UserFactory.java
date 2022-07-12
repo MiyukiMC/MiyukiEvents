@@ -16,7 +16,6 @@ public class UserFactory {
     private final MiyukiEvents plugin;
 
     public User create(@NotNull UUID uuid, @Nullable String playerName) {
-
         List<UserGameHistory> userGameHistories = new ArrayList<>();
 
         for (String game : plugin.getGameManager().getGames().keySet())

@@ -19,24 +19,22 @@ public class PlayerJoin implements Listener {
 
     public PlayerJoin(MiyukiEvents plugin) {
         this.plugin = plugin;
-        userFactory = new UserFactory(plugin);
+        this.userFactory = new UserFactory(plugin);
     }
-
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerLoginEvent event) {
-
         val player = event.getPlayer();
 
-        val uuid = player.getUniqueId();
+        val uniqueId = player.getUniqueId();
         val playerName = player.getName();
 
         val storage = plugin.getStorage();
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(
                 plugin,
-                () -> storage.getUser(uuid.toString()).thenAcceptAsync(user -> {
-                    val finalUser = user.orElseGet(() -> userFactory.create(uuid, playerName));
+                () -> storage.getUser(uniqueId).thenAcceptAsync(user -> {
+                    val finalUser = user.orElseGet(() -> userFactory.create(uniqueId, playerName));
 
                     if (!finalUser.getPlayerName().equals(playerName)) {
                         finalUser.setPlayerName(playerName);

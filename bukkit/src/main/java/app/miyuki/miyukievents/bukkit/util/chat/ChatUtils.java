@@ -29,14 +29,17 @@ public class ChatUtils {
      */
     public String colorize(@NotNull String text) {
         var coloredText = text;
+
         if (HEX_COLOR_SUPPORT) {
             val matcher = HEX_COLOR_PATTERN.matcher(coloredText);
-            StringBuffer buffer = new StringBuffer();
-            while (matcher.find()) {
+            val buffer = new StringBuffer();
+
+            while (matcher.find())
                 matcher.appendReplacement(buffer, net.md_5.bungee.api.ChatColor.of("#" + matcher.group(1)).toString());
-            }
+
             coloredText = matcher.appendTail(buffer).toString();
         }
+
         return ChatColor.translateAlternateColorCodes('&', coloredText);
     }
 
@@ -45,14 +48,17 @@ public class ChatUtils {
      */
     public String stripColors(String text) {
         var colorlessText = text;
+
         if (HEX_COLOR_SUPPORT) {
             val matcher = HEX_COLOR_PATTERN.matcher(colorlessText);
-            StringBuffer buffer = new StringBuffer();
-            while (matcher.find()) {
+            val buffer = new StringBuffer();
+
+            while (matcher.find())
                 matcher.appendReplacement(buffer, "");
-            }
+
             colorlessText = matcher.appendTail(buffer).toString();
         }
+
         return ChatColor.stripColor(colorlessText);
     }
 

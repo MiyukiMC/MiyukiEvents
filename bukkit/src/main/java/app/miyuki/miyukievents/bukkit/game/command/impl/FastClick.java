@@ -86,16 +86,16 @@ public class FastClick extends Command<User> {
 
     @Override
     public void stop() {
-        setGameState(GameState.STOPPED);
-        schedulerManager.cancel();
+        this.setGameState(GameState.STOPPED);
+        this.schedulerManager.cancel();
     }
 
     @Override
     public void onWin(User user) {
-        stop();
-        giveReward(user);
+        this.stop();
+        this.giveReward(user);
 
-        messageDispatcher.globalDispatch("Win", message -> message
+        this.messageDispatcher.globalDispatch("Win", message -> message
                 .replace("{winner}", user.getPlayerName()));
     }
 

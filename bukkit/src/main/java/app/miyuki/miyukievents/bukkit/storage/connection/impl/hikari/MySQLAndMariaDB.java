@@ -42,14 +42,12 @@ public class MySQLAndMariaDB implements ConnectionFactory {
 
         Map<String, String> properties = Maps.newHashMap();
 
-        for (String property : section.getConfigurationSection("Properties").getKeys(false))
+        for (val property : section.getConfigurationSection("Properties").getKeys(false))
             properties.put(property, section.getString("Properties." + property));
-
 
         properties.putIfAbsent("socketTimeout", String.valueOf(TimeUnit.SECONDS.toMillis(30)));
 
-        for (Map.Entry<String, String> entry : properties.entrySet())
-            hikariConfig.addDataSourceProperty(entry.getKey(), entry.getValue());
+        properties.forEach(hikariConfig::addDataSourceProperty);
 
         hikariDataSource = new HikariDataSource(hikariConfig);
     }
@@ -59,6 +57,7 @@ public class MySQLAndMariaDB implements ConnectionFactory {
         try {
             return hikariDataSource.getConnection();
         } catch (SQLException e) {
+            // adapt to language system.. (pt-br, en-us) (custom message)
             LoggerHelper.log(Level.SEVERE, "An error occurred while trying to initialize the database connection");
             Bukkit.getPluginManager().disablePlugin(plugin);
             return null;

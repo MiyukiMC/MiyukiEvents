@@ -24,19 +24,18 @@ public class Reward {
         val playerName = user.getPlayerName();
         val uuid = user.getUuid();
 
-        for (String command : commands) {
+        this.commands.forEach(command -> {
             Bukkit.dispatchCommand(
                     Bukkit.getConsoleSender(),
                     command.replace("{player}", playerName)
             );
-        }
+        });
 
         val plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
 
         plugin.getVaultProvider().provide().ifPresent(economy -> economy.deposit(uuid, money));
 
         plugin.getCashProvider().provide().ifPresent(cashAPI -> cashAPI.deposit(uuid, cash));
-
     }
 
     public void execute(@NotNull List<User> users) {
