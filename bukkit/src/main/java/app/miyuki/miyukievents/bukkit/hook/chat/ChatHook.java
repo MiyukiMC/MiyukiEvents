@@ -20,6 +20,7 @@ public class ChatHook {
 
         Class<?> clazz = null;
 
+        // Maybe a map key-value?
         if (pluginManager.getPlugin("nChat") != null) {
             clazz = NChat.class;
         } else if (pluginManager.getPlugin("LegendChat") != null) {

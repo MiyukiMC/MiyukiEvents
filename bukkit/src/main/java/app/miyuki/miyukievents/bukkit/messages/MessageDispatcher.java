@@ -20,7 +20,6 @@ public class MessageDispatcher {
 
     private final LoadingCache<String, Message> cache;
 
-
     public MessageDispatcher(MiyukiEvents plugin, @NotNull GameConfigProvider configProvider) {
         this(plugin, configProvider.provide(ConfigType.MESSAGES));
     }

@@ -30,9 +30,8 @@ public class ChatMessage implements Message {
 
         tempMessage = plugin.getTextColorAdapter().adapt(message);
 
-        if (format != null) {
+        if (format != null)
             tempMessage = format.apply(tempMessage);
-        }
 
         plugin.getAdventure().sender(sender).sendMessage(miniMessage.deserialize(tempMessage));
     }

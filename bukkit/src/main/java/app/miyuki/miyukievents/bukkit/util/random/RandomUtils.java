@@ -2,6 +2,7 @@ package app.miyuki.miyukievents.bukkit.util.random;
 
 import lombok.experimental.UtilityClass;
 import lombok.val;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.math.BigDecimal;
@@ -46,15 +47,15 @@ public class RandomUtils {
     }
 
     @Nullable
-    public<T> T getRandomElement(List<T> elements) {
-        if (elements.size() < 1)
+    public<T> T getRandomElement(@NotNull List<T> elements) {
+        if (elements.isEmpty())
             return null;
 
         return elements.get(RANDOM.nextInt(elements.size()));
     }
 
     @Nullable
-    public<T> T getRandomElement(T[] array) {
+    public<T> T getRandomElement(@NotNull T[] array) {
         if (array.length < 1)
             return null;
 
@@ -62,7 +63,7 @@ public class RandomUtils {
     }
 
     @Nullable
-    public <E> E getWeightedRandom(Map<E, BigDecimal> weights) {
+    public <E> E getWeightedRandom(@NotNull Map<E, BigDecimal> weights) {
         E result = null;
         BigDecimal bestValue = BigDecimal.valueOf(Double.MAX_VALUE);
 
@@ -78,8 +79,7 @@ public class RandomUtils {
         return result;
     }
 
-    public <E> BigDecimal getChance(Map<E, BigDecimal> weights, E e) {
-
+    public <E> BigDecimal getChance(@NotNull Map<E, BigDecimal> weights, @NotNull E e) {
         val sum = weights.values().stream().reduce(BigDecimal.valueOf(0), BigDecimal::add);
         val chance = weights.get(e).divide(sum, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100));
 

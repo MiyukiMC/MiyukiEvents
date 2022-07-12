@@ -16,8 +16,9 @@ public class ClanProvider implements ProviderService<ClanAPI> {
     private ClanAPI clanAPI = null;
 
     public ClanProvider(MiyukiEvents plugin) {
-
         val pluginManager = Bukkit.getPluginManager();
+
+        // Maybe a map key-value
         if (pluginManager.getPlugin("yClans") != null) {
             Bukkit.getServicesManager().register(ClanAPI.class, new YClans(), plugin, ServicePriority.Highest);
         } else if (pluginManager.getPlugin("SimpleClans") != null) {
@@ -33,7 +34,7 @@ public class ClanProvider implements ProviderService<ClanAPI> {
         if (registeredServiceProvider == null)
             return false;
 
-        clanAPI = registeredServiceProvider.getProvider();
+        this.clanAPI = registeredServiceProvider.getProvider();
         return true;
     }
 

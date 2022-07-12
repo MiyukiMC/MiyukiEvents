@@ -19,10 +19,8 @@ public class UserFactory {
 
         List<UserGameHistory> userGameHistories = new ArrayList<>();
 
-        for (String game : plugin.getGameManager().getGames().keySet()) {
+        for (String game : plugin.getGameManager().getGames().keySet())
             userGameHistories.add(new UserGameHistory(game, 0, 0, 0, 0));
-        }
-
 
         return new User(uuid, playerName, BigDecimal.valueOf(0), BigDecimal.valueOf(0), UserState.FREE, userGameHistories);
     }

@@ -14,8 +14,8 @@ public class EconomyProvider implements ProviderService<EconomyAPI> {
     private EconomyAPI economyAPI = null;
 
     public EconomyProvider(MiyukiEvents plugin) {
-
         val pluginManager = Bukkit.getPluginManager();
+
         if (pluginManager.getPlugin("Vault") != null) {
             try {
                 Bukkit.getServicesManager().register(EconomyAPI.class, new Vault(), plugin, ServicePriority.Highest);
@@ -32,7 +32,7 @@ public class EconomyProvider implements ProviderService<EconomyAPI> {
         if (registeredServiceProvider == null)
             return false;
 
-        economyAPI = registeredServiceProvider.getProvider();
+        this.economyAPI = registeredServiceProvider.getProvider();
         return true;
     }
 

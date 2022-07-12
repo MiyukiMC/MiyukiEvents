@@ -4,9 +4,11 @@ import app.miyuki.miyukievents.bukkit.hook.clan.ClanAPI;
 import com.google.common.collect.Lists;
 import lombok.val;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import yclans.api.yClansAPI;
 
+import java.util.Collections;
 import java.util.List;
 
 public class YClans implements ClanAPI {
@@ -14,12 +16,13 @@ public class YClans implements ClanAPI {
     private final yClansAPI clanAPI = yClansAPI.yclansapi;
 
     @Override
-    public boolean hasClan(String playerName) {
+    public boolean hasClan(@NotNull String playerName) {
         return clanAPI.getPlayer(playerName).getClan() != null;
     }
 
     @Override
-    public @Nullable String getClanTagByPlayer(String playerName) {
+    @Nullable
+    public String getClanTagByPlayer(@NotNull String playerName) {
         if (!hasClan(playerName))
             return null;
 
@@ -27,7 +30,8 @@ public class YClans implements ClanAPI {
     }
 
     @Override
-    public @Nullable String getClanColorTag(String clanTag) {
+    @Nullable
+    public String getClanColorTag(@NotNull String clanTag) {
         val clan = clanAPI.getClan(clanTag);
 
         if (clan == null)
@@ -37,7 +41,8 @@ public class YClans implements ClanAPI {
     }
 
     @Override
-    public @Nullable String getClanName(String clanTag) {
+    @Nullable
+    public String getClanName(@NotNull String clanTag) {
         val clan = clanAPI.getClan(clanTag);
 
         if (clan == null)
@@ -47,17 +52,19 @@ public class YClans implements ClanAPI {
     }
 
     @Override
-    public @Nullable List<String> getLeaders(String clanTag) {
+    @Nullable
+    public List<String> getLeaders(@NotNull String clanTag) {
         val clan = clanAPI.getClan(clanTag);
 
         if (clan == null)
             return null;
 
-        return Lists.newArrayList(clan.getLeader());
+        return Collections.singletonList(clan.getLeader());
     }
 
     @Override
-    public @Nullable List<String> getMembers(String clanTag) {
+    @Nullable
+    public List<String> getMembers(@NotNull String clanTag) {
         val clan = clanAPI.getClan(clanTag);
 
         if (clan == null)
@@ -66,11 +73,15 @@ public class YClans implements ClanAPI {
         return clan.getMembers();
     }
 
+    // ?
     @Override
-    public void disableFriendlyFire(Player player) {
+    public void disableFriendlyFire(@NotNull Player player) {
+
     }
 
+    // ?
     @Override
-    public void enableFriendlyFire(Player player) {
+    public void enableFriendlyFire(@NotNull Player player) {
+
     }
 }

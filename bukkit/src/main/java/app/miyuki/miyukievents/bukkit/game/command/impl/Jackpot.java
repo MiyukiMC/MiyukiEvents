@@ -45,7 +45,7 @@ public class Jackpot extends Command<User> {
             return;
         }
 
-        if (!StringUtils.isNumeric(args[0]) || !NumberEvaluator.isValid(Double.parseDouble(args[0]))) {
+        if (!StringUtils.isNumeric(args[0]) || !NumberEvaluator.isValidDoubleValue(Double.parseDouble(args[0]))) {
             messageDispatcher.dispatch(player, "EnterAValidValue");
             return;
         }

@@ -51,7 +51,7 @@ public class Auction extends Command<User> {
             return;
         }
 
-        if (!NumberEvaluator.isValid(Double.parseDouble(args[0])) || !StringUtils.isNumeric(args[0])) {
+        if (!NumberEvaluator.isValidDoubleValue(Double.parseDouble(args[0])) || !StringUtils.isNumeric(args[0])) {
             messageDispatcher.dispatch(player, "EnterAValidValue");
             return;
         }

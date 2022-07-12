@@ -26,7 +26,7 @@ public class WorldEditProvider implements ProviderService<WorldEditAPI> {
 
         Class<?> clazz = version.startsWith("6.") ? Class.forName(WORLD_EDIT_6) : Class.forName(WORLD_EDIT_7);
 
-        worldEditAPI = (WorldEditAPI) clazz.getConstructor().newInstance();
+        this.worldEditAPI = (WorldEditAPI) clazz.getConstructor().newInstance();
         return true;
 
     }

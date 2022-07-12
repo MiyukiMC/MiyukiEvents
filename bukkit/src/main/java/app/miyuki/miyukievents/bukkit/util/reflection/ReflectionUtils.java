@@ -15,11 +15,8 @@ public class ReflectionUtils {
 
         ImmutableSet.Builder<ClassPath.ClassInfo> builder = ImmutableSet.builder();
 
-        for (String packageName : packages) {
-
+        for (String packageName : packages)
             builder.addAll(classPath.getTopLevelClassesRecursive(packageName));
-
-        }
 
         return builder.build();
     }

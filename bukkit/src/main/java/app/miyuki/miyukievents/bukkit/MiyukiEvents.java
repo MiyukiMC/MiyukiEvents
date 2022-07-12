@@ -64,7 +64,6 @@ public final class MiyukiEvents extends JavaPlugin {
 
     private DependencyManager dependencyManager;
 
-
     @Override
     public void onEnable() {
         this.language = new LanguageEvaluator().evaluate(new LanguageProvider().provide());
@@ -76,20 +75,20 @@ public final class MiyukiEvents extends JavaPlugin {
 
         adventure = BukkitAudiences.create(this);
 
-        loadMessages();
+        this.loadMessages();
 
-        loadAdapters();
-        loadProviders();
+        this.loadAdapters();
+        this.loadProviders();
 
-        loadCommands();
-        loadListeners();
+        this.loadCommands();
+        this.loadListeners();
 
         ChatHook.of(this).hook();
 
-        loadGameManager();
+        this.loadGameManager();
 
-        loadDatabase();
-        loadMetrics();
+        this.loadDatabase();
+        this.loadMetrics();
 
         this.userRepository = new UserRepository(this);
 
@@ -102,11 +101,10 @@ public final class MiyukiEvents extends JavaPlugin {
         if (currentGame != null)
             currentGame.stop();
 
-        adventure.close();
+        this.adventure.close();
 
         if (storage != null)
             storage.shutdown();
-
     }
 
     private void loadCommands() {
@@ -147,7 +145,6 @@ public final class MiyukiEvents extends JavaPlugin {
     }
 
     private void loadDatabase() {
-
         val storageFactory = new StorageFactory(this);
         storage = storageFactory.create();
 

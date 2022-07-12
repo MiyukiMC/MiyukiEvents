@@ -1,26 +1,27 @@
 package app.miyuki.miyukievents.bukkit.hook.clan;
 
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public interface ClanAPI {
 
-    boolean hasClan(String playerName);
+    boolean hasClan(@NotNull String playerName);
 
-    @Nullable String getClanTagByPlayer(String playerName);
+    @Nullable String getClanTagByPlayer(@NotNull String playerName);
 
-    @Nullable String getClanColorTag(String clanTag);
+    @Nullable String getClanColorTag(@NotNull String clanTag);
 
-    @Nullable String getClanName(String clanTag);
+    @Nullable String getClanName(@NotNull String clanTag);
 
-    @Nullable List<String> getLeaders(String clanTag);
+    @Nullable List<String> getLeaders(@NotNull String clanTag);
 
-    @Nullable List<String> getMembers(String clanTag);
+    @Nullable List<String> getMembers(@NotNull String clanTag);
 
-    void disableFriendlyFire(Player player);
+    void disableFriendlyFire(@NotNull Player player);
 
-    void enableFriendlyFire(Player player);
+    void enableFriendlyFire(@NotNull Player player);
 
 }

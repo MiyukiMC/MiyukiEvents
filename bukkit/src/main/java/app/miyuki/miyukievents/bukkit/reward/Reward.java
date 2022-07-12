@@ -40,9 +40,7 @@ public class Reward {
     }
 
     public void execute(@NotNull List<User> users) {
-        for (User user : users) {
-            execute(user);
-        }
+        users.forEach(this::execute);
     }
 
 }

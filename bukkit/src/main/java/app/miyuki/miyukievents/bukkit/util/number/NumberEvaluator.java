@@ -5,7 +5,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class NumberEvaluator {
 
-    public boolean isValid(double value) {
+    public boolean isValidDoubleValue(double value) {
         return !Double.isNaN(value) && !Double.isInfinite(value);
     }
 

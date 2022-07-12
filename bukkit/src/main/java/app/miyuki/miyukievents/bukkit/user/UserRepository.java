@@ -35,7 +35,6 @@ public class UserRepository {
     }
 
     public void cleanUp() {
-
         val gameManager = plugin.getGameManager();
 
         users.entrySet().removeIf(entries ->

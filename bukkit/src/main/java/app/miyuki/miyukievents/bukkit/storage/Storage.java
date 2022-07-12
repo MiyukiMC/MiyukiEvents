@@ -70,7 +70,6 @@ public class Storage {
         this.storageType = storageType;
     }
 
-
     /*
     Inspired by lucko: https://github.com/LuckPerms/LuckPerms/blob/master/common/src/main/java/me/lucko/luckperms/common/storage/implementation/sql/SchemaReader.java
      */

@@ -1,8 +1,9 @@
 package app.miyuki.miyukievents.bukkit.util.singlemap;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
 
+@AllArgsConstructor
 @Getter
 public class Triple<K, V, T> {
 
@@ -10,10 +11,8 @@ public class Triple<K, V, T> {
     private final V second;
     private final T third;
 
-    public Triple(@NotNull K first, @NotNull V second, @NotNull T third) {
-        this.first = first;
-        this.second = second;
-        this.third = third;
+    public static <K, V, T> Triple<K, V, T> of(K k, V v, T t) {
+        return new Triple<>(k, v, t);
     }
 
 }
