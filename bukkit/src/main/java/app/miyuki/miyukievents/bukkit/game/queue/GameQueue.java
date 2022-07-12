@@ -34,7 +34,6 @@ public class GameQueue {
                     return;
 
                 game.start();
-                gameManager.setLastGame(game);
             }
         }.runTaskTimerAsynchronously(plugin, 20L, 20L);
     }

@@ -44,10 +44,6 @@ public class GameManager {
     private final GameRegistry gameRegistry;
 
     @Getter
-    @Setter
-    private Game<?> lastGame = null;
-
-    @Getter
     private final Map<String, Game<?>> games = Maps.newHashMap();
 
     public GameManager(@NotNull MiyukiEvents plugin, @NotNull String language) {
