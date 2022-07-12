@@ -19,13 +19,19 @@ Questions:
   1:
     # A pergunta
     Question: 'Qual a capital do Brasil?'
-    # A resposta
-    Answer: 'Brasilia'
+    # A resposta para ser mostrada
+    DisplayAnswer: 'Brasília'
+    # As possiveis respostas (qualquer uma dessas vale
+    Answers:
+      - 'Brasilia'
+      - 'Brasília'
     # Ignorar a caixa alta/baixa?
     IgnoreCase: true
   2:
     Question: 'Qual a capital dos EUA?'
-    Answer: 'Nova Iorque'
+    Answers:
+      - 'Nova Iorque'
+      - 'Nova York'
     IgnoreCase: false
 
 # O prêmio

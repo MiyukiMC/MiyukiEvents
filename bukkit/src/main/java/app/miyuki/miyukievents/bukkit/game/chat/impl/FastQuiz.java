@@ -78,7 +78,7 @@ public class FastQuiz extends Chat<User> {
             }
 
             this.messageDispatcher.globalDispatch("NoWinner", message ->
-                    message.replace("{answer}", question.getAnswer()));
+                    message.replace("{answer}", question.getDisplayAnswer()));
 
             this.stop();
         });
@@ -95,7 +95,7 @@ public class FastQuiz extends Chat<User> {
         this.stop();
 
         this.messageDispatcher.globalDispatch("Win", message -> message
-                .replace("{answer}", question.getAnswer())
+                .replace("{answer}", question.getDisplayAnswer())
                 .replace("{winner}", user.getPlayerName()));
 
         this.giveReward(user);
@@ -122,7 +122,8 @@ public class FastQuiz extends Chat<User> {
 
             questions.add(new Question(
                     questionSection.getString("Question"),
-                    questionSection.getString("Answer"),
+                    questionSection.getString("DisplayAnswer"),
+                    questionSection.getStringList("Answers"),
                     questionSection.getBoolean("IgnoreCase")
             ));
         }
@@ -135,11 +136,22 @@ public class FastQuiz extends Chat<User> {
     private class Question {
 
         private String question;
-        private String answer;
+        private String displayAnswer;
+        private List<String> answers;
         private boolean ignoreCase;
 
         private boolean compareAnswer(String message) {
-            return ignoreCase ? message.equalsIgnoreCase(answer) : message.equals(answer);
+            return ignoreCase ? equalsIgnoreCase(message) : equals(message);
+        }
+
+        private boolean equalsIgnoreCase(String message) {
+            return answers.stream()
+                    .anyMatch(answer -> answer.equalsIgnoreCase(message));
+        }
+
+        private boolean equals(String message) {
+            return answers.stream()
+                    .anyMatch(answer -> answer.equals(message));
         }
 
     }
