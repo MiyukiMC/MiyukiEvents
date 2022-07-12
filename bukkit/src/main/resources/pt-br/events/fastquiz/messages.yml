@@ -1,39 +1,49 @@
-# Mensagem de inicio
+# Mensagem de início
 # {question} = a pergunta
 # {seconds} = o tempo restante
 Start:
   - ''
-  - 'O evento fastquiz comecou'
-  - 'Responda: {question}'
+  - '&b[Evento] &fEvento iniciado &7➜ &dFastQuiz &7➜ &b{seconds}s '
+  - '&b[Evento]'
+  - '&b[Evento] &fResponda: &b{question}'
   - ''
-  - 'Tempo restante: {seconds} segundos'
-# Mensagem quando alguem ganha
+# Mensagem quando alguém ganha
 # {winner} = nome do ganhador
 # {answer} = resposta da pergunta
 Win:
   - ''
-  - 'O evento fastquiz acabou'
-  - 'O jogador {winner} ganhou'
-  - 'A resposta era: {answer}'
+  - '&b[Evento] &fEvento finalizado!'
+  - '&b[Evento]'
+  - '&b[Evento] &fVencedor: &a{winner}'
+  - '&b[Evento]'
+  - '&b[Evento] &fReposta: &b{answer}'
   - ''
 # Mensagem de quando o evento acaba e ninguem ganha
 # {answer} = a resposta
 NoWinner:
   - ''
-  - 'O evento fastquiz acabou sem nenhum ganhador'
-  - 'A resposta era: {answer}'
+  - '&b[Evento] &fO evento foi cancelado pro não ter o mínimo de jogadores.'
+  - '&b[Evento]'
+  - '&b[Evento] &fResposta: &b{answer}'
   - ''
 # Mensagem de quando o evento é cancelado
 Cancelled:
   - ''
-  - 'O evento fastquiz foi cancelado'
+  - '&b[Evento] &cO evento bolão foi cancelado por um administrador.'
   - ''
 # Mensagem de ajuda normal
 Help:
-  - '/fastquiz help'
+  - ''
+  - '&b[Evento] &fComandos disponíveis para o evento &bFast Quiz&f:'
+  - ' &b» &f/fastquiz help &7- &fExibe está mensagem.'
+  - ''
 # Mensagem de ajuda admin
 HelpAdmin:
-  - '/fastquiz start'
-  - '/fastquiz stop'
-  - '/fastquiz reload'
+  - ''
+  - '&b[Evento] &fComandos administrativos disponíveis para o evento:'
+  - ' &b» &f/fastquiz iniciar &7- &fInicia o evento;'
+  - ' &b» &f/fastquiz parar &7- &fPara o evento;'
+  - ' &b» &f/fastquiz reload &7- &fRecarrega o evento.'
+  - ' &b» &f/fastquiz help &7- &fExibe está mensagem.'
+  - ''
 

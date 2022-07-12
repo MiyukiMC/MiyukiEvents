@@ -5,41 +5,51 @@
 # {total} - Total apostado já no jackpot
 Start:
   - ''
-  - 'O evento jackpot comecou'
-  - 'Aposte o quanto você quiser e tenha chance de ganhar a bolada.'
-  - 'Valor máximo de aposta: {maxBet}'
-  - 'Total apostado já: {total}'
-  - 'Participantes: {size}'
+  - '&b[Evento] &fEvento iniciado &7➜ &3Jackpot &7➜ &b{seconds}s '
+  - '&b[Evento]'
+  - '&b[Evento] &fValor máximo de aposta: {maxBet}'
+  - '&b[Evento]'
+  - '&b[Evento] &fTotal apostado já: {total}'
+  - '&b[Evento] &fParticipantes: {size}'
+  - '&b[Evento]'
+  - '&b[Evento] &fAposte o quanto você quiser e tenha chance de ganhar a bolada.'
   - ''
-  - 'Tempo restante: {seconds} segundos'
-# Mensagem quando alguem ganha
+# Mensagem quando alguém ganha
 # {winner} - nome do jogador
 # {total} - Quantidade de dinheiro total que o jogador ganhou
 # {chance} - Chance do jogador que ganhou.
 Win:
-  - ''
-  - 'O evento jackpot acabou'
-  - 'O jogador {winner} ganhou {total}'
-  - 'Com {chance}% de chance.'
-  - ''
+  - '&b[Evento] &fEvento finalizado!'
+  - '&b[Evento]'
+  - '&b[Evento] &fVencedor: &a{winner} &fcom &b{chance}%'
+  - '&b[Evento]'
+  - '&b[Evento] &fPrêmio total: &2$&a{total}'
 # Mensagem quando o evento acaba sem nenhum ganhador
 NoWinner:
   - ''
-  - 'O evento jackpot acabou sem nenhum ganhador'
+  - '&b[Evento] &fO evento foi cancelado pro não ter o mínimo de jogadores.'
   - ''
 # Mensagem quando o evento é cancelado
 Cancelled:
   - ''
-  - 'O evento jackpot foi cancelado'
+  - '&b[Evento] &cO evento bolão foi cancelado por um administrador.'
   - ''
 # Mensagem de ajuda normal
 Help:
-  - '/jackpot help'
-  - '/jackpot chance'
+  - ''
+  - '&b[Evento] &fComandos disponíveis para o evento &bBolão&f:'
+  - ' &b» &f/jackpot help &7- &fExibe está mensagem.'
+  - ' &b» &f/jackpot chance &7- &fMostra suas chances de vencer.'
+  - ''
 # Mensagem de ajuda admin
 HelpAdmin:
-  - '/jackpot start'
-  - '/jackpot stop'
+  - ''
+  - '&b[Evento] &fComandos administrativos disponíveis para o evento:'
+  - ' &b» &f/jackpot iniciar &7- &fInicia o evento;'
+  - ' &b» &f/jackpot parar &7- &fPara o evento;'
+  - ' &b» &f/jackpot reload &7- &fRecarrega o evento.'
+  - ' &b» &f/jackpot help &7- &fExibe está mensagem.'
+  - ''
 
 # Mensagem quando o comando é utilizado incorretamente
 CommandUsedIncorrectly: 'Utilize /jackpot <sua aposta>!'
@@ -47,24 +57,23 @@ CommandUsedIncorrectly: 'Utilize /jackpot <sua aposta>!'
 # Mensagem quando o jogador entra no evento
 # {money} - money que ele colocou
 # {chance} - chance atual do jogador de ganhar
-YouEntered: 'Você entrou no jackpot com {money}. Sua chance atual é de {chance}'
+YouEntered: '&aVocê entrou no jackpot com &7{money}. &aSua chance atual é de &7{chance}'
 
 # Mensagem quando o jogador não tem dinheiro suficiente para apostar
-YouDontHaveMoney: 'Você não tem dinheiro suficiente para apostar.'
+YouDontHaveMoney: '&cVocê não tem dinheiro suficiente para apostar.'
 
 # Mensagem quando o jogador já apostou a quantidade máxima
-YouAlreadyBetTheMost: 'Você já apostou a quantidade máxima.'
+YouAlreadyBetTheMost: '&aVocê já apostou a quantidade máxima.'
 
 # Mensagem da chance do jogador no jackpot
 # {chance} - chance atual do jogador de ganhar o evento
-YourChance: 'Sua chance atual no jackpot é de {chance}%.'
+YourChance: '&b[Evento] &fSua chance atual no jackpot é de &b{chance}%.'
 
 # Mensagem de quando o jogador verifica a chance mas não está no jackpot
-YouAreNotInTheJackpot: 'Você não está no jackpot. Para entrar digite /jackpot <valor>'
+YouAreNotInTheJackpot: '&cVocê não está no jackpot. Para entrar digite /jackpot <valor>'
 
 # Mensagem de quando o jogador não informa um valor válido para participar
-EnterAValidValue: 'Insira um valor válido para participar do jackpot.'
+EnterAValidValue: '&cInsira um valor válido para participar do jackpot.'
 
 # Mensagem de quando o jogador insire um valor maior que o máximo permitido
-ValueGreaterMax: 'Você inseriu um valor maior que o máximo. Tente novamente'
-
+ValueGreaterMax: '&cVocê inseriu um valor maior que o máximo. Tente novamente'
