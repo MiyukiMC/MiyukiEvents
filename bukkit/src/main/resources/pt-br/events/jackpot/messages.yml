@@ -32,7 +32,7 @@ NoWinner:
 # Mensagem quando o evento é cancelado
 Cancelled:
   - ''
-  - '&b[Evento] &cO evento bolão foi cancelado por um administrador.'
+  - '&b[Evento] &cO evento jackpot foi cancelado por um administrador.'
   - ''
 # Mensagem de ajuda normal
 Help:

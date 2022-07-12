@@ -14,12 +14,12 @@ public class GenericStartConditionEvaluator {
     public boolean evaluate(@NotNull CommandSender sender, GameState gameState) {
 
         if (gameState == GameState.QUEUE) {
-            messageDispatcher.dispatch(sender, "GameAlreadyInQueue");
+            this.messageDispatcher.dispatch(sender, "GameAlreadyInQueue");
             return false;
         }
 
         if (gameState != GameState.STOPPED) {
-            messageDispatcher.dispatch(sender, "GameAlreadyStarted");
+            this.messageDispatcher.dispatch(sender, "GameAlreadyStarted");
             return false;
         }
 

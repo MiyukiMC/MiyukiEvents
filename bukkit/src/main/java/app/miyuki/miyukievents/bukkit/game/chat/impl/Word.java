@@ -32,7 +32,7 @@ public class Word extends Chat<User> {
         if (args.length < 1)
             return;
 
-        if (!player.hasPermission(getPermission()))
+        if (!player.hasPermission(this.getPermission()))
             return;
 
         if (!checkCost(player))
@@ -45,7 +45,7 @@ public class Word extends Chat<User> {
             word = word.toLowerCase(Locale.ROOT);
         }
 
-        if (!(message.equals(word)))
+        if (checkResult(message))
             return;
 
         val uniqueId = player.getUniqueId();
@@ -65,7 +65,7 @@ public class Word extends Chat<User> {
         val expireTime = configProvider.provide(ConfigType.CONFIG).getInt("ExpireTime");
 
         this.schedulerManager.runAsync(expireTime * 20L, () -> {
-            messageDispatcher.globalDispatch("NoWinner");
+            this.messageDispatcher.globalDispatch("NoWinner");
             this.stop();
         });
     }
@@ -94,6 +94,10 @@ public class Word extends Chat<User> {
     @Override
     public boolean isEconomyRequired() {
         return false;
+    }
+
+    private boolean checkResult(String message) {
+        return message.equals(this.word);
     }
 
     private void setupResult() {

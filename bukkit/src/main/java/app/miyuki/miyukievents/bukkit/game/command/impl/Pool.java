@@ -78,6 +78,7 @@ public class Pool extends Command<User> {
                         .replace("{cost}", String.valueOf(getCost()))
                         .replace("{seconds}", String.valueOf(seconds)));
 
+                calls.getAndDecrement();
                 return;
             }
 

@@ -14,17 +14,17 @@ public class InPersonStartConditionEvaluator {
     public boolean evaluate(@NotNull CommandSender sender, InPerson<?> game) {
 
         if (game.getLobby() == null) {
-            messageDispatcher.dispatch(sender, "LobbyIsNotSet");
+            this.messageDispatcher.dispatch(sender, "LobbyIsNotSet");
             return false;
         }
 
         if (game.getCabin() == null) {
-            messageDispatcher.dispatch(sender, "CabinIsNotSet");
+            this.messageDispatcher.dispatch(sender, "CabinIsNotSet");
             return false;
         }
 
         if (game.getExit() == null) {
-            messageDispatcher.dispatch(sender, "ExitIsNotSet");
+            this.messageDispatcher.dispatch(sender, "ExitIsNotSet");
             return false;
         }
 
