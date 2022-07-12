@@ -16,10 +16,10 @@ import java.util.Optional;
 
 public class CashProvider implements ProviderService<CashAPI> {
 
-    private static final Map<String, ? extends CashAPI> CASH_APIS = ImmutableMap.of(
-            "NextCash", new NextCash(),
-            "yPoints", new YPoints(),
-            "PlayerPoints", new PlayerPoints()
+    private static final Map<String, Class<? extends CashAPI>> CASH_APIS = ImmutableMap.of(
+            "NextCash", NextCash.class,
+            "yPoints", YPoints.class,
+            "PlayerPoints", PlayerPoints.class
     );
 
     private CashAPI cashAPI = null;
@@ -28,8 +28,10 @@ public class CashProvider implements ProviderService<CashAPI> {
         val pluginManager = Bukkit.getPluginManager();
 
         CASH_APIS.forEach((key, value) -> {
-            if (pluginManager.isPluginEnabled(key))
-                Bukkit.getServicesManager().register(CashAPI.class, value, plugin, ServicePriority.Highest);
+            try {
+                if (pluginManager.isPluginEnabled(key))
+                    Bukkit.getServicesManager().register(CashAPI.class, value.newInstance(), plugin, ServicePriority.Highest);
+            } catch (Exception ignored) { }
         });
     }
 

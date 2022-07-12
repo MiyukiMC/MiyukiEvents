@@ -36,17 +36,13 @@ public class JackpotChanceSubCommand extends SubCommand {
 
     @Override
     public List<String> getAliases() {
-        val names = configProvider.provide(ConfigType.CONFIG).getStringList("SubCommands.Chance.Names");
-
-        if (names.isEmpty())
-            names.add("chance");
-
-        return names;
+        return this.configProvider.provide(ConfigType.CONFIG).getStringList("SubCommands.Chance.Names");
     }
 
     @Override
-    public @Nullable String getPermission() {
-        return null; // ?
+    @Nullable
+    public String getPermission() {
+        return this.configProvider.provide(ConfigType.CONFIG).getString("SubCommand.Chance.Permission");
     }
 
     @Override

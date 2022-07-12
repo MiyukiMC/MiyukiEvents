@@ -1,6 +1,7 @@
 package app.miyuki.miyukievents.bukkit.game.command.impl;
 
 import app.miyuki.miyukievents.bukkit.commands.impl.command.GenericCommandCommand;
+import app.miyuki.miyukievents.bukkit.commands.impl.command.auction.AuctionCommand;
 import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameInfo;
@@ -15,24 +16,28 @@ import app.miyuki.miyukievents.bukkit.util.singlemap.Pair;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
-@GameInfo(typeName = "Auction", commandClass = GenericCommandCommand.class)
+@GameInfo(typeName = "Auction", commandClass = AuctionCommand.class)
 public class Auction extends Command<User> {
 
     @Getter
     private final List<AuctionItem> auctionItems = Lists.newArrayList();
 
+    @Getter
+    @Setter
     private AuctionItem auctionItem;
 
     private Pair<User, BigDecimal> lastBid = null;
@@ -105,7 +110,6 @@ public class Auction extends Command<User> {
 
     @Override
     public void start() {
-        this.setupAuction();
         this.setGameState(GameState.STARTED);
         val config = configProvider.provide(ConfigType.CONFIG);
 
@@ -181,7 +185,7 @@ public class Auction extends Command<User> {
         return true;
     }
 
-    private void setupAuction() {
+    public void setupAuctionItems() {
         this.auctionItems.clear();
         this.lastBid = null;
 
@@ -197,9 +201,17 @@ public class Auction extends Command<User> {
         this.auctionItem = RandomUtils.getRandomElement(auctionItems);
     }
 
+    @Nullable
+    public AuctionItem getAuctionItemByName(@NotNull String name) {
+        return this.auctionItems.stream()
+                .filter(auctionItem -> auctionItem.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
+    }
+
     @AllArgsConstructor
     @Getter
-    private static class AuctionItem {
+    public static class AuctionItem {
 
         private String name;
         private List<String> commands;

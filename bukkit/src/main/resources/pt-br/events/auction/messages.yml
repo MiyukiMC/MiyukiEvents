@@ -26,5 +26,6 @@ YouDontHaveMoney: 'Você não tem esse dinheiro para entrar no leilão.'
 EnterAValidValue: 'Insira um valor válido para participar do leilão.'
 MinMaxBetweenError: 'Você tem que inserir um valor entre {min} - {max} entre as entradas.'
 PlayerEnteredInTheAuction: '[{player}] entrou no leilão com {money}.'
+InvalidAuctionItem: 'O item de leilão que você inseriu não é valido. Confira a config.yml'
 
 

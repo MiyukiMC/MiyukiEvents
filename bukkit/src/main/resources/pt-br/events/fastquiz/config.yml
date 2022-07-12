@@ -29,6 +29,7 @@ Questions:
     IgnoreCase: true
   2:
     Question: 'Qual a capital dos EUA?'
+    DisplayAnswer: 'Nova York'
     Answers:
       - 'Nova Iorque'
       - 'Nova York'

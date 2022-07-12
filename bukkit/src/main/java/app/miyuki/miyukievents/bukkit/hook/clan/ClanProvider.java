@@ -15,9 +15,9 @@ import java.util.Optional;
 
 public class ClanProvider implements ProviderService<ClanAPI> {
 
-    private static final Map<String, ? extends ClanAPI> CLAN_APIS = ImmutableMap.of(
-            "yClans", new YClans(),
-            "SimpleClans", new SimpleClans()
+    private static final Map<String, Class<? extends ClanAPI>> CLAN_APIS = ImmutableMap.of(
+            "yClans", YClans.class,
+            "SimpleClans", SimpleClans.class
     );
 
     private ClanAPI clanAPI = null;
@@ -26,9 +26,12 @@ public class ClanProvider implements ProviderService<ClanAPI> {
         val pluginManager = Bukkit.getPluginManager();
 
         CLAN_APIS.forEach((key, value) -> {
-            if (pluginManager.isPluginEnabled(key))
-                Bukkit.getServicesManager().register(ClanAPI.class, value, plugin, ServicePriority.High);
+            try {
+                if (pluginManager.isPluginEnabled(key))
+                    Bukkit.getServicesManager().register(ClanAPI.class, value.newInstance(), plugin, ServicePriority.High);
+            } catch (Exception ignored) { }
         });
+
     }
 
     @Override

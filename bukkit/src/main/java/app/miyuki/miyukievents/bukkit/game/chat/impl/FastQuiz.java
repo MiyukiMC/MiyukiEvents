@@ -46,7 +46,7 @@ public class FastQuiz extends Chat<User> {
 
         val message = String.join(" ", args);
 
-        if (!question.compareAnswer(message))
+        if (!question.compare(message))
             return;
 
         val uniqueId = player.getUniqueId();
@@ -140,16 +140,16 @@ public class FastQuiz extends Chat<User> {
         private List<String> answers;
         private boolean ignoreCase;
 
-        private boolean compareAnswer(String message) {
-            return ignoreCase ? equalsIgnoreCase(message) : equals(message);
+        private boolean compare(String message) {
+            return ignoreCase ? compareAnswerIgnoringCase(message) : compareAnswer(message);
         }
 
-        private boolean equalsIgnoreCase(String message) {
+        private boolean compareAnswerIgnoringCase(String message) {
             return answers.stream()
                     .anyMatch(answer -> answer.equalsIgnoreCase(message));
         }
 
-        private boolean equals(String message) {
+        private boolean compareAnswer(String message) {
             return answers.stream()
                     .anyMatch(answer -> answer.equals(message));
         }

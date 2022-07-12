@@ -39,7 +39,6 @@ public class GenericStartSubCommand extends SubCommand {
         return configProvider.provide(ConfigType.CONFIG).getString("SubCommands.Start.Permission");
     }
 
-
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
 
