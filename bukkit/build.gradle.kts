@@ -25,7 +25,7 @@ dependencies {
 
     implementation("org.bstats:bstats-bukkit:3.0.0")
 
-    compileOnly("net.kyori:adventure-platform-bukkit:4.1.0")
+    compileOnly("net.kyori:adventure-platform-bukkit:4.1.1")
 
     compileOnly("net.sacredlabyrinth.phaed.simpleclans:SimpleClans:2.15.0")
 }

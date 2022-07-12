@@ -4,27 +4,31 @@ import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.hook.ProviderService;
 import app.miyuki.miyukievents.bukkit.hook.clan.impl.SimpleClans;
 import app.miyuki.miyukievents.bukkit.hook.clan.impl.YClans;
+import com.google.common.collect.ImmutableMap;
 import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.ServicePriority;
 
+import java.util.Map;
 import java.util.Optional;
 
 
 public class ClanProvider implements ProviderService<ClanAPI> {
+
+    private final Map<String, ? extends ClanAPI> CLAN_APIS = ImmutableMap.of(
+            "yClans", new YClans(),
+            "SimpleClans", new SimpleClans()
+    );
 
     private ClanAPI clanAPI = null;
 
     public ClanProvider(MiyukiEvents plugin) {
         val pluginManager = Bukkit.getPluginManager();
 
-        // Maybe a map key-value
-        if (pluginManager.getPlugin("yClans") != null) {
-            Bukkit.getServicesManager().register(ClanAPI.class, new YClans(), plugin, ServicePriority.Highest);
-        } else if (pluginManager.getPlugin("SimpleClans") != null) {
-            Bukkit.getServicesManager().register(ClanAPI.class, new SimpleClans(), plugin, ServicePriority.Highest);
-        }
-
+        CLAN_APIS.forEach((key, value) -> {
+            if (pluginManager.isPluginEnabled(key))
+                Bukkit.getServicesManager().register(ClanAPI.class, value, plugin, ServicePriority.High);
+        });
     }
 
     @Override
