@@ -13,7 +13,8 @@ import org.jetbrains.annotations.Nullable;
 public class LocationAdapter implements Adapter<Location, String>, Restorable<String, Location> {
 
     @Override
-    public @Nullable Location adapt(@NotNull String string) {
+    @Nullable
+    public Location adapt(@NotNull String string) {
         val split = string.split(";");
 
         return new Location(
@@ -27,7 +28,8 @@ public class LocationAdapter implements Adapter<Location, String>, Restorable<St
     }
 
     @Override
-    public @Nullable String restore(@NotNull Location location) {
+    @Nullable
+    public String restore(@NotNull Location location) {
         return location.getWorld().getName() +
                 ";" + location.getX() +
                 ";" + location.getY() +

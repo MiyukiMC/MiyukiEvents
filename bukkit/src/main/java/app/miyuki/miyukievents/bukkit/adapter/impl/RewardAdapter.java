@@ -13,7 +13,8 @@ import java.math.BigDecimal;
 public class RewardAdapter implements Adapter<Reward, ConfigurationSection> {
 
     @Override
-    public @Nullable Reward adapt(@NotNull ConfigurationSection configurationSection) {
+    @Nullable
+    public Reward adapt(@NotNull ConfigurationSection configurationSection) {
         return Reward.builder()
                 .money(new BigDecimal(configurationSection.getString("Money")))
                 .cash(new BigDecimal(configurationSection.getString("Cash")))

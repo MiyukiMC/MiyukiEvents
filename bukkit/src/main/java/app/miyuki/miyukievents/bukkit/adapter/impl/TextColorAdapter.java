@@ -8,16 +8,17 @@ import org.jetbrains.annotations.Nullable;
 public class TextColorAdapter implements Adapter<String, String> {
 
     @Override
-    public @Nullable String adapt(@NotNull String text) {
+    @Nullable
+    public String adapt(@NotNull String text) {
         String formatting = text;
 
-        for (TextColor textColor : TextColor.values()) {
+        for (TextColor textColor : TextColor.values())
             formatting = formatting.replace(textColor.getFormattingCode(), textColor.getTag());
-        }
 
         return formatting;
     }
 
+    @Getter
     private enum TextColor {
         BLACK("&0", "<black>"),
         DARK_BLUE("&1", "<dark_blue>"),

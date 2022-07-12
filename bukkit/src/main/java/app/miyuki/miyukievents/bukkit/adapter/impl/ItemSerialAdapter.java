@@ -20,8 +20,9 @@ import java.util.Map;
 public class ItemSerialAdapter implements Adapter<String, ItemStack[]>, Restorable<ItemStack[], String> {
 
     @Override
+    @Nullable
     @SneakyThrows
-    public @Nullable String adapt(ItemStack @NotNull [] items) {
+    public String adapt(ItemStack @NotNull [] items) {
         @Cleanup val outputStream = new ByteArrayOutputStream();
         @Cleanup val dataOutput = new BukkitObjectOutputStream(outputStream);
 
