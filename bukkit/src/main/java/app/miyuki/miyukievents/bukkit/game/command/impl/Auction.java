@@ -112,34 +112,40 @@ public class Auction extends Command<User> {
         val calls = new AtomicInteger(config.getInt("Calls"));
         val interval = config.getInt("CallInterval");
 
+        final Function<String, String> format = message -> message
+                .replace("{itemname}", auctionItem.getName())
+                .replace("{username}", lastBid == null ? "Ninguém" : lastBid.getFirst().getPlayerName())
+                .replace("{usernamebid}", lastBid == null ? "0" : lastBid.getSecond().toString())
+                .replace("{actualbid}", lastBid == null ? auctionItem.getStartBid().toString() : lastBid.getSecond().toString())
+                .replace("{mindifference}", auctionItem.getMinDifferenceBetweenEntries().toString())
+                .replace("{maxdifference}", auctionItem.getMaxDifferenceBetweenEntries().toString())
+                .replace("{seconds}", String.valueOf(calls.get() * interval));
+
         this.schedulerManager.run(0L, interval * 20L, () -> {
 
             if (calls.get() > 0) {
-                // change the Function<String, String> to local variable
-                messageDispatcher.globalDispatch("Start", message -> message
-                        .replace("{itemname}", auctionItem.getName())
-                        .replace("{username}", lastBid == null ? "Ninguém" : lastBid.getFirst().getPlayerName())
-                        .replace("{usernamebid}", lastBid == null ? "0" : lastBid.getSecond().toString())
-                        .replace("{actualbid}", lastBid == null ? auctionItem.getStartBid().toString() : lastBid.getSecond().toString())
-                        .replace("{mindifference}", auctionItem.getMinDifferenceBetweenEntries().toString())
-                        .replace("{maxdifference}", auctionItem.getMaxDifferenceBetweenEntries().toString())
-                        .replace("{seconds}", String.valueOf(calls.get() * interval)));
+                this.messageDispatcher.globalDispatch("Start", format);
 
                 calls.getAndDecrement();
-
-            } else {
-                this.schedulerManager.run(() -> {
-                    if (lastBid == null) {
-                        this.messageDispatcher.globalDispatch("NoWinner");
-                        stop();
-                    } else {
-                        val user = lastBid.getFirst();
-                        this.onWin(user);
-                        this.messageDispatcher.globalDispatch("Win", message -> message
-                                .replace("{name}", user.getPlayerName()));
-                    }
-                });
+                return;
             }
+
+            this.schedulerManager.run(() -> {
+                if (lastBid == null) {
+                    this.messageDispatcher.globalDispatch("NoWinner");
+                    this.stop();
+                    return;
+                }
+
+                val user = lastBid.getFirst();
+
+                this.onWin(user);
+
+                // maybe change this to onWin function?
+                this.messageDispatcher.globalDispatch("Win", message -> message
+                        .replace("{name}", user.getPlayerName()));
+            });
+
         });
 
     }
@@ -150,6 +156,7 @@ public class Auction extends Command<User> {
         this.schedulerManager.cancel();
 
         if (this.lastBid != null) {
+            // change to class variable
             val economyAPI = plugin.getVaultProvider().provide().get();
             economyAPI.deposit(lastBid.getFirst().getUuid(), lastBid.getSecond());
         }

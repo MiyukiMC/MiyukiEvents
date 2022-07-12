@@ -65,23 +65,22 @@ public class FastQuiz extends Chat<User> {
         val calls = new AtomicInteger(config.getInt("Calls"));
         val interval = config.getInt("CallInterval");
 
-        schedulerManager.runAsync(0L, interval * 20L, () -> {
+        this.schedulerManager.runAsync(0L, interval * 20L, () -> {
             val seconds = calls.get() * interval;
 
             if (calls.get() > 0) {
-                // globalDispatch in messageDispatcher
-                Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "Start", message -> message
+                this.messageDispatcher.globalDispatch("Start", message -> message
                         .replace("{seconds}", String.valueOf(seconds))
-                        .replace("{question}", question.getQuestion())));
+                        .replace("{question}", question.getQuestion()));
 
                 calls.getAndDecrement();
-            } else {
-                // globalDispatch in messageDispatcher
-                Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "NoWinner", message -> message
-                        .replace("{answer}", question.getAnswer())));
-
-                stop();
+                return;
             }
+
+            this.messageDispatcher.globalDispatch("NoWinner", message ->
+                    message.replace("{answer}", question.getAnswer()));
+
+            this.stop();
         });
     }
 
@@ -95,10 +94,9 @@ public class FastQuiz extends Chat<User> {
     public void onWin(User user) {
         this.stop();
 
-        // globalDispatch in messageDispatcher
-        Bukkit.getOnlinePlayers().forEach(it -> messageDispatcher.dispatch(it, "Win", message -> message
+        this.messageDispatcher.globalDispatch("Win", message -> message
                 .replace("{answer}", question.getAnswer())
-                .replace("{winner}", user.getPlayerName())));
+                .replace("{winner}", user.getPlayerName()));
 
         this.giveReward(user);
     }

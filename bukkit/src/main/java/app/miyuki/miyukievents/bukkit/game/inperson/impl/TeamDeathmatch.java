@@ -28,8 +28,6 @@ public class TeamDeathmatch extends Teams<Set<User>> {
     @Override
     public void start() {
 
-
-
     }
 
     @Override

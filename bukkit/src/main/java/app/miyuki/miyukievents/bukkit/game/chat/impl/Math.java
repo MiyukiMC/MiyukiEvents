@@ -41,7 +41,7 @@ public class Math extends Chat<User> {
         if (!(StringUtils.isNumeric(args[0])))
             return;
 
-        if (!(Integer.parseInt(args[0]) == result))
+        if (Integer.parseInt(args[0]) != result)
             return;
 
         val uniqueId = player.getUniqueId();
@@ -63,8 +63,8 @@ public class Math extends Chat<User> {
                 .replace("{number2}", String.valueOf(numberTwo)));
 
         this.schedulerManager.runAsync(expireTime * 20L, () -> {
-            messageDispatcher.globalDispatch("NoWinner");
-            stop();
+            this.messageDispatcher.globalDispatch("NoWinner");
+            this.stop();
         });
     }
 

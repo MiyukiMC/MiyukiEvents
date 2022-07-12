@@ -69,20 +69,18 @@ public class Lottery extends Command<User> {
             if (calls.get() > 0) {
                 val seconds = calls.get() * interval;
 
-                messageDispatcher.globalDispatch("Start", message -> message
+                this.messageDispatcher.globalDispatch("Start", message -> message
                         .replace("{minNumber}", String.valueOf(minNumber))
                         .replace("{maxNumber}", String.valueOf(maxNumber))
                         .replace("{seconds}", String.valueOf(seconds)));
 
                 calls.getAndDecrement();
-
-            } else {
-
-                messageDispatcher.globalDispatch("NoWinner", message -> message
-                        .replace("{result}", String.valueOf(result)));
-                stop();
-
+                return;
             }
+
+            this.messageDispatcher.globalDispatch("NoWinner", message -> message
+                    .replace("{result}", String.valueOf(result)));
+            this.stop();
         });
 
     }

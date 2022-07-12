@@ -72,53 +72,60 @@ public class Pool extends Command<User> {
             if (calls.get() > 0) {
                 val seconds = calls.get() * interval;
 
-                messageDispatcher.globalDispatch("Start", message -> message
+                this.messageDispatcher.globalDispatch("Start", message -> message
                         .replace("{size}", String.valueOf(players.size()))
                         .replace("{totalValue}", String.valueOf(getCost().multiply(BigDecimal.valueOf(players.size()))))
                         .replace("{cost}", String.valueOf(getCost()))
                         .replace("{seconds}", String.valueOf(seconds)));
-            } else {
 
-                if (players.size() < 2) {
-                    messageDispatcher.globalDispatch("NoWinner");
-                    players.forEach(player -> plugin.getVaultProvider().provide().ifPresent(economyAPI -> economyAPI.deposit(player.getUniqueId(), getCost())));
-                    stop();
-                } else {
-                    val section = config.getConfigurationSection("RandomTitles");
-                    if (section.getBoolean("Enabled")) {
-
-                        Bukkit.getOnlinePlayers().forEach(player -> messageDispatcher.dispatch(player, "Raffling"));
-
-                        List<Pair<String, String>> titles = Lists.newArrayList();
-
-                        Player lastPlayer = null;
-
-                        for (int i = 0; i < config.getInt("Calls"); i++) {
-
-                            lastPlayer = RandomUtils.getRandomElement(players);
-
-                            val title = ChatUtils.colorize(section.getString("Title").replace("{player}", lastPlayer.getName()));
-                            val subtitle = ChatUtils.colorize(section.getString("Subtitle").replace("{player}", lastPlayer.getName()));
-
-                            titles.add(new Pair<>(title, subtitle));
-
-                        }
-
-                        Player finalLastPlayer = lastPlayer;
-                        TitleAnimation.Builder()
-                                .animation(titles)
-                                .period(config.getInt("Interval"))
-                                .callback(() -> onWin(plugin.getUserRepository().findById(finalLastPlayer.getUniqueId()).get()))
-                                .build()
-                                .start();
-
-                    } else {
-                        this.onWin(plugin.getUserRepository().findById(RandomUtils.getRandomElement(players).getUniqueId()).get());
-                    }
-                }
+                return;
             }
 
-            calls.getAndDecrement();
+            if (players.size() < 2) {
+                this.messageDispatcher.globalDispatch("NoWinner");
+
+                // change economyAPI to class variable?
+                this.players.forEach(player ->
+                        plugin.getVaultProvider().provide().ifPresent(economyAPI ->
+                                economyAPI.deposit(player.getUniqueId(), getCost()))
+                );
+
+                this.stop();
+                return;
+            }
+
+            val section = config.getConfigurationSection("RandomTitles");
+
+            if (section.getBoolean("Enabled")) {
+
+                this.messageDispatcher.globalDispatch("Raffling");
+
+                List<Pair<String, String>> titles = Lists.newArrayList();
+
+                Player lastPlayer = null;
+
+                for (int i = 0; i < config.getInt("Calls"); i++) {
+
+                    lastPlayer = RandomUtils.getRandomElement(players);
+
+                    val title = ChatUtils.colorize(section.getString("Title").replace("{player}", lastPlayer.getName()));
+                    val subtitle = ChatUtils.colorize(section.getString("Subtitle").replace("{player}", lastPlayer.getName()));
+
+                    titles.add(new Pair<>(title, subtitle));
+
+                }
+
+                Player finalLastPlayer = lastPlayer;
+                TitleAnimation.Builder()
+                        .animation(titles)
+                        .period(config.getInt("Interval"))
+                        .callback(() -> onWin(plugin.getUserRepository().findById(finalLastPlayer.getUniqueId()).get()))
+                        .build()
+                        .start();
+                return;
+            }
+
+            this.onWin(plugin.getUserRepository().findById(RandomUtils.getRandomElement(players).getUniqueId()).get());
         });
     }
 
@@ -128,7 +135,7 @@ public class Pool extends Command<User> {
         this.schedulerManager.cancel();
 
         this.players.forEach(player ->
-                // change this to local variable.
+                // change this to local/class variable
                 plugin.getVaultProvider().provide().ifPresent(economyAPI -> economyAPI.deposit(player.getUniqueId(), getCost()))
         );
     }

@@ -56,7 +56,11 @@ public class Jackpot extends Command<User> {
         val uuid = player.getUniqueId();
         val money = new BigDecimal(args[0]);
 
-        val playerBet = players.get(plugin.getUserRepository().findById(uuid));
+        val uniqueId = player.getUniqueId();
+
+        val user = plugin.getUserRepository().findById(uniqueId).get(); // null check
+
+        val playerBet = players.get(user);
 
         if (playerBet != null && playerBet.compareTo(maxBet) == 0) {
             messageDispatcher.dispatch(player, "YouAlreadyBetTheMost");
@@ -73,10 +77,6 @@ public class Jackpot extends Command<User> {
             return;
         }
 
-        val uniqueId = player.getUniqueId();
-
-        val user = plugin.getUserRepository().findById(uniqueId).get();
-
         // use .replace?
         if (playerBet != null) {
             val oldValue = players.get(user);
@@ -84,6 +84,7 @@ public class Jackpot extends Command<User> {
         } else
             players.put(user, money);
 
+        // change to class variable?
         economyAPI.withdraw(uuid, money);
 
         this.messageDispatcher.dispatch(player, "YouEntered", message -> message
@@ -108,23 +109,25 @@ public class Jackpot extends Command<User> {
             val seconds = calls.get() * interval;
 
             if (calls.get() > 0) {
-                messageDispatcher.globalDispatch("Start", message -> message
+                this.messageDispatcher.globalDispatch("Start", message -> message
                         .replace("{size}", String.valueOf(players.size()))
                         .replace("{total}", String.valueOf(players.values().stream().reduce(BigDecimal.valueOf(0), BigDecimal::add)))
                         .replace("{maxBet}", String.valueOf(maxBet))
                         .replace("{seconds}", String.valueOf(seconds)));
 
                 calls.getAndDecrement();
-            } else {
-                if (players.size() >= 2) {
-                    val winner = RandomUtils.getWeightedRandom(players);
-                    onWin(winner);
-                } else {
-                    messageDispatcher.globalDispatch("NoWinner");
-                    stop();
-                }
-
+                return;
             }
+
+            if (players.size() >= 2) {
+                val winner = RandomUtils.getWeightedRandom(players);
+                this.onWin(winner);
+            } else {
+                messageDispatcher.globalDispatch("NoWinner");
+                this.stop();
+            }
+
+
         });
     }
 
@@ -133,7 +136,7 @@ public class Jackpot extends Command<User> {
         this.setGameState(GameState.STOPPED);
         this.schedulerManager.cancel();
 
-        // refactor this
+        // change to class variable?
         val economyAPI = plugin.getVaultProvider().provide().get();
 
         this.players.forEach((user, value) ->
@@ -160,7 +163,7 @@ public class Jackpot extends Command<User> {
     protected void giveReward(User user) {
         val total = players.values().stream().reduce(BigDecimal.valueOf(0), BigDecimal::add);
 
-        // refactor this
+        // change to class variable?
         plugin.getVaultProvider().provide().get().deposit(user.getUuid(), total);
 
         this.reward.execute(user);

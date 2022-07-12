@@ -63,28 +63,22 @@ public class FastClick extends Command<User> {
         String message;
         val messagesSection = config.getConfigurationSection("Messages");
 
-        if (messagesSection.isList(messagePath)) {
-
+        if (messagesSection.isList(messagePath))
             message = String.join("<newline>", messagesSection.getStringList(messagePath));
-
-        } else {
-
+        else
             message = messagesSection.getString(messagePath);
-
-        }
 
         val miniMessage = MiniMessage.miniMessage();
 
         message = message.replace("{id}", this.id);
 
         plugin.getAdventure().all().sendMessage(miniMessage.deserialize(plugin.getTextColorAdapter().adapt(message)).asComponent());
-        //
 
         val expireTime = configProvider.provide(ConfigType.CONFIG).getInt("ExpireTime");
 
         this.schedulerManager.runAsync(expireTime * 20L, () -> {
-            messageDispatcher.globalDispatch("NoWinner");
-            stop();
+            this.messageDispatcher.globalDispatch("NoWinner");
+            this.stop();
         });
     }
 
