@@ -22,7 +22,6 @@ public class Vault implements EconomyAPI {
         this.economy = registeredServiceProvider.getProvider();
     }
 
-
     @Override
     public void deposit(@NotNull UUID player, @NotNull BigDecimal amount) {
         this.economy.depositPlayer(Bukkit.getOfflinePlayer(player), amount.doubleValue());

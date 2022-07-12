@@ -23,7 +23,6 @@ public class GameQueue extends BukkitRunnable {
 
     @Override
     public void run() {
-
         if (queue.isEmpty())
             return;
 

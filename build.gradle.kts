@@ -27,8 +27,8 @@ allprojects {
 
         implementation("org.jetbrains:annotations:23.0.0")
 
-        compileOnly("net.kyori:adventure-api:4.10.0")
-        compileOnly("net.kyori:adventure-text-minimessage:4.10.0")
+        compileOnly("net.kyori:adventure-api:4.11.0")
+        compileOnly("net.kyori:adventure-text-minimessage:4.11.0")
 
         compileOnly("org.mariadb.jdbc:mariadb-java-client:3.0.3")
         compileOnly("mysql:mysql-connector-java:8.0.28")

@@ -73,7 +73,9 @@ public class Jackpot extends Command<User> {
             return;
         }
 
-        val user = plugin.getUserRepository().findById(player.getUniqueId());
+        val uniqueId = player.getUniqueId();
+
+        val user = plugin.getUserRepository().findById(uniqueId).get();
 
         // use .replace?
         if (playerBet != null) {

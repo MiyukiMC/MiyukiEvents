@@ -33,7 +33,6 @@ public class GameManager {
             "auction"
     );
 
-
     private final MiyukiEvents plugin;
     private final String language;
 
@@ -46,15 +45,14 @@ public class GameManager {
     @Getter
     private final Map<String, Game<?>> games = Maps.newHashMap();
 
-
     public GameManager(@NotNull MiyukiEvents plugin, @NotNull String language) {
         this.plugin = plugin;
         this.language = language;
 
-        queue = new GameQueue(plugin, this);
-        gameRegistry = new GameRegistry();
+        this.queue = new GameQueue(plugin, this);
+        this.gameRegistry = new GameRegistry();
 
-        gameRegistry.load();
+        this.gameRegistry.load();
     }
 
     @Nullable

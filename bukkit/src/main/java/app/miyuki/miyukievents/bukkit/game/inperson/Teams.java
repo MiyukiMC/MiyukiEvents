@@ -73,7 +73,7 @@ public abstract class Teams<W> extends InPerson<W> {
 
     }
 
-    protected void teleportAllUsersToDesignatedEntrance(User user) {
+    protected void teleportAllUsersToDesignatedEntrance(@NotNull User user) {
         teams.asMap().forEach((team, users) -> user.getPlayer().ifPresent(it -> it.teleport(entries.get(team))));
     }
 

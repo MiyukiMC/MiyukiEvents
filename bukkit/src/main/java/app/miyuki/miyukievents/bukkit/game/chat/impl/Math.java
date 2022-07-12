@@ -41,8 +41,13 @@ public class Math extends Chat<User> {
         if (!(StringUtils.isNumeric(args[0])))
             return;
 
-        if (Integer.parseInt(args[0]) == result)
-            onWin(plugin.getUserRepository().findById(player.getUniqueId()));
+        if (!(Integer.parseInt(args[0]) == result))
+            return;
+
+        val uniqueId = player.getUniqueId();
+        val user = plugin.getUserRepository().findById(uniqueId).get();
+
+        this.onWin(user);
     }
 
     @Override

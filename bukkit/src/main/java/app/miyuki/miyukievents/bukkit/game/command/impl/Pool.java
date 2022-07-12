@@ -108,12 +108,12 @@ public class Pool extends Command<User> {
                         TitleAnimation.Builder()
                                 .animation(titles)
                                 .period(config.getInt("Interval"))
-                                .callback(() -> onWin(plugin.getUserRepository().findById(finalLastPlayer.getUniqueId())))
+                                .callback(() -> onWin(plugin.getUserRepository().findById(finalLastPlayer.getUniqueId()).get()))
                                 .build()
                                 .start();
 
                     } else {
-                        this.onWin(plugin.getUserRepository().findById(RandomUtils.getRandomElement(players).getUniqueId()));
+                        this.onWin(plugin.getUserRepository().findById(RandomUtils.getRandomElement(players).getUniqueId()).get());
                     }
                 }
             }
@@ -144,11 +144,10 @@ public class Pool extends Command<User> {
                 .replace("{winner}", user.getPlayerName())
                 .replace("{money}", String.valueOf(total)));
 
-        // maybe be null
         this.messageDispatcher.dispatch(Bukkit.getPlayer(user.getUuid()), "YouWin", message -> message
                 .replace("{money}", String.valueOf(total)));
 
-        giveReward(user);
+        this.giveReward(user);
     }
 
     @Override

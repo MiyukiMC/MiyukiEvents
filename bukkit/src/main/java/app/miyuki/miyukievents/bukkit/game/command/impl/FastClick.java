@@ -40,7 +40,11 @@ public class FastClick extends Command<User> {
             return;
         }
 
-        this.onWin(plugin.getUserRepository().findById(player.getUniqueId()));
+        val uniqueId = player.getUniqueId();
+
+        val user = plugin.getUserRepository().findById(uniqueId).get(); // null check
+
+        this.onWin(user);
     }
 
     @Override

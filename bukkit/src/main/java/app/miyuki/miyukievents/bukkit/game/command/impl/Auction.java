@@ -95,7 +95,7 @@ public class Auction extends Command<User> {
         if (this.lastBid != null)
             economyAPI.deposit(lastBid.getFirst().getUuid(), lastBid.getSecond());
 
-        this.lastBid = new Pair<>(plugin.getUserRepository().findById(uuid), money);
+        this.lastBid = new Pair<>(plugin.getUserRepository().findById(uuid).get(), money);
 
         this.messageDispatcher.globalDispatch("PlayerEnteredInTheAuction", message -> message
                 .replace("{player}", player.getName())
@@ -115,6 +115,7 @@ public class Auction extends Command<User> {
         this.schedulerManager.run(0L, interval * 20L, () -> {
 
             if (calls.get() > 0) {
+                // change the Function<String, String> to local variable
                 messageDispatcher.globalDispatch("Start", message -> message
                         .replace("{itemname}", auctionItem.getName())
                         .replace("{username}", lastBid == null ? "Ninguém" : lastBid.getFirst().getPlayerName())

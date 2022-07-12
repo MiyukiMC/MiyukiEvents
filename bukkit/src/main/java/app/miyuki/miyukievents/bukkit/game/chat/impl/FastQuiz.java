@@ -46,8 +46,13 @@ public class FastQuiz extends Chat<User> {
 
         val message = String.join(" ", args);
 
-        if (question.compareAnswer(message))
-            onWin(plugin.getUserRepository().findById(player.getUniqueId()));
+        if (!question.compareAnswer(message))
+            return;
+
+        val uniqueId = player.getUniqueId();
+        val user = plugin.getUserRepository().findById(uniqueId).get(); // null check
+
+        this.onWin(user);
     }
 
     @Override

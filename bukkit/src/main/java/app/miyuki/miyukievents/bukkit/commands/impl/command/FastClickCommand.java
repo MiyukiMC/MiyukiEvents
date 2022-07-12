@@ -42,7 +42,6 @@ public class FastClickCommand extends GameCommand {
             val player = (Player) sender;
             ((app.miyuki.miyukievents.bukkit.game.command.Command<?>) game).onCommand(player, args);
             return false;
-
         }
 
         Bukkit.dispatchCommand(sender, getName() + " help");

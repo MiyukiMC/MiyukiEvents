@@ -46,21 +46,25 @@ public class JackpotChanceSubCommand extends SubCommand {
 
     @Override
     public @Nullable String getPermission() {
-        return null;
+        return null; // ?
     }
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
         val jackpotGame = (Jackpot) game;
 
-        if (sender instanceof Player) {
-            val player = (Player) sender;
-            if (!jackpotGame.getPlayers().containsKey(player.getName()))
-                messageDispatcher.dispatch(player, "YouAreNotInTheJackpot");
-            else
-                messageDispatcher.dispatch(player, "YourChance", message -> message
-                        .replace("{chance}", String.valueOf(RandomUtils.getChance(jackpotGame.getPlayers(), plugin.getUserRepository().findById(player.getUniqueId())))));
-        }
+        if (!(sender instanceof Player))
+            return false;
+
+        val player = (Player) sender;
+
+        val user = plugin.getUserRepository().findById(player.getUniqueId()).get(); // null check
+
+        if (jackpotGame.getPlayers().containsKey(user))
+            messageDispatcher.dispatch(player, "YourChance", message -> message
+                    .replace("{chance}", String.valueOf(RandomUtils.getChance(jackpotGame.getPlayers(), user))));
+        else
+            messageDispatcher.dispatch(player, "YouAreNotInTheJackpot");
 
         return false;
     }

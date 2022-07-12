@@ -91,13 +91,11 @@ public final class MiyukiEvents extends JavaPlugin {
         this.loadMetrics();
 
         this.userRepository = new UserRepository(this);
-
     }
 
     @Override
     public void onDisable() {
-
-        val currentGame = gameManager.getCurrentGame();
+        val currentGame = this.gameManager.getCurrentGame();
         if (currentGame != null)
             currentGame.stop();
 

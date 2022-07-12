@@ -45,8 +45,13 @@ public class Word extends Chat<User> {
             word = word.toLowerCase(Locale.ROOT);
         }
 
-        if (message.equals(word))
-            onWin(plugin.getUserRepository().findById(player.getUniqueId()));
+        if (!(message.equals(word)))
+            return;
+
+        val uniqueId = player.getUniqueId();
+        val user = plugin.getUserRepository().findById(uniqueId).get(); // null check
+
+        this.onWin(user);
     }
 
     @Override
