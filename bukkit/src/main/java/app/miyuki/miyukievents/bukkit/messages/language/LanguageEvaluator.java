@@ -1,4 +1,4 @@
-package app.miyuki.miyukievents.bukkit.language;
+package app.miyuki.miyukievents.bukkit.messages.language;
 
 import com.google.common.collect.ImmutableList;
 import lombok.val;

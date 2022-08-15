@@ -1,8 +1,7 @@
 package app.miyuki.miyukievents.bukkit.game.command.impl;
 
 import app.miyuki.miyukievents.bukkit.commands.impl.command.GenericCommandCommand;
-import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
+import app.miyuki.miyukievents.bukkit.config.Config;
 import app.miyuki.miyukievents.bukkit.game.GameInfo;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.command.Command;
@@ -12,7 +11,6 @@ import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.val;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,24 +26,24 @@ public class Jackpot extends Command<User> {
 
     private BigDecimal maxBet;
 
-    public Jackpot(@NotNull GameConfigProvider configProvider) {
-        super(configProvider);
+    public Jackpot(@NotNull Config config, @NotNull Config messages, @NotNull Config data) {
+        super(config, messages, data);
     }
+
 
     @Override
     public void onCommand(Player player, String[] args) {
-
-        if (this.gameState != GameState.STARTED) {
-            plugin.getGlobalMessageDispatcher().dispatch(player, "GameNotFound");
+        if (args.length != 1) {
+            this.messageDispatcher.dispatch(player, "CommandUsedIncorrectly");
             return;
         }
 
-        if (!player.hasPermission(getPermission())) {
+        if (permission != null && !player.hasPermission(permission)) {
             plugin.getGlobalMessageDispatcher().dispatch(player, "NoPermission");
             return;
         }
 
-        if (!StringUtils.isNumeric(args[0]) || !NumberEvaluator.isValidDoubleValue(Double.parseDouble(args[0]))) {
+        if (!NumberEvaluator.isDouble(args[0])) {
             messageDispatcher.dispatch(player, "EnterAValidValue");
             return;
         }
@@ -67,7 +65,7 @@ public class Jackpot extends Command<User> {
             return;
         }
 
-        if (money.compareTo(playerBet) == 1) {
+        if (money.compareTo(playerBet) > 0) {
             messageDispatcher.dispatch(player, "ValueGreaterMax");
             return;
         }
@@ -96,14 +94,14 @@ public class Jackpot extends Command<User> {
     public void start() {
         this.players.clear();
 
-        val config = configProvider.provide(ConfigType.CONFIG);
+        val configRoot = config.getRoot();
 
-        this.maxBet = new BigDecimal(config.getString("MaxBet"));
+        this.maxBet = new BigDecimal(configRoot.node("MaxBet").getString("1000"));
 
         this.setGameState(GameState.STARTED);
 
-        val calls = new AtomicInteger(config.getInt("Calls"));
-        val interval = config.getInt("CallInterval");
+        val calls = new AtomicInteger(configRoot.node("Calls").getInt());
+        val interval = configRoot.node("CallInterval").getInt();
 
         this.schedulerManager.runAsync(0L, interval * 20L, () -> {
             val seconds = calls.get() * interval;

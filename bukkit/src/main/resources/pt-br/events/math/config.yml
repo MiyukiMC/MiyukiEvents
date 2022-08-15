@@ -3,8 +3,6 @@ Type: 'math'
 # Nome do evento
 Name: 'math'
 
-# Permissão para participar do evento
-Permission: 'miyukievents.math'
 # Custo do evento (Esse evento ele não cobra para participar, ele só verifica se ele tem essa quantia)
 # Não coloque valores negativos
 Cost: 0

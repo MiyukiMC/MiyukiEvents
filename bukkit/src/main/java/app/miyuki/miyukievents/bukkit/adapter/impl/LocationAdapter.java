@@ -9,6 +9,8 @@ import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 public class LocationAdapter implements Adapter<Location, String>, Restorable<String, Location> {
 
@@ -18,7 +20,7 @@ public class LocationAdapter implements Adapter<Location, String>, Restorable<St
         val split = string.split(";");
 
         return new Location(
-                Bukkit.getWorld(split[0]),
+                Bukkit.getWorld(UUID.fromString(split[0])),
                 Double.parseDouble(split[1]),
                 Double.parseDouble(split[2]),
                 Double.parseDouble(split[3]),
@@ -30,7 +32,7 @@ public class LocationAdapter implements Adapter<Location, String>, Restorable<St
     @Override
     @Nullable
     public String restore(@NotNull Location location) {
-        return location.getWorld().getName() +
+        return location.getWorld().getUID() +
                 ";" + location.getX() +
                 ";" + location.getY() +
                 ";" + location.getZ() +

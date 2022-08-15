@@ -1,10 +1,13 @@
 package app.miyuki.miyukievents.bukkit.messages;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
+import app.miyuki.miyukievents.bukkit.util.chat.ChatUtils;
 import lombok.Data;
 import lombok.Getter;
 import lombok.var;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,21 +22,16 @@ public class ChatMessage implements Message {
     @Getter
     public final String message;
 
-    private final MiniMessage miniMessage = MiniMessage.miniMessage();
-
     @Override
     public void dispatch(@NotNull CommandSender sender, @Nullable Function<String, String> format) {
 
         var tempMessage = message
-                .replace("§", "")
-                .replace("\\n", "<newline>");
-
-        tempMessage = plugin.getTextColorAdapter().adapt(message);
+                .replace("\\n", "<reset><newline>");
 
         if (format != null)
             tempMessage = format.apply(tempMessage);
 
-        plugin.getAdventure().sender(sender).sendMessage(miniMessage.deserialize(tempMessage));
+        plugin.getAdventure().sender(sender).sendMessage(ChatUtils.colorize(tempMessage));
     }
 
 }

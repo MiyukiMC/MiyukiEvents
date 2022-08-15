@@ -2,17 +2,17 @@ package app.miyuki.miyukievents.bukkit.messages;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.config.Config;
-import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import lombok.SneakyThrows;
+import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
@@ -20,31 +20,34 @@ public class MessageDispatcher {
 
     private final LoadingCache<String, Message> cache;
 
-    public MessageDispatcher(MiyukiEvents plugin, @NotNull GameConfigProvider configProvider) {
-        this(plugin, configProvider.provide(ConfigType.MESSAGES));
-    }
-
     public MessageDispatcher(MiyukiEvents plugin, @NotNull Config messages) {
 
         cache = CacheBuilder.newBuilder()
                 .expireAfterAccess(2, TimeUnit.MINUTES)
                 .build(new CacheLoader<String, Message>() {
+                    @SneakyThrows
                     @Override
                     public Message load(final @NotNull String path) {
 
-                        if (!messages.contains(path)) {
+                        val messagesRoot = messages.getRoot();
+
+                        if (!messagesRoot.hasChild(path)) {
                             return ChatMessage.of(
                                     plugin,
-                                    "&r[&9&lMiyuki&d&lEvents&r] &cMessage '&7" + path + "' &cnot found, contact an administrator."
+                                    "<gray>[<gradient:#2A8CFF:#25FFE5>MiyukiEvents</gradient><gray>] <red>Message '<gray>" + path + "' <red>not found, contact an administrator."
                             );
                         }
 
+                        val messageNode = messagesRoot.node(path);
 
-                        if (messages.isList(path)) {
-                            return ChatMessage.of(plugin, String.join("<newline>", messages.getStringList(path)));
+                        if (messageNode.isList()) {
+                            return ChatMessage.of(
+                                    plugin,
+                                    String.join("<reset><newline>", messageNode.getList(String.class, ArrayList::new))
+                            );
                         }
 
-                        return ChatMessage.of(plugin, messages.getString(path));
+                        return ChatMessage.of(plugin, messageNode.getString());
                     }
 
                 });
@@ -67,5 +70,8 @@ public class MessageDispatcher {
         Bukkit.getOnlinePlayers().forEach(player -> dispatch(player, path, format));
     }
 
+    public void clear() {
+        cache.invalidateAll();
+    }
 
 }

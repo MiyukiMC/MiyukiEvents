@@ -6,20 +6,18 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-@RequiredArgsConstructor(staticName = "of")
 public class GenericStartConditionEvaluator {
 
-    private final MessageDispatcher messageDispatcher;
 
-    public boolean evaluate(@NotNull CommandSender sender, GameState gameState) {
+    public static boolean evaluate(@NotNull MessageDispatcher messageDispatcher, @NotNull CommandSender sender, GameState gameState) {
 
         if (gameState == GameState.QUEUE) {
-            this.messageDispatcher.dispatch(sender, "GameAlreadyInQueue");
+            messageDispatcher.dispatch(sender, "GameAlreadyInQueue");
             return false;
         }
 
         if (gameState != GameState.STOPPED) {
-            this.messageDispatcher.dispatch(sender, "GameAlreadyStarted");
+            messageDispatcher.dispatch(sender, "GameAlreadyStarted");
             return false;
         }
 

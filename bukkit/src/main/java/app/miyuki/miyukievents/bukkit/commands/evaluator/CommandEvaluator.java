@@ -1,19 +1,14 @@
 package app.miyuki.miyukievents.bukkit.commands.evaluator;
 
-import app.miyuki.miyukievents.bukkit.MiyukiEvents;
-import lombok.RequiredArgsConstructor;
-import lombok.val;
+import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
+import app.miyuki.miyukievents.bukkit.user.UserRepository;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-@RequiredArgsConstructor(staticName = "of")
 public class CommandEvaluator {
 
-    private final MiyukiEvents plugin;
-
-    public boolean evaluate(@NotNull CommandSender sender, String permission, boolean console) {
-        val messageDispatcher = plugin.getGlobalMessageDispatcher();
+    public static boolean evaluate(@NotNull MessageDispatcher messageDispatcher, @NotNull CommandSender sender, String permission, boolean console) {
         if (permission != null && !sender.hasPermission(permission)) {
             messageDispatcher.dispatch(sender, "NoPermission");
             return false;
@@ -23,6 +18,7 @@ public class CommandEvaluator {
             messageDispatcher.dispatch(sender, "OnlyPlayers");
             return false;
         }
+
         return true;
     }
 

@@ -1,11 +1,10 @@
 package app.miyuki.miyukievents.bukkit.util.title;
 
 import app.miyuki.miyukievents.bukkit.game.manager.GameSchedulerManager;
-import com.cryptomorin.xseries.messages.Titles;
-import javafx.util.Pair;
 import lombok.Builder;
 import lombok.val;
-import org.bukkit.Bukkit;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.title.Title;
 
 import java.util.List;
 
@@ -17,8 +16,10 @@ public class TitleAnimation {
     @Builder.Default
     public long period = 20L;
 
-    public List<Pair<String, String>> animation;
+    public List<Title> animation;
     public Runnable callback;
+
+    public BukkitAudiences adventure;
 
     public void start() {
         int calls = animation.size() - 1;
@@ -31,7 +32,7 @@ public class TitleAnimation {
 
             val title = animation.get(calls);
 
-            Bukkit.getOnlinePlayers().forEach(player -> Titles.sendTitle(player, title.getKey(), title.getValue()));
+            adventure.all().showTitle(title);
 
             if (calls == 0) {
 

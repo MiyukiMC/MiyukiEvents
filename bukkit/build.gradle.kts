@@ -19,13 +19,13 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("me.clip:placeholderapi:2.10.9")
 
-    implementation("io.github.bananapuncher714:nbteditor:7.18.1")
+    implementation("io.github.bananapuncher714:nbteditor:7.18.3")
 
-    implementation("com.github.cryptomorin:XSeries:8.6.1")
+    implementation("com.github.cryptomorin:XSeries:9.0.0")
 
     implementation("org.bstats:bstats-bukkit:3.0.0")
 
-    compileOnly("net.kyori:adventure-platform-bukkit:4.1.1")
+    implementation("net.kyori:adventure-platform-bukkit:4.1.1")
 
     compileOnly("net.sacredlabyrinth.phaed.simpleclans:SimpleClans:2.15.0")
 }

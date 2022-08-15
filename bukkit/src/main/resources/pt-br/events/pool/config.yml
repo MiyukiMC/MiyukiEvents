@@ -1,7 +1,6 @@
 Type: 'pool'
 Name: 'pool'
 
-Permission: 'miyukievents.pool'
 Cost: 10000
 
 Calls: 3

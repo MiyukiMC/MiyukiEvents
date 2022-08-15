@@ -27,17 +27,18 @@ allprojects {
 
         implementation("org.jetbrains:annotations:23.0.0")
 
-        compileOnly("net.kyori:adventure-api:4.11.0")
-        compileOnly("net.kyori:adventure-text-minimessage:4.11.0")
+        implementation("net.kyori:adventure-text-minimessage:4.11.0")
 
-        compileOnly("org.mariadb.jdbc:mariadb-java-client:3.0.3")
-        compileOnly("mysql:mysql-connector-java:8.0.28")
-        compileOnly("com.h2database:h2:2.1.210")
-        compileOnly("org.xerial:sqlite-jdbc:3.36.0.3")
-        compileOnly("redis.clients:jedis:4.1.1")
-        compileOnly("com.zaxxer:HikariCP:4.0.3")
-        compileOnly("org.slf4j:slf4j-simple:1.7.36")
-        compileOnly("org.slf4j:slf4j-api:1.7.36")
+        implementation("org.mariadb.jdbc:mariadb-java-client:3.0.6")
+        implementation("mysql:mysql-connector-java:8.0.30")
+        implementation("com.h2database:h2:2.1.214")
+        implementation("org.xerial:sqlite-jdbc:3.36.0.3")
+        implementation("redis.clients:jedis:4.2.3")
+        implementation("com.zaxxer:HikariCP:4.0.3")
+        implementation("org.slf4j:slf4j-simple:1.7.36")
+        implementation("org.slf4j:slf4j-api:1.7.36")
+
+        implementation("org.spongepowered:configurate-yaml:4.1.2")
     }
 
 }
@@ -53,16 +54,14 @@ tasks {
         options.encoding = "UTF-8"
     }
     shadowJar {
-        archiveFileName.set("MiyukiEvents-$version.jar")
+        archiveFileName.set("MiyukiEvents-${project.version}.jar")
 
         val libsPackage = "app.miyuki.miyukievents.libs."
 
         relocate("org.intellij.lang.annotations", "${libsPackage}lang.annotations")
         relocate("org.jetbrains.annotations", "${libsPackage}jetbrains.annotations")
-
         relocate("com.zaxxer.hikari", "${libsPackage}hikari")
         relocate("org.slf4j", "${libsPackage}slf4j")
-
         relocate("com.google.errorprone.annotations", "${libsPackage}errorprone.annotations")
         relocate("com.mysql.cj", "${libsPackage}mysql")
         relocate("org.apache.commons.pool2", "${libsPackage}pool2")

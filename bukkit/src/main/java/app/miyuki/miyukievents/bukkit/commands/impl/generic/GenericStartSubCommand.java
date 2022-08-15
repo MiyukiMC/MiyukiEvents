@@ -3,40 +3,38 @@ package app.miyuki.miyukievents.bukkit.commands.impl.generic;
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.commands.SubCommand;
 import app.miyuki.miyukievents.bukkit.commands.evaluator.GenericStartConditionEvaluator;
-import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Game;
-import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
+import lombok.SneakyThrows;
 import lombok.val;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GenericStartSubCommand extends SubCommand {
 
-    private final GameConfigProvider configProvider;
     private final Game<?> game;
 
     public GenericStartSubCommand(
             @NotNull MiyukiEvents plugin,
-            @NotNull Game<?> game,
-            @NotNull GameConfigProvider configProvider
+            @NotNull Game<?> game
     ) {
         super(plugin, true);
         this.game = game;
-        this.configProvider = configProvider;
     }
 
+    @SneakyThrows
     @Override
     public List<String> getAliases() {
-        return configProvider.provide(ConfigType.CONFIG).getStringList("SubCommands.Start.Names");
+        return game.getConfig().getRoot().node("SubCommands", "Start", "Names").getList(String.class, ArrayList::new);
     }
 
     @Override
     public @Nullable String getPermission() {
-        return configProvider.provide(ConfigType.CONFIG).getString("SubCommands.Start.Permission");
+        return game.getConfig().getRoot().node("SubCommands", "Start", "Permission").getString();
     }
 
     @Override
@@ -44,7 +42,7 @@ public class GenericStartSubCommand extends SubCommand {
 
         val globalMessageDispatcher = plugin.getGlobalMessageDispatcher();
 
-        if (!GenericStartConditionEvaluator.of(globalMessageDispatcher).evaluate(sender, game.getGameState()))
+        if (!GenericStartConditionEvaluator.evaluate(globalMessageDispatcher, sender, game.getGameState()))
             return false;
 
         game.setGameState(GameState.QUEUE);

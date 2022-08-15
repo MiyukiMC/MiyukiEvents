@@ -19,13 +19,11 @@ public class StorageFactory {
     private MiyukiEvents plugin;
 
     public Storage create() {
-        val config = plugin.getGlobalConfig();
-        val section = config.getConfigurationSection("Database");
-        val typeName = section.getString("Type").toUpperCase(Locale.ROOT);
+        val configRoot = plugin.getGlobalConfig().getRoot();
+        val database = configRoot.node("Database");
+        val typeName = database.node("Type").getString("SQLITE").toUpperCase(Locale.ROOT);
 
         val storageType = StorageType.of(typeName);
-
-        plugin.getDependencyManager().loadStorageDependencies(storageType);
 
         ConnectionFactory connectionFactory;
         try {
@@ -33,7 +31,7 @@ public class StorageFactory {
             switch (storageType) {
                 case MYSQL:
                 case MARIADB:
-                    connectionFactory = new MySQLAndMariaDB(plugin, storageType, section);
+                    connectionFactory = new MySQLAndMariaDB(plugin, storageType, database);
                     break;
                 case SQLITE:
                     connectionFactory = new SQLite(plugin, storageType);

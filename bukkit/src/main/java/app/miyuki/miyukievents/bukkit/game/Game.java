@@ -1,7 +1,7 @@
 package app.miyuki.miyukievents.bukkit.game;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
-import app.miyuki.miyukievents.bukkit.config.ConfigType;
+import app.miyuki.miyukievents.bukkit.config.Config;
 import app.miyuki.miyukievents.bukkit.game.manager.GameSchedulerManager;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
 import app.miyuki.miyukievents.bukkit.reward.Reward;
@@ -11,61 +11,60 @@ import lombok.val;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
+@Getter
 public abstract class Game<W> {
 
     protected final @NotNull MiyukiEvents plugin;
 
-    @Getter
-    protected final @NotNull GameConfigProvider configProvider;
-
-    @Getter
     protected final @NotNull MessageDispatcher messageDispatcher;
 
-    @Getter
+    protected final Config config;
+
+    protected final Config messages;
+
+    protected final Config data;
+
     @Setter
     protected GameState gameState = GameState.STOPPED;
 
-    @Getter
     protected final Reward reward;
 
-    @Getter
+    @Nullable
     protected final String permission;
 
-    @Getter
     protected BigDecimal cost;
 
-    @Getter
     protected final GameSchedulerManager schedulerManager;
 
-    public Game(@NotNull GameConfigProvider configProvider) {
+    public Game(@NotNull Config config, @NotNull Config messages, @NotNull Config data) {
+        this.config = config;
+        this.messages = messages;
+        this.data = data;
         this.plugin = JavaPlugin.getPlugin(MiyukiEvents.class);
-        this.configProvider = configProvider;
-        this.reward = plugin.getRewardAdapter().adapt(
-                Objects.requireNonNull(configProvider.provide(ConfigType.CONFIG).getConfigurationSection("Reward"))
-        );
-        this.permission = configProvider.provide(ConfigType.CONFIG).getString("Permission");
 
-        val cost = configProvider.provide(ConfigType.CONFIG).getString("Cost");
+        val configRoot = config.getRoot();
 
-        this.cost = new BigDecimal(cost);
+        this.reward = plugin.getRewardAdapter().adapt(configRoot.node("Reward"));
+        this.permission = config.getRoot().node("Command", "  Permission").getString();
 
-        messageDispatcher = new MessageDispatcher(plugin, configProvider);
+        this.cost = new BigDecimal(config.getRoot().node("Cost").getString("0"));
+
+        messageDispatcher = new MessageDispatcher(plugin, messages);
         schedulerManager = new GameSchedulerManager(plugin);
     }
 
     protected boolean checkCost(Player player) {
-        if (!plugin.getVaultProvider().provide().isPresent())
-            return true;
+        val economyAPI = plugin.getVaultProvider().provide();
+        return economyAPI.map(api -> api.has(player.getUniqueId(), cost)).orElse(true);
 
-        return plugin.getVaultProvider().provide().map(economyAPI -> economyAPI.has(player.getUniqueId(), cost)).orElse(true);
     }
 
     public String getName() {
-        return configProvider.provide(ConfigType.CONFIG).getString("Name");
+        return config.getRoot().node("Name").getString();
     }
 
     public abstract void start();

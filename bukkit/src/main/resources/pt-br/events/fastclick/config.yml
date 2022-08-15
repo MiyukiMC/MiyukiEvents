@@ -1,8 +1,6 @@
 Type: 'fastclick'
 Name: 'fastclick'
 
-Permission: 'miyukievents.fastclick'
-
 Cost: 0
 
 # Em segundos

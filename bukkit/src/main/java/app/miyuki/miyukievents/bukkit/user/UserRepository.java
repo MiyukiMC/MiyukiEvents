@@ -2,24 +2,20 @@ package app.miyuki.miyukievents.bukkit.user;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.util.async.Async;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.Maps;
 import lombok.val;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class UserRepository {
 
     private final MiyukiEvents plugin;
 
-    private final Cache<UUID, User> users = CacheBuilder.newBuilder()
-            .build();
+    private final Map<UUID, User> users = Maps.newConcurrentMap();
 
     public UserRepository(MiyukiEvents plugin) {
         this.plugin = plugin;
@@ -28,11 +24,12 @@ public class UserRepository {
     }
 
     public Optional<User> findById(@NotNull UUID uniqueId) {
-        return Optional.ofNullable(users.getIfPresent(uniqueId));
+        return Optional.ofNullable(users.get(uniqueId));
     }
 
     public Optional<User> findByName(@NotNull String playerName) {
-        val filteredUser = users.asMap().values().stream()
+        val filteredUser = users.values()
+                .stream()
                 .filter(user -> user.getPlayerName().equalsIgnoreCase(playerName))
                 .findFirst()
                 .orElse(null);
@@ -45,16 +42,18 @@ public class UserRepository {
     }
 
     public void remove(@NotNull UUID uniqueId) {
-        users.invalidate(uniqueId);
+        users.remove(uniqueId);
     }
 
     public void cleanUp() {
         val gameManager = plugin.getGameManager();
 
-        users.asMap().entrySet().removeIf(entries ->
-                Bukkit.getPlayer(entries.getKey()) == null
+
+        val removed = users.entrySet().removeIf(entries ->
+                !entries.getValue().getPlayer().isPresent()
                         && gameManager.getQueue().isEmpty()
                         && gameManager.getCurrentGame() == null);
+
     }
 
 

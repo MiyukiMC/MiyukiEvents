@@ -4,10 +4,9 @@ import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.user.UserFactory;
 import app.miyuki.miyukievents.bukkit.user.UserGameHistory;
 import lombok.val;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 
 import java.util.stream.Collectors;
@@ -22,8 +21,8 @@ public class PlayerJoin implements Listener {
         this.userFactory = new UserFactory(plugin);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerJoin(PlayerLoginEvent event) {
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
         val player = event.getPlayer();
 
         val uniqueId = player.getUniqueId();
@@ -31,35 +30,33 @@ public class PlayerJoin implements Listener {
 
         val storage = plugin.getStorage();
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(
-                plugin,
-                () -> storage.getUser(uniqueId).thenAcceptAsync(user -> {
-                    val finalUser = user.orElseGet(() -> userFactory.create(uniqueId, playerName));
+        storage.getUser(uniqueId).thenAcceptAsync(user -> {
+            val finalUser = user.orElseGet(() -> userFactory.create(uniqueId, playerName));
 
-                    if (!finalUser.getPlayerName().equals(playerName)) {
-                        finalUser.setPlayerName(playerName);
-                    }
+            if (!finalUser.getPlayerName().equals(playerName)) {
+                finalUser.setPlayerName(playerName);
+            }
 
-                    val games = plugin.getGameManager().getGames().keySet();
-                    val userGameHistories = finalUser.getGameHistories();
+            val games = plugin.getGameManager().getGames().keySet();
+            val userGameHistories = finalUser.getGameHistories();
 
-                    val toRemove = userGameHistories.stream()
-                            .map(UserGameHistory::getGameName).
-                            filter(gameName -> !games.contains(gameName)).toArray(String[]::new);
+            val toRemove = userGameHistories.stream()
+                    .map(UserGameHistory::getGameName).
+                    filter(gameName -> !games.contains(gameName)).toArray(String[]::new);
 
-                    val toAdd = games.stream()
-                            .filter(game -> userGameHistories.stream()
-                                    .noneMatch(history -> history.getGameName().equals(game)))
-                            .collect(Collectors.toList());
+            val toAdd = games.stream()
+                    .filter(game -> userGameHistories.stream().noneMatch(history -> history.getGameName().equals(game)))
+                    .collect(Collectors.toList());
 
-                    storage.deleteHistory(toRemove);
+            storage.deleteHistory(toRemove);
 
-                    toAdd.forEach(game -> userGameHistories.add(new UserGameHistory(game, 0, 0, 0, 0)));
+            toAdd.forEach(game -> userGameHistories.add(new UserGameHistory(game, 0, 0, 0, 0)));
 
-                    finalUser.save();
-                }),
-                3L
-        );
+            finalUser.save();
+        }).handle((value, exception) -> {
+            exception.printStackTrace();
+            return null;
+        });
 
 
     }

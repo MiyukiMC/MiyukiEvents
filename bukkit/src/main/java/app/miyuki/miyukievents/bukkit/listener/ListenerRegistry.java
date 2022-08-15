@@ -18,8 +18,6 @@ public class ListenerRegistry {
 
     @SneakyThrows
     public void register() {
-        ClassPath classPath = ClassPath.from(plugin.getClass().getClassLoader());
-
         for (ClassPath.ClassInfo classInfo : ReflectionUtils.getClasses(LISTENERS)) {
             val listener = classInfo.load();
 
@@ -28,7 +26,6 @@ public class ListenerRegistry {
 
             Bukkit.getPluginManager().registerEvents((Listener) listener.getConstructor(MiyukiEvents.class).newInstance(plugin), plugin);
         }
-
     }
 
 }

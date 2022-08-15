@@ -1,36 +1,49 @@
 package app.miyuki.miyukievents.bukkit.game.command.impl;
 
-import app.miyuki.miyukievents.bukkit.commands.impl.command.FastClickCommand;
-import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
+import app.miyuki.miyukievents.bukkit.commands.impl.command.GenericCommandCommand;
+import app.miyuki.miyukievents.bukkit.config.Config;
 import app.miyuki.miyukievents.bukkit.game.GameInfo;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.command.Command;
 import app.miyuki.miyukievents.bukkit.user.User;
+import app.miyuki.miyukievents.bukkit.util.chat.ChatUtils;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import com.google.common.collect.Lists;
+import lombok.SneakyThrows;
 import lombok.val;
+import lombok.var;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.configurate.CommentedConfigurationNode;
 
-@GameInfo(typeName = "FastClick", commandClass = FastClickCommand.class)
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+@GameInfo(typeName = "FastClick", commandClass = GenericCommandCommand.class)
 public class FastClick extends Command<User> {
 
     // Used to verify json
     private String id;
 
-    public FastClick(@NotNull GameConfigProvider configProvider) {
-        super(configProvider);
+    public FastClick(@NotNull Config config, @NotNull Config messages, @NotNull Config data) {
+        super(config, messages, data);
     }
 
     @Override
     public void onCommand(Player player, String[] args) {
+        if (args.length != 1)
+            return;
+
         if (!args[0].equals(id)) {
             return;
         }
 
-        if (!player.hasPermission(getPermission())) {
+        if (permission != null && !player.hasPermission(permission)) {
             plugin.getGlobalMessageDispatcher().dispatch(player, "NoPermission");
             return;
         }
@@ -47,34 +60,31 @@ public class FastClick extends Command<User> {
         this.onWin(user);
     }
 
+    @SneakyThrows
     @Override
     public void start() {
         this.setGameState(GameState.STARTED);
         this.id = RandomUtils.generateRandomString(15);
 
-        val config = configProvider.provide(ConfigType.CONFIG);
+        val configRoot = config.getRoot();
 
-        val messagesPaths = Lists.newArrayList(config.getConfigurationSection("Messages").getKeys(false));
+        List<String> messagesPaths = Lists.newArrayList();
 
-        val messagePath = RandomUtils.getRandomElement(messagesPaths);
+        for (CommentedConfigurationNode node : configRoot.node("Messages").childrenMap().values()) {
 
+            if (node.isList()) {
+                messagesPaths.add(String.join("<reset><newline>", node.getList(String.class, ArrayList::new)));
+            } else {
+                messagesPaths.add(node.getString());
+            }
 
-        // refactor this
-        String message;
-        val messagesSection = config.getConfigurationSection("Messages");
+        }
 
-        if (messagesSection.isList(messagePath))
-            message = String.join("<newline>", messagesSection.getStringList(messagePath));
-        else
-            message = messagesSection.getString(messagePath);
+        var message = Objects.requireNonNull(RandomUtils.getRandomElement(messagesPaths)).replace("{id}", this.id);
 
-        val miniMessage = MiniMessage.miniMessage();
+        plugin.getAdventure().all().sendMessage(ChatUtils.colorize(message));
 
-        message = message.replace("{id}", this.id);
-
-        plugin.getAdventure().all().sendMessage(miniMessage.deserialize(plugin.getTextColorAdapter().adapt(message)).asComponent());
-
-        val expireTime = configProvider.provide(ConfigType.CONFIG).getInt("ExpireTime");
+        val expireTime = configRoot.node("ExpireTime").getInt();
 
         this.schedulerManager.runAsync(expireTime * 20L, () -> {
             this.messageDispatcher.globalDispatch("NoWinner");

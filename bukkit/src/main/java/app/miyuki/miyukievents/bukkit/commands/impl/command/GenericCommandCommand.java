@@ -2,6 +2,7 @@ package app.miyuki.miyukievents.bukkit.commands.impl.command;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
 import app.miyuki.miyukievents.bukkit.commands.GameCommand;
+import app.miyuki.miyukievents.bukkit.commands.impl.command.auction.AuctionStartSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.command.jackpot.JackpotChanceSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericHelpSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericReloadSubCommand;
@@ -9,6 +10,7 @@ import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericStartSubComma
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericStopSubCommand;
 import app.miyuki.miyukievents.bukkit.game.Game;
 import app.miyuki.miyukievents.bukkit.game.GameState;
+import app.miyuki.miyukievents.bukkit.game.command.impl.Auction;
 import app.miyuki.miyukievents.bukkit.game.command.impl.Jackpot;
 import lombok.val;
 import org.bukkit.Bukkit;
@@ -27,17 +29,21 @@ public class GenericCommandCommand extends GameCommand {
 
         this.game = game;
         val messageDispatcher = game.getMessageDispatcher();
-        val configProvider = game.getConfigProvider();
 
         this.registerSubCommand(
-                new GenericStartSubCommand(plugin, game, configProvider),
-                new GenericStopSubCommand(plugin, game, configProvider, messageDispatcher),
-                new GenericHelpSubCommand(plugin, configProvider, messageDispatcher),
-                new GenericReloadSubCommand(plugin, game, configProvider)
+                new GenericStopSubCommand(plugin, game, messageDispatcher),
+                new GenericHelpSubCommand(plugin, game, messageDispatcher),
+                new GenericReloadSubCommand(plugin, game)
         );
 
         if (game instanceof Jackpot)
-            this.registerSubCommand(new JackpotChanceSubCommand(plugin, game, configProvider, messageDispatcher));
+            this.registerSubCommand(new JackpotChanceSubCommand(plugin, (Jackpot) game, messageDispatcher));
+
+        if (game instanceof Auction)
+            this.registerSubCommand(new AuctionStartSubCommand(plugin, (Auction) game, messageDispatcher));
+        else
+            this.registerSubCommand(new GenericStartSubCommand(plugin, game));
+
     }
 
     @Override

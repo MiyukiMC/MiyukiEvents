@@ -29,7 +29,7 @@ Database:
 # É necessário o uso de um banco de dados REDIS para utilizá-lo.
 # Devido a transferência de itens ser perigosa, são realizados diversos backups do inventário do jogador.
 # Esses backups podem ser encontrados na pasta BACKUPS
-Bungeecord:
+Redis:
   Enabled: false
   # Nome do servidor em que este plugin está no momento.
   ServerName: 'rankup'

@@ -1,22 +1,21 @@
-package app.miyuki.miyukievents.bukkit.game.command.impl;
+package app.miyuki.miyukievents.bukkit.game.chat.impl;
 
-import app.miyuki.miyukievents.bukkit.commands.impl.command.GenericCommandCommand;
-import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
+import app.miyuki.miyukievents.bukkit.commands.impl.chat.ChatCommand;
+import app.miyuki.miyukievents.bukkit.config.Config;
 import app.miyuki.miyukievents.bukkit.game.GameInfo;
 import app.miyuki.miyukievents.bukkit.game.GameState;
-import app.miyuki.miyukievents.bukkit.game.command.Command;
+import app.miyuki.miyukievents.bukkit.game.chat.Chat;
 import app.miyuki.miyukievents.bukkit.user.User;
+import app.miyuki.miyukievents.bukkit.util.number.NumberEvaluator;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import lombok.val;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-@GameInfo(typeName = "Lottery", commandClass = GenericCommandCommand.class)
-public class Lottery extends Command<User> {
+@GameInfo(typeName = "Lottery", commandClass = ChatCommand.class)
+public class Lottery extends Chat<User> {
 
     // Maybe change this to local variable
     private Integer minNumber;
@@ -24,29 +23,27 @@ public class Lottery extends Command<User> {
 
     private Integer result;
 
-    public Lottery(@NotNull GameConfigProvider configProvider) {
-        super(configProvider);
+    public Lottery(@NotNull Config config, @NotNull Config messages, @NotNull Config data) {
+        super(config, messages, data);
     }
 
+
     @Override
-    public void onCommand(Player player, String[] args) {
-        if (this.gameState != GameState.STARTED && !StringUtils.isNumeric(args[1]))
+    public void onChat(Player player, String[] args) {
+        if (gameState != GameState.STARTED)
             return;
 
-        if (!player.hasPermission(getPermission())) {
-            plugin.getGlobalMessageDispatcher().dispatch(player, "NoPermissions");
+        if (args.length < 1)
             return;
-        }
 
-        if (!checkCost(player)) {
-            messageDispatcher.dispatch(player, "");
+        if (!NumberEvaluator.isInteger(args[0]))
             return;
-        }
 
-        if (Integer.parseInt(args[0]) != result) {
-            messageDispatcher.dispatch(player, "WrongNumber");
+        if (!checkCost(player))
             return;
-        }
+
+        if (Integer.parseInt(args[0]) != result)
+            return;
 
         val uniqueId = player.getUniqueId();
         val user = plugin.getUserRepository().findById(uniqueId).get(); // null check
@@ -59,10 +56,10 @@ public class Lottery extends Command<User> {
         this.setupResult();
         this.setGameState(GameState.STARTED);
 
-        val config = configProvider.provide(ConfigType.CONFIG);
+        val configRoot = config.getRoot();
 
-        val calls = new AtomicInteger(config.getInt("Calls"));
-        val interval = config.getInt("CallInterval");
+        val calls = new AtomicInteger(configRoot.node("Calls").getInt());
+        val interval = configRoot.node("CallInterval").getInt();
 
         this.schedulerManager.runAsync(0L, interval * 20L, () -> {
 
@@ -112,9 +109,9 @@ public class Lottery extends Command<User> {
     }
 
     private void setupResult() {
-        val config = configProvider.provide(ConfigType.CONFIG);
-        this.minNumber = config.getInt("MinNumber");
-        this.maxNumber = config.getInt("MaxNumber");
+        val configRoot = config.getRoot();
+        this.minNumber = configRoot.node("MinNumber").getInt();
+        this.maxNumber = configRoot.node("MaxNumber").getInt();
 
         this.result = RandomUtils.generateRandomNumber(minNumber, maxNumber);
 

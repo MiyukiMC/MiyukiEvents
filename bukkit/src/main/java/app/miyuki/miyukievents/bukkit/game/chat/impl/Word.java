@@ -1,27 +1,29 @@
 package app.miyuki.miyukievents.bukkit.game.chat.impl;
 
-import app.miyuki.miyukievents.bukkit.commands.impl.chat.GenericChatCommand;
-import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
+import app.miyuki.miyukievents.bukkit.commands.impl.chat.ChatCommand;
+import app.miyuki.miyukievents.bukkit.config.Config;
 import app.miyuki.miyukievents.bukkit.game.GameInfo;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.chat.Chat;
 import app.miyuki.miyukievents.bukkit.user.User;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
+import lombok.SneakyThrows;
 import lombok.val;
 import lombok.var;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
-@GameInfo(typeName = "Word", commandClass = GenericChatCommand.class)
+@GameInfo(typeName = "Word", commandClass = ChatCommand.class)
 public class Word extends Chat<User> {
 
     private String word;
 
-    public Word(@NotNull GameConfigProvider configProvider) {
-        super(configProvider);
+    public Word(@NotNull Config config, @NotNull Config messages, @NotNull Config data) {
+        super(config, messages, data);
     }
 
     @Override
@@ -32,7 +34,7 @@ public class Word extends Chat<User> {
         if (args.length < 1)
             return;
 
-        if (!player.hasPermission(this.getPermission()))
+        if (permission != null && !player.hasPermission(permission))
             return;
 
         if (!checkCost(player))
@@ -40,7 +42,7 @@ public class Word extends Chat<User> {
 
         var message = args[0];
 
-        if (configProvider.provide(ConfigType.CONFIG).getBoolean("Words.IgnoreCase")) {
+        if (config.getRoot().node("Words", "IgnoreCase").getBoolean()) {
             message = message.toLowerCase(Locale.ROOT);
             word = word.toLowerCase(Locale.ROOT);
         }
@@ -62,7 +64,7 @@ public class Word extends Chat<User> {
         this.messageDispatcher.globalDispatch("Start", message -> message
                 .replace("{word}", word));
 
-        val expireTime = configProvider.provide(ConfigType.CONFIG).getInt("ExpireTime");
+        val expireTime = config.getRoot().node("ExpireTime").getInt();
 
         this.schedulerManager.runAsync(expireTime * 20L, () -> {
             this.messageDispatcher.globalDispatch("NoWinner");
@@ -100,22 +102,25 @@ public class Word extends Chat<User> {
         return message.equals(this.word);
     }
 
+    @SneakyThrows
     private void setupResult() {
-        val randomSection = configProvider.provide(ConfigType.CONFIG).getConfigurationSection("Words.Random");
+        val configRoot = config.getRoot();
+        val wordsNode = configRoot.node("Words");
+        val randomNode = wordsNode.node("Random");
 
-        if (randomSection.getBoolean("Enabled")) {
-            val min = randomSection.getInt("MinCharacters");
-            val max = randomSection.getInt("MaxCharacters");
+        if (randomNode.node("Enabled").getBoolean()) {
+            val min = randomNode.node("MinCharacters").getInt();
+            val max = randomNode.node("MaxCharacters").getInt();
 
             val length = RandomUtils.generateRandomNumber(min, max);
 
             this.word = RandomUtils.generateRandomString(
-                    randomSection.getString("Characters").toCharArray(),
+                    Objects.requireNonNull(randomNode.node("Characters").getString()).toCharArray(),
                     length
             );
-
-        } else
-            this.word = RandomUtils.getRandomElement(configProvider.provide(ConfigType.CONFIG).getStringList("Words.Words"));
+        } else {
+            this.word = RandomUtils.getRandomElement(wordsNode.node("Words").getList(String.class, ArrayList::new));
+        }
 
     }
 }

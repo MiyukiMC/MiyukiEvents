@@ -22,10 +22,12 @@ public class AsyncPlayerChat implements Listener {
         if (!(currentGame instanceof Chat))
             return;
 
-        Bukkit.getScheduler().runTaskLater(
+        Bukkit.getScheduler().runTask(
                 plugin,
-                () -> ((Chat<?>) currentGame).onChat(event.getPlayer(), event.getMessage().split(" ")),
-                3L
+                () -> {
+                    val game = (Chat<?>) currentGame;
+                    game.onChat(event.getPlayer(), event.getMessage().split(" "));
+                }
         );
     }
 

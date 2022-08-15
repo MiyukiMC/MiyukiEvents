@@ -30,7 +30,7 @@ public abstract class GameCommand extends Command {
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
 
-        if (!CommandEvaluator.of(plugin).evaluate(sender, getPermission(), console))
+        if (!CommandEvaluator.evaluate(plugin.getGlobalMessageDispatcher(), sender, getPermission(), console))
             return false;
 
         if (args.length > 0) {

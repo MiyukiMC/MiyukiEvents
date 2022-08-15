@@ -13,4 +13,3 @@ HelpAdmin:
 NoWinner:
   - 'Evento chat'
   - 'Ninguém ganhou!'
-CommandUsedIncorrectly: 'Utilize /word <palavra>!'

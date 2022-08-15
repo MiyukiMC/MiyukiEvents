@@ -36,6 +36,9 @@ public class RandomUtils {
     }
 
     public int generateRandomNumber(int min, int max) {
+        if (min == max)
+            return max;
+
         int randomNumber;
 
         randomNumber = RANDOM.nextInt(max);

@@ -9,8 +9,6 @@ Type: 'lottery'
 # O nome do evento
 Name: 'lottery'
 
-# Permissão para participar do evento
-Permission: 'miyukievents.lottery'
 # Custo do evento (Esse evento ele não cobra para participar, ele só verifica se ele tem essa quantia)
 # Não coloque valores negativos
 Cost: 0

@@ -1,36 +1,32 @@
 package app.miyuki.miyukievents.bukkit.game.command.impl;
 
 import app.miyuki.miyukievents.bukkit.commands.impl.command.GenericCommandCommand;
-import app.miyuki.miyukievents.bukkit.commands.impl.command.auction.AuctionCommand;
-import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
+import app.miyuki.miyukievents.bukkit.config.Config;
 import app.miyuki.miyukievents.bukkit.game.GameInfo;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.command.Command;
 import app.miyuki.miyukievents.bukkit.user.User;
-import app.miyuki.miyukievents.bukkit.util.chat.ChatUtils;
 import app.miyuki.miyukievents.bukkit.util.number.NumberEvaluator;
 import app.miyuki.miyukievents.bukkit.util.number.NumberFormatter;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import app.miyuki.miyukievents.bukkit.util.singlemap.Pair;
 import com.google.common.collect.Lists;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.val;
-import org.apache.commons.lang3.StringUtils;
+import lombok.*;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.configurate.CommentedConfigurationNode;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
-@GameInfo(typeName = "Auction", commandClass = AuctionCommand.class)
+@GameInfo(typeName = "Auction", commandClass = GenericCommandCommand.class)
 public class Auction extends Command<User> {
 
     @Getter
@@ -42,21 +38,19 @@ public class Auction extends Command<User> {
 
     private Pair<User, BigDecimal> lastBid = null;
 
-    public Auction(@NotNull GameConfigProvider configProvider) {
-        super(configProvider);
+    public Auction(@NotNull Config config, @NotNull Config messages, @NotNull Config data) {
+        super(config, messages, data);
     }
+
 
     @Override
     public void onCommand(Player player, String[] args) {
-        if (this.gameState != GameState.STARTED)
-            return;
-
-        if (args.length < 1) {
-            this.messageDispatcher.dispatch(player, "Help");
+        if (args.length != 1) {
+            this.messageDispatcher.dispatch(player, "CommandUsedIncorrectly");
             return;
         }
 
-        if (!NumberEvaluator.isValidDoubleValue(Double.parseDouble(args[0])) || !StringUtils.isNumeric(args[0])) {
+        if (!NumberEvaluator.isDouble(args[0])) {
             messageDispatcher.dispatch(player, "EnterAValidValue");
             return;
         }
@@ -70,9 +64,11 @@ public class Auction extends Command<User> {
             return;
         }
 
+        val amount = new BigDecimal(args[0]);
+
         val money = lastBid == null
-                ? new BigDecimal(args[0]).add(auctionItem.getStartBid())
-                : new BigDecimal(args[0]).add(lastBid.getSecond());
+                ? amount.add(auctionItem.getStartBid())
+                : amount.add(lastBid.getSecond());
 
         if (!economyAPI.has(uuid, money)) {
             this.messageDispatcher.dispatch(player, "YouDontHaveMoney");
@@ -85,12 +81,12 @@ public class Auction extends Command<User> {
                 .replace("{min}", NumberFormatter.format(auctionItem.getMinDifferenceBetweenEntries()))
                 .replace("{max}", NumberFormatter.format(auctionItem.getMaxDifferenceBetweenEntries())));
 
-        if (subtractedValue.compareTo(auctionItem.getMinDifferenceBetweenEntries()) == -1) {
+        if (subtractedValue.compareTo(auctionItem.getMinDifferenceBetweenEntries()) < 0) {
             messageDispatcher.dispatch(player, "MinMaxBetweenError", format);
             return;
         }
 
-        if (subtractedValue.compareTo(auctionItem.getMaxDifferenceBetweenEntries()) == 1) {
+        if (subtractedValue.compareTo(auctionItem.getMaxDifferenceBetweenEntries()) > 0) {
             messageDispatcher.dispatch(player, "MinMaxBetweenError", format);
             return;
         }
@@ -105,19 +101,19 @@ public class Auction extends Command<User> {
         this.messageDispatcher.globalDispatch("PlayerEnteredInTheAuction", message -> message
                 .replace("{player}", player.getName())
                 .replace("{money}", money.toString()));
-
     }
 
     @Override
     public void start() {
         this.setGameState(GameState.STARTED);
-        val config = configProvider.provide(ConfigType.CONFIG);
+        val configRoot = config.getRoot();
 
-        val calls = new AtomicInteger(config.getInt("Calls"));
-        val interval = config.getInt("CallInterval");
+        val calls = new AtomicInteger(configRoot.node("Calls").getInt());
+        val interval = configRoot.node("CallInterval").getInt();
 
         final Function<String, String> format = message -> message
                 .replace("{itemname}", auctionItem.getName())
+                .replace("{itemnamedisplayname}", auctionItem.getDisplayName())
                 .replace("{username}", lastBid == null ? "Ninguém" : lastBid.getFirst().getPlayerName())
                 .replace("{usernamebid}", lastBid == null ? "0" : lastBid.getSecond().toString())
                 .replace("{actualbid}", lastBid == null ? auctionItem.getStartBid().toString() : lastBid.getSecond().toString())
@@ -159,6 +155,7 @@ public class Auction extends Command<User> {
         this.setGameState(GameState.STOPPED);
         this.schedulerManager.cancel();
 
+
         if (this.lastBid != null) {
             // change to class variable
             val economyAPI = plugin.getVaultProvider().provide().get();
@@ -171,6 +168,9 @@ public class Auction extends Command<User> {
         this.lastBid = null;
         this.stop();
         this.giveReward(user);
+
+        this.messageDispatcher.globalDispatch("Win", message -> message
+                .replace("{name}", user.getPlayerName()));
     }
 
     @Override
@@ -189,13 +189,11 @@ public class Auction extends Command<User> {
         this.auctionItems.clear();
         this.lastBid = null;
 
-        val config = configProvider.provide(ConfigType.CONFIG).getConfig();
-        val section = config.getConfigurationSection("Auctions");
+        val configRoot = config.getRoot();
+        val auctionsNode = configRoot.node("Auctions");
 
-        for (val key : section.getKeys(false)) {
-            val auctionItemSection = section.getConfigurationSection(key);
-
-            auctionItems.add(AuctionItem.fromConfig(auctionItemSection));
+        for (Map.Entry<Object, CommentedConfigurationNode> entry : auctionsNode.childrenMap().entrySet()) {
+            auctionItems.add(AuctionItem.fromConfig(entry.getValue()));
         }
 
         this.auctionItem = RandomUtils.getRandomElement(auctionItems);
@@ -209,23 +207,31 @@ public class Auction extends Command<User> {
                 .orElse(null);
     }
 
+    @Nullable
+    public AuctionItem getRandomAuctionItem() {
+        return RandomUtils.getRandomElement(auctionItems);
+    }
+
     @AllArgsConstructor
     @Getter
     public static class AuctionItem {
 
         private String name;
+        private String displayName;
         private List<String> commands;
         private BigDecimal startBid;
         private BigDecimal minDifferenceBetweenEntries;
         private BigDecimal maxDifferenceBetweenEntries;
 
-        private static AuctionItem fromConfig(@NotNull ConfigurationSection configurationSection) {
+        @SneakyThrows
+        private static AuctionItem fromConfig(@NotNull CommentedConfigurationNode node) {
             return new AuctionItem(
-                    ChatUtils.colorize(configurationSection.getString("Name")),
-                    configurationSection.getStringList("Commands"),
-                    new BigDecimal(configurationSection.getString("StartBid")),
-                    new BigDecimal(configurationSection.getString("MinDifferenceBetweenEntries")),
-                    new BigDecimal(configurationSection.getString("MaxDifferenceBetweenEntries"))
+                    (String) node.key(),
+                    node.node("Name").getString(),
+                    node.node("Commands").getList(String.class, ArrayList::new),
+                    new BigDecimal(Objects.requireNonNull(node.node("StartBid").getString())),
+                    new BigDecimal(Objects.requireNonNull(node.node("MinDifferenceBetweenEntries").getString())),
+                    new BigDecimal(Objects.requireNonNull(node.node("MaxDifferenceBetweenEntries").getString()))
             );
         }
 

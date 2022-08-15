@@ -9,7 +9,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.val;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
+import org.spongepowered.configurate.CommentedConfigurationNode;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -23,27 +23,27 @@ public class MySQLAndMariaDB implements ConnectionFactory {
     private final HikariDataSource hikariDataSource;
     private final MiyukiEvents plugin;
 
-    public MySQLAndMariaDB(MiyukiEvents plugin, StorageType storageType, ConfigurationSection section) {
+    public MySQLAndMariaDB(MiyukiEvents plugin, StorageType storageType, CommentedConfigurationNode node) {
         this.plugin = plugin;
 
-        val host = section.getString("Host") + ":" + section.getInt("Port");
-        val database = section.getString("Database");
+        val host = node.node("Host").getString() + ":" + node.node("Port").getString();
+        val database = node.node("Database").getString();
 
         val url = "jdbc:" + storageType.name().toLowerCase(Locale.ROOT) + "://" + host + "/" + database;
 
         val hikariConfig = new HikariConfig();
 
         hikariConfig.setJdbcUrl(url);
-        hikariConfig.setUsername(section.getString("Username"));
-        hikariConfig.setPassword(section.getString("Password"));
+        hikariConfig.setUsername(node.node("Username").getString());
+        hikariConfig.setPassword(node.node("Password").getString());
         hikariConfig.setPoolName("MiyukiEvents-Pool");
 
         hikariConfig.setDriverClassName(storageType.getDriver());
 
         Map<String, String> properties = Maps.newHashMap();
 
-        for (val property : section.getConfigurationSection("Properties").getKeys(false))
-            properties.put(property, section.getString("Properties." + property));
+        for (Map.Entry<Object, CommentedConfigurationNode> property : node.node("Properties").childrenMap().entrySet())
+            properties.put((String) property.getKey(), property.getValue().getString());
 
         properties.putIfAbsent("socketTimeout", String.valueOf(TimeUnit.SECONDS.toMillis(30)));
 
@@ -57,7 +57,6 @@ public class MySQLAndMariaDB implements ConnectionFactory {
         try {
             return hikariDataSource.getConnection();
         } catch (SQLException e) {
-            // adapt to language system.. (pt-br, en-us) (custom message)
             LoggerHelper.log(Level.SEVERE, "An error occurred while trying to initialize the database connection");
             Bukkit.getPluginManager().disablePlugin(plugin);
             return null;

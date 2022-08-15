@@ -1,7 +1,6 @@
 package app.miyuki.miyukievents.bukkit.commands;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
-import app.miyuki.miyukievents.bukkit.config.ConfigType;
 import app.miyuki.miyukievents.bukkit.game.Game;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -9,6 +8,7 @@ import lombok.val;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,9 +27,9 @@ public class CommandRegistry {
         if (!(GameCommand.class.isAssignableFrom(commandClass)))
             throw new IllegalArgumentException();
 
-        val config = game.getConfigProvider().provide(ConfigType.CONFIG);
+        val configRoot = game.getConfig().getRoot();
 
-        val commandName = config.getStringList("Command.Names");
+        val commandName = configRoot.node("Command", "Names").getList(String.class, ArrayList::new);
 
         if (commandName.isEmpty())
             return;

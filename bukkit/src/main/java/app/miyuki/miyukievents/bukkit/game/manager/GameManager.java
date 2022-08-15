@@ -1,7 +1,7 @@
 package app.miyuki.miyukievents.bukkit.game.manager;
 
 import app.miyuki.miyukievents.bukkit.MiyukiEvents;
-import app.miyuki.miyukievents.bukkit.config.ConfigType;
+import app.miyuki.miyukievents.bukkit.config.Config;
 import app.miyuki.miyukievents.bukkit.game.*;
 import app.miyuki.miyukievents.bukkit.game.inperson.InPerson;
 import app.miyuki.miyukievents.bukkit.game.queue.GameQueue;
@@ -12,6 +12,7 @@ import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
+import lombok.var;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,6 +44,10 @@ public class GameManager {
     @Getter
     private final GameRegistry gameRegistry;
 
+    @Setter
+    @Nullable
+    private Game<?> currentGame = null;
+
     @Getter
     private final Map<String, Game<?>> games = Maps.newHashMap();
 
@@ -54,16 +59,6 @@ public class GameManager {
         this.gameRegistry = new GameRegistry();
 
         this.gameRegistry.load();
-    }
-
-    @Nullable
-    public Game<?> getCurrentGame() {
-        for (Game<?> game : plugin.getGameManager().getGames().values()) {
-            if (game.getGameState() != GameState.QUEUE && game.getGameState() != GameState.STOPPED) {
-                return game;
-            }
-        }
-        return null;
     }
 
     public void load() {
@@ -88,31 +83,34 @@ public class GameManager {
 
         for (String gameName : games) {
 
-            val path = "events/" + gameName + "/";
+            var path = "events/" + gameName + "/";
             String internalPath = null;
 
             if (DEFAULT_GAMES.contains(gameName)) {
                 internalPath = language + "/" + path;
+                path = plugin.getDataFolder() + "/" + path;
             }
 
-            val configProvider = new GameConfigProvider(path, internalPath);
+            val config = new Config(path + "config.yml", internalPath + "config.yml");
+            val configRoot = config.getRoot();
 
-            val config = configProvider.provide(ConfigType.CONFIG);
-
-            val typeName = config.getString("Type");
+            val typeName = configRoot.node("Type").getString();
 
             val typeClass = gameRegistry.getGames().stream()
                     .filter(it -> it.getAnnotation(GameInfo.class).typeName().equalsIgnoreCase(typeName))
                     .findFirst();
 
             if (!typeClass.isPresent()) {
-                LoggerHelper.log(Level.SEVERE, "The type &f" + typeName + " is invalid.");
+                LoggerHelper.log(Level.SEVERE, "The type " + typeName + " is invalid.");
                 continue;
             }
 
+            val messages = new Config(path + "messages.yml", internalPath + "messages.yml");
+            val data = new Config(path + "data.yml", internalPath + "data.yml");
+
             Game<?> game;
             try {
-                game = (Game<?>) typeClass.get().getConstructor(GameConfigProvider.class).newInstance(configProvider);
+                game = (Game<?>) typeClass.get().getConstructor(Config.class, Config.class, Config.class).newInstance(config, messages, data);
             } catch (Exception exception) {
                 LoggerHelper.log(Level.SEVERE, "The " + typeName + " event cannot be instantiated.");
                 continue;
@@ -145,6 +143,16 @@ public class GameManager {
 
             this.games.put(gameName.toLowerCase(Locale.ROOT), game);
         }
+    }
+
+    @Nullable
+    public Game<?> getCurrentGame() {
+        if (this.currentGame != null) {
+            val gameState = this.currentGame.getGameState();
+            if (gameState == GameState.STOPPED || gameState == GameState.QUEUE)
+                this.currentGame = null;
+        }
+        return this.currentGame;
     }
 
 

@@ -1,8 +1,7 @@
 package app.miyuki.miyukievents.bukkit.game.command.impl;
 
 import app.miyuki.miyukievents.bukkit.commands.impl.command.GenericCommandCommand;
-import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
+import app.miyuki.miyukievents.bukkit.config.Config;
 import app.miyuki.miyukievents.bukkit.game.GameInfo;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.command.Command;
@@ -11,37 +10,36 @@ import app.miyuki.miyukievents.bukkit.util.chat.ChatUtils;
 import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import app.miyuki.miyukievents.bukkit.util.title.TitleAnimation;
 import com.google.common.collect.Lists;
-import javafx.util.Pair;
 import lombok.val;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @GameInfo(typeName = "Pool", commandClass = GenericCommandCommand.class)
 public class Pool extends Command<User> {
 
-    // maybe change to UUID or String
-    private final List<Player> players = Lists.newArrayList();
+    private final List<UUID> players = Lists.newArrayList();
 
-    public Pool(@NotNull GameConfigProvider configProvider) {
-        super(configProvider);
+    public Pool(@NotNull Config config, @NotNull Config messages, @NotNull Config data) {
+        super(config, messages, data);
     }
+
 
     @Override
     public void onCommand(Player player, String[] args) {
-        if (this.gameState != GameState.STARTED)
-            return;
-
-        if (!player.hasPermission(getPermission())) {
+        if (permission != null && !player.hasPermission(permission)) {
             plugin.getGlobalMessageDispatcher().dispatch(player, "NoPermission");
             return;
         }
 
-        if (players.contains(player)) {
+        if (players.contains(player.getUniqueId())) {
             messageDispatcher.dispatch(player, "YouAlreadyEntered");
             return;
         }
@@ -52,7 +50,7 @@ public class Pool extends Command<User> {
         }
 
         this.plugin.getVaultProvider().provide().ifPresent(economyAPI -> economyAPI.withdraw(player.getUniqueId(), getCost()));
-        this.players.add(player);
+        this.players.add(player.getUniqueId());
 
         this.messageDispatcher.dispatch(player, "YouEntered");
     }
@@ -62,10 +60,10 @@ public class Pool extends Command<User> {
         this.players.clear();
         this.setGameState(GameState.STARTED);
 
-        val config = configProvider.provide(ConfigType.CONFIG);
+        val configRoot = config.getRoot();
 
-        val calls = new AtomicInteger(config.getInt("Calls"));
-        val interval = config.getInt("CallInterval");
+        val calls = new AtomicInteger(configRoot.node("Calls").getInt());
+        val interval = configRoot.node("CallInterval").getInt();
 
         this.schedulerManager.runAsync(0L, interval * 20L, () -> {
 
@@ -86,47 +84,51 @@ public class Pool extends Command<User> {
                 this.messageDispatcher.globalDispatch("NoWinner");
 
                 // change economyAPI to class variable?
-                this.players.forEach(player ->
+                this.players.forEach(uuid ->
                         plugin.getVaultProvider().provide().ifPresent(economyAPI ->
-                                economyAPI.deposit(player.getUniqueId(), getCost()))
+                                economyAPI.deposit(uuid, getCost()))
                 );
 
                 this.stop();
                 return;
             }
 
-            val section = config.getConfigurationSection("RandomTitles");
+            val randomTitlesNode = configRoot.node("RandomTitles");
 
-            if (section.getBoolean("Enabled")) {
+            if (randomTitlesNode.node("Enabled").getBoolean()) {
 
                 this.messageDispatcher.globalDispatch("Raffling");
 
-                List<Pair<String, String>> titles = Lists.newArrayList();
+                List<Title> titles = Lists.newArrayList();
 
-                Player lastPlayer = null;
+                OfflinePlayer lastPlayer = null;
 
-                for (int i = 0; i < config.getInt("Calls"); i++) {
+                for (int i = 0; i < configRoot.node("Calls").getInt(); i++) {
 
-                    lastPlayer = RandomUtils.getRandomElement(players);
+                    UUID uuid = RandomUtils.getRandomElement(players);
+                    lastPlayer = Bukkit.getOfflinePlayer(uuid);
 
-                    val title = ChatUtils.colorize(section.getString("Title").replace("{player}", lastPlayer.getName()));
-                    val subtitle = ChatUtils.colorize(section.getString("Subtitle").replace("{player}", lastPlayer.getName()));
+                    val title = ChatUtils.colorize(
+                            randomTitlesNode.node("Title").getString("").replace("{player}", lastPlayer.getName())
+                    );
+                    val subtitle = ChatUtils.colorize(
+                            randomTitlesNode.node("Subtitle").getString("").replace("{player}", lastPlayer.getName())
+                    );
 
-                    titles.add(new Pair<>(title, subtitle));
-
+                    titles.add(Title.title(title, subtitle));
                 }
 
-                Player finalLastPlayer = lastPlayer;
+                OfflinePlayer finalLastPlayer = lastPlayer;
                 TitleAnimation.Builder()
                         .animation(titles)
-                        .period(config.getInt("Interval"))
+                        .period(configRoot.node("Interval").getInt())
                         .callback(() -> onWin(plugin.getUserRepository().findById(finalLastPlayer.getUniqueId()).get()))
                         .build()
                         .start();
                 return;
             }
 
-            this.onWin(plugin.getUserRepository().findById(RandomUtils.getRandomElement(players).getUniqueId()).get());
+            this.onWin(plugin.getUserRepository().findById(RandomUtils.getRandomElement(players)).get());
         });
     }
 
@@ -135,9 +137,9 @@ public class Pool extends Command<User> {
         this.setGameState(GameState.STOPPED);
         this.schedulerManager.cancel();
 
-        this.players.forEach(player ->
+        this.players.forEach(uuid ->
                 // change this to local/class variable
-                plugin.getVaultProvider().provide().ifPresent(economyAPI -> economyAPI.deposit(player.getUniqueId(), getCost()))
+                plugin.getVaultProvider().provide().ifPresent(economyAPI -> economyAPI.deposit(uuid, getCost()))
         );
     }
 
@@ -152,8 +154,9 @@ public class Pool extends Command<User> {
                 .replace("{winner}", user.getPlayerName())
                 .replace("{money}", String.valueOf(total)));
 
-        this.messageDispatcher.dispatch(Bukkit.getPlayer(user.getUuid()), "YouWin", message -> message
-                .replace("{money}", String.valueOf(total)));
+
+        user.getPlayer().ifPresent(player -> this.messageDispatcher.dispatch(player, "YouWin", message -> message
+                .replace("{money}", String.valueOf(total))));
 
         this.giveReward(user);
     }

@@ -24,7 +24,7 @@ public abstract class SubCommand {
     public abstract @Nullable String getPermission();
 
     public boolean evaluate(@NotNull CommandSender sender, @NotNull String[] args) {
-        if (!CommandEvaluator.of(plugin).evaluate(sender, getPermission(), console))
+        if (!CommandEvaluator.evaluate(plugin.getGlobalMessageDispatcher(), sender, getPermission(), console))
             return false;
 
         return execute(sender, args);

@@ -7,7 +7,6 @@ import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericReloadSubComm
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericStartSubCommand;
 import app.miyuki.miyukievents.bukkit.commands.impl.generic.GenericStopSubCommand;
 import app.miyuki.miyukievents.bukkit.game.Game;
-import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.chat.Chat;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
@@ -18,40 +17,29 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class GenericChatCommand extends GameCommand {
+public class ChatCommand extends GameCommand {
 
     private final Game<?> game;
     private final MessageDispatcher messageDispatcher;
 
-    public GenericChatCommand(@NotNull MiyukiEvents plugin, @NotNull Game<?> game, @NotNull String name, @NotNull List<String> aliases) {
+    public ChatCommand(@NotNull MiyukiEvents plugin, @NotNull Game<?> game, @NotNull String name, @NotNull List<String> aliases) {
         super(plugin, name, aliases, true);
 
         this.game = game;
         messageDispatcher = game.getMessageDispatcher();
-        GameConfigProvider configProvider = game.getConfigProvider();
 
         registerSubCommand(
-                new GenericStartSubCommand(plugin, game, configProvider),
-                new GenericStopSubCommand(plugin, game, configProvider, messageDispatcher),
-                new GenericHelpSubCommand(plugin, configProvider, messageDispatcher),
-                new GenericReloadSubCommand(plugin, game, configProvider)
+                new GenericStartSubCommand(plugin, game),
+                new GenericStopSubCommand(plugin, game, messageDispatcher),
+                new GenericHelpSubCommand(plugin, game, messageDispatcher),
+                new GenericReloadSubCommand(plugin, game)
         );
     }
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String[] args) {
 
-        if (sender instanceof Player && game.getGameState() == GameState.STARTED) {
-            if (args.length == 0) {
-                messageDispatcher.dispatch(sender, "CommandUsedIncorrectly");
-                return false;
-            }
-            ((Chat<?>) game).onChat((Player) sender, args);
-            return true;
-        }
-
         Bukkit.dispatchCommand(sender, getName() + " help");
-
         return false;
     }
 

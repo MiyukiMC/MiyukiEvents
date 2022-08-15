@@ -12,30 +12,30 @@ import java.util.Queue;
 
 public class GameQueue {
 
-    private final GameManager gameManager;
-
     private final Queue<Game<?>> queue = new LinkedList<>();
 
     public GameQueue(@NotNull MiyukiEvents plugin, @NotNull GameManager gameManager) {
-        this.gameManager = gameManager;
 
         new BukkitRunnable() {
             @Override
             public void run() {
+
                 if (queue.isEmpty())
                     return;
 
                 if (gameManager.getCurrentGame() != null)
                     return;
 
+
                 val game = queue.poll();
 
                 if (game == null)
                     return;
 
+                gameManager.setCurrentGame(game);
                 game.start();
             }
-        }.runTaskTimerAsynchronously(plugin, 20L, 20L);
+        }.runTaskTimer(plugin, 20L, 20L);
     }
 
     public boolean register(@NotNull Game<?> game) {

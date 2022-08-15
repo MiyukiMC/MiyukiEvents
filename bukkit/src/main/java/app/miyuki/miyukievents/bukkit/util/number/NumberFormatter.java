@@ -6,11 +6,13 @@ import lombok.val;
 import lombok.var;
 import org.apache.commons.lang.math.IntRange;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -24,14 +26,18 @@ public class NumberFormatter {
     private final List<String> SUFFIXES;
 
     static {
-        val config = JavaPlugin.getPlugin(MiyukiEvents.class).getGlobalConfig();
-        val section = config.getConfigurationSection("NumberFormatter");
+        val configRoot = JavaPlugin.getPlugin(MiyukiEvents.class).getGlobalConfig().getRoot();
+        val numberFormatterNode = configRoot.node("NumberFormatter");
 
-        FORMAT = section.getString("Format");
-        GROUP_SEPARATOR = section.getString("GroupSeparator").charAt(0);
-        DECIMAL_SEPARATOR = section.getString("DecimalSeparator").charAt(0);
-        START = section.getInt("Start");
-        SUFFIXES = section.getStringList("Suffixes");
+        FORMAT = numberFormatterNode.getString("Format");
+        GROUP_SEPARATOR = numberFormatterNode.node("GroupSeparator").getString(",").charAt(0);
+        DECIMAL_SEPARATOR = numberFormatterNode.node("DecimalSeparator").getString(".").charAt(0);
+        START = numberFormatterNode.node("Start").getInt();
+        try {
+            SUFFIXES = numberFormatterNode.node("Suffixes").getList(String.class, ArrayList::new);
+        } catch (SerializationException exception) {
+            throw new RuntimeException(exception);
+        }
     }
 
     public String format(BigDecimal amount) {

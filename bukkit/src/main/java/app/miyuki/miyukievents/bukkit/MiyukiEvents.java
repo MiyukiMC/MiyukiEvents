@@ -1,22 +1,23 @@
 package app.miyuki.miyukievents.bukkit;
 
-import app.miyuki.miyukievents.bukkit.adapter.impl.*;
+import app.miyuki.miyukievents.bukkit.adapter.impl.ItemSerialAdapter;
+import app.miyuki.miyukievents.bukkit.adapter.impl.LocationAdapter;
+import app.miyuki.miyukievents.bukkit.adapter.impl.RewardAdapter;
+import app.miyuki.miyukievents.bukkit.adapter.impl.UserGameHistoryAdapter;
 import app.miyuki.miyukievents.bukkit.commands.CommandRegistry;
 import app.miyuki.miyukievents.bukkit.config.Config;
-import app.miyuki.miyukievents.bukkit.dependency.DependencyManager;
 import app.miyuki.miyukievents.bukkit.game.manager.GameManager;
 import app.miyuki.miyukievents.bukkit.hook.cash.CashProvider;
 import app.miyuki.miyukievents.bukkit.hook.chat.ChatHook;
 import app.miyuki.miyukievents.bukkit.hook.clan.ClanProvider;
 import app.miyuki.miyukievents.bukkit.hook.economy.EconomyProvider;
 import app.miyuki.miyukievents.bukkit.hook.worldedit.WorldEditProvider;
-import app.miyuki.miyukievents.bukkit.language.LanguageEvaluator;
-import app.miyuki.miyukievents.bukkit.language.LanguageProvider;
+import app.miyuki.miyukievents.bukkit.messages.language.LanguageEvaluator;
+import app.miyuki.miyukievents.bukkit.messages.language.LanguageProvider;
 import app.miyuki.miyukievents.bukkit.listener.ListenerRegistry;
 import app.miyuki.miyukievents.bukkit.messages.MessageDispatcher;
 import app.miyuki.miyukievents.bukkit.storage.Storage;
 import app.miyuki.miyukievents.bukkit.storage.StorageFactory;
-import app.miyuki.miyukievents.bukkit.user.UserGameHistory;
 import app.miyuki.miyukievents.bukkit.user.UserRepository;
 import app.miyuki.miyukievents.bukkit.util.logger.LoggerHelper;
 import lombok.Getter;
@@ -44,8 +45,6 @@ public final class MiyukiEvents extends JavaPlugin {
 
     private ItemSerialAdapter itemSerialAdapter;
 
-    private TextColorAdapter textColorAdapter;
-
     private UserGameHistoryAdapter userGameHistoryAdapter;
 
     private CommandRegistry commandRegistry;
@@ -62,16 +61,12 @@ public final class MiyukiEvents extends JavaPlugin {
 
     private UserRepository userRepository;
 
-    private DependencyManager dependencyManager;
 
     @Override
     public void onEnable() {
-        this.language = new LanguageEvaluator().evaluate(new LanguageProvider().provide());
+        this.language = new LanguageEvaluator().evaluate(new LanguageProvider(this).provide());
 
         loadGlobalConfig();
-
-        dependencyManager = new DependencyManager(this);
-        dependencyManager.loadGlobalDependencies();
 
         adventure = BukkitAudiences.create(this);
 
@@ -106,39 +101,39 @@ public final class MiyukiEvents extends JavaPlugin {
 
     private void loadCommands() {
         this.commandRegistry = new CommandRegistry(this);
-        LoggerHelper.log("Commands loaded successfully");
+        LoggerHelper.console("Commands loaded successfully");
     }
 
     private void loadListeners() {
         ListenerRegistry.of(this).register();
-        LoggerHelper.log("Listeners loaded successfully");
+        LoggerHelper.console("Listeners loaded successfully");
     }
 
     private void loadProviders() {
         this.vaultProvider = new EconomyProvider(this);
         if (vaultProvider.hook())
-            LoggerHelper.log("Vault Provider loaded successfully");
+            LoggerHelper.console("Vault Provider loaded successfully");
 
         this.clanProvider = new ClanProvider(this);
         if (clanProvider.hook())
-            LoggerHelper.log("Clan Provider loaded successfully");
+            LoggerHelper.console("Clan Provider loaded successfully");
 
         this.cashProvider = new CashProvider(this);
         if (cashProvider.hook())
-            LoggerHelper.log("Cash Provider loaded successfully");
+            LoggerHelper.console("Cash Provider loaded successfully");
 
         this.worldEditProvider = new WorldEditProvider();
         if (worldEditProvider.hook())
-            LoggerHelper.log("WorldEdit Provider loaded successfully");
+            LoggerHelper.console("WorldEdit Provider loaded successfully");
     }
 
     private void loadGlobalConfig() {
-        this.globalConfig = new Config("config.yml", language + "/config.yml");
+        this.globalConfig = new Config(getDataFolder() + "/config.yml", language + "/config.yml");
     }
 
     private void loadMessages() {
-        this.globalMessageDispatcher = new MessageDispatcher(this, new Config("messages.yml", language + "/messages.yml"));
-        LoggerHelper.log("Messages loaded successfully");
+        this.globalMessageDispatcher = new MessageDispatcher(this, new Config(getDataFolder() + "/messages.yml", language + "/messages.yml"));
+        LoggerHelper.console("Messages loaded successfully");
     }
 
     private void loadDatabase() {
@@ -150,26 +145,26 @@ public final class MiyukiEvents extends JavaPlugin {
 
         this.storage.createTables();
 
-        LoggerHelper.log("Database loaded successfully");
+        LoggerHelper.console("Database loaded successfully");
     }
 
     private void loadGameManager() {
         this.gameManager = new GameManager(this, language);
         this.gameManager.load();
+        LoggerHelper.console("Games loaded successfully");
     }
 
     private void loadAdapters() {
         this.rewardAdapter = new RewardAdapter();
         this.locationAdapter = new LocationAdapter();
         this.itemSerialAdapter = new ItemSerialAdapter();
-        this.textColorAdapter = new TextColorAdapter();
         this.userGameHistoryAdapter = new UserGameHistoryAdapter();
     }
 
     private void loadMetrics() {
-        if (globalConfig.getBoolean("Metrics")) {
+        if (globalConfig.getRoot().node("Metrics").getBoolean()) {
             new Metrics(this, 14218);
-            LoggerHelper.log("Metrics loaded successfully");
+            LoggerHelper.console("Metrics loaded successfully");
         }
     }
 

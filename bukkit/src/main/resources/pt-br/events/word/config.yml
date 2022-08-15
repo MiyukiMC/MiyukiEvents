@@ -19,7 +19,6 @@ Tag:
   Name: 'miyukievents_word'
   Tag: '&c[Palavra]'
 
-Permission: 'miyukievents.word'
 Cost: 0
 
 ExpireTime: 60

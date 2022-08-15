@@ -1,6 +1,11 @@
 package app.miyuki.miyukievents.bukkit.util.item;
 
 import app.miyuki.miyukievents.bukkit.util.chat.ChatUtils;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
+import lombok.val;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -13,7 +18,7 @@ import java.util.List;
 // Remake
 public class ItemBuilder {
 
-    private final ItemStack item;
+    private ItemStack item;
 
     private ItemBuilder(Material material) {
         item = new ItemStack(material);
@@ -23,22 +28,31 @@ public class ItemBuilder {
         return new ItemBuilder(material);
     }
 
+
     public ItemBuilder setName(String name) {
-        ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setDisplayName(ChatUtils.colorize(name));
-        item.setItemMeta(itemMeta);
+
+        Component component = ChatUtils.colorize(name);
+        component = component.decoration(TextDecoration.ITALIC, false);
+
+        val serialized = GsonComponentSerializer.gson().serialize(component);
+
+        item = NBTEditor.set(item, serialized, "display", "Name");
         return this;
     }
 
-    public ItemBuilder setLore(List<String> lores) {
-        ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.setLore(lores);
-        item.setItemMeta(itemMeta);
+    public ItemBuilder setLore(List<String> lore) {
+
+        val serializedLore = lore.stream()
+                .map(ChatUtils::colorize)
+                .map(component -> component.decoration(TextDecoration.ITALIC, false))
+                .map(GsonComponentSerializer.gson()::serialize);
+
+        item = NBTEditor.set(item, serializedLore, "display", "Lore");
         return this;
     }
 
-    public ItemBuilder setLore(String... lores) {
-        return setLore(Arrays.asList(lores));
+    public ItemBuilder setLore(String... lore) {
+        return setLore(Arrays.asList(lore));
     }
 
     public ItemBuilder setGlow(boolean state) {

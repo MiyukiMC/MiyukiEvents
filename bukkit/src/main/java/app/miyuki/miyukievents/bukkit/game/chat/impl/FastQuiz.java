@@ -1,8 +1,7 @@
 package app.miyuki.miyukievents.bukkit.game.chat.impl;
 
-import app.miyuki.miyukievents.bukkit.commands.impl.chat.GenericChatCommand;
-import app.miyuki.miyukievents.bukkit.config.ConfigType;
-import app.miyuki.miyukievents.bukkit.game.GameConfigProvider;
+import app.miyuki.miyukievents.bukkit.commands.impl.chat.ChatCommand;
+import app.miyuki.miyukievents.bukkit.config.Config;
 import app.miyuki.miyukievents.bukkit.game.GameInfo;
 import app.miyuki.miyukievents.bukkit.game.GameState;
 import app.miyuki.miyukievents.bukkit.game.chat.Chat;
@@ -11,24 +10,28 @@ import app.miyuki.miyukievents.bukkit.util.random.RandomUtils;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import lombok.val;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.configurate.CommentedConfigurationNode;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@GameInfo(typeName = "FastQuiz", commandClass = GenericChatCommand.class)
+@GameInfo(typeName = "FastQuiz", commandClass = ChatCommand.class)
 public class FastQuiz extends Chat<User> {
 
     private final List<Question> questions = Lists.newArrayList();
 
     private Question question;
 
-    public FastQuiz(@NotNull GameConfigProvider configProvider) {
-        super(configProvider);
+    public FastQuiz(@NotNull Config config, @NotNull Config messages, @NotNull Config data) {
+        super(config, messages, data);
     }
+
 
     @Override
     public void onChat(Player player, String[] args) {
@@ -38,11 +41,12 @@ public class FastQuiz extends Chat<User> {
         if (args.length < 1)
             return;
 
-        if (!player.hasPermission(getPermission()))
+        if (permission != null && !player.hasPermission(permission))
             return;
 
-        if (!checkCost(player))
+        if (!checkCost(player)) {
             return;
+        }
 
         val message = String.join(" ", args);
 
@@ -60,10 +64,10 @@ public class FastQuiz extends Chat<User> {
         this.setupQuestions();
         this.setGameState(GameState.STARTED);
 
-        val config = configProvider.provide(ConfigType.CONFIG);
+        val configRoot = config.getRoot();
 
-        val calls = new AtomicInteger(config.getInt("Calls"));
-        val interval = config.getInt("CallInterval");
+        val calls = new AtomicInteger(configRoot.node("Calls").getInt());
+        val interval = configRoot.node("CallInterval").getInt();
 
         this.schedulerManager.runAsync(0L, interval * 20L, () -> {
             val seconds = calls.get() * interval;
@@ -111,20 +115,22 @@ public class FastQuiz extends Chat<User> {
         return false;
     }
 
+    @SneakyThrows
     private void setupQuestions() {
         this.questions.clear();
 
-        val config = configProvider.provide(ConfigType.CONFIG);
-        val section = config.getConfigurationSection("Questions");
+        val configRoot = config.getRoot();
+        val questionsNode = configRoot.node("Questions");
 
-        for (val key : section.getKeys(false)) {
-            val questionSection = section.getConfigurationSection(key);
+
+        for (Map.Entry<Object, CommentedConfigurationNode> entry : questionsNode.childrenMap().entrySet()) {
+            val questionNode = entry.getValue();
 
             questions.add(new Question(
-                    questionSection.getString("Question"),
-                    questionSection.getString("DisplayAnswer"),
-                    questionSection.getStringList("Answers"),
-                    questionSection.getBoolean("IgnoreCase")
+                    questionNode.node("Question").getString(),
+                    questionNode.node("DisplayAnswer").getString(),
+                    questionNode.node("Answers").getList(String.class, ArrayList::new),
+                    questionNode.node("IgnoreCase").getBoolean()
             ));
         }
 
@@ -133,7 +139,7 @@ public class FastQuiz extends Chat<User> {
 
     @AllArgsConstructor
     @Getter
-    private class Question {
+    private static class Question {
 
         private String question;
         private String displayAnswer;

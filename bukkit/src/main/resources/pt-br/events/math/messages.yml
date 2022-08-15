@@ -33,5 +33,3 @@ Help:
 HelpAdmin:
   - '/math start'
   - '/math stop'
-# Mensagem quando usa o comando errado
-CommandUsedIncorrectly: 'Utilize /math <numero>!'
